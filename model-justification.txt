@@ -1,1 +1,7 @@
 The model justification goes here.
+
+We want bookable resources to be dynamically added to the app, not hard-coded.
+We need to internationalize descriptions, titles, and such things belonging to these resources.
+We can use django-hvad if the following holds:
+    We can manage without .annotate(), in_bulk(), reverse() and only().
+    We can do without some admin things (see bottom of http://django-hvad.readthedocs.org/en/latest/public/admin.html)
