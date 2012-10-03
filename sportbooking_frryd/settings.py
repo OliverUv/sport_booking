@@ -4,7 +4,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Oliver Uvman', 'oliver.uvman@gmail.com')
 )
 
 MANAGERS = ADMINS
@@ -28,7 +28,10 @@ TIME_ZONE = 'Europe/Stockholm'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
+# This determines the default language for the site.
 LANGUAGE_CODE = 'en-us'
+
+LANGUAGE_COOKIE_NAME = 'frryd_language_choice_cookie'
 
 SITE_ID = 1
 
@@ -45,7 +48,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = '/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
