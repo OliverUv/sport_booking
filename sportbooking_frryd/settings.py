@@ -107,6 +107,7 @@ ROOT_URLCONF = 'sportbooking_frryd.urls'
 WSGI_APPLICATION = 'sportbooking_frryd.wsgi.application'
 
 TEMPLATE_DIRS = (
+    '/home/oliver/sportbooking_frryd/templates'
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -155,3 +156,5 @@ LOGGING = {
         },
     }
 }
+
+AUTH_PROFILE_MODULE = 'booking.UserProfile'
