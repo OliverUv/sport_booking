@@ -1,12 +1,15 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render_to_response
 from django.contrib.auth import logout as do_logout
-from django.template import Context
-from booking.common import render_to_res_csrf
+from django.template import RequestContext
+from django.utils import translation
 
 
 def start(request):
-    context = Context({'logged_in': request.user.is_authenticated()})
-    return render_to_res_csrf('start.html', request, context)
+    context = RequestContext(request, {
+        'logged_in': request.user.is_authenticated(),
+        'current_language': translation.get_language(),
+        'welc': translation.ugettext('Welcome')})
+    return render_to_response('start.html', context)
 
 
 def logout(request):

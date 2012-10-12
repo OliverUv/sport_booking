@@ -65,6 +65,9 @@ STATIC_ROOT = ''
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
+# Where to redirect by default after login
+LOGIN_REDIRECT_URL = '/'
+
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
@@ -91,12 +94,14 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
+    # The ordering of these matters! Consult
+    # https://docs.djangoproject.com/en/dev/topics/i18n/translation/#how-django-discovers-language-preference
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.locale.LocaleMiddleware'
+    'django.contrib.messages.middleware.MessageMiddleware'
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -127,6 +132,8 @@ INSTALLED_APPS = (
     'hvad',  # Translation of dynamic content
     'booking'  # Booking system
 )
+
+LOCALE_PATHS = ('/home/oliver/sportbooking_frryd/conf/locale')
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

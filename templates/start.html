@@ -1,5 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block content %}
-    Welcom!
+{{ welc }}<br/>
+Currently speaking {{ current_language }}
 {% endblock %}
