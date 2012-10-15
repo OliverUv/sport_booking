@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+404 !!!
+{% if message %}
+    {{ message }}
+{% else %}
+    {% trans "Could not find whatever you wanted to find, sorry :(" %}
+{% endif %}
+
+{% endblock %}

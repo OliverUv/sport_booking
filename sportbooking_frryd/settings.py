@@ -59,17 +59,16 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
+# STATIC_ROOT = '/home/oliver/sportbooking_frryd/collected_statics'
 STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
-# Where to redirect by default after login
-LOGIN_REDIRECT_URL = '/'
-
 # Additional locations of static files
 STATICFILES_DIRS = (
+    "/home/oliver/sportbooking_frryd/static"
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -82,6 +81,9 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
+
+# Where to redirect by default after login
+LOGIN_REDIRECT_URL = '/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '()i!des5(o7t03=)6bd5@8esx!j=$_1ht4d$i#i0jhw-^pn56+'

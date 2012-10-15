@@ -7,14 +7,13 @@ from validators import validate_liuid
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
 
-    name = models.CharField(max_length=255)
     postal_number = models.IntegerField()
     phone_number = models.CharField(max_length=40)
     liuid = models.CharField(max_length=8, validators=[validate_liuid])
     registration_time = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return self.name
+        return self.user.username
 
 
 class Remark(models.Model):
@@ -57,4 +56,4 @@ class Reservation(models.Model):
     end = models.DateTimeField()
 
     def __unicode__(self):
-        return '%s booking' % [self.user.name]
+        return '%s booking' % [self.user.username]
