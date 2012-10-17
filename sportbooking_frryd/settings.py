@@ -1,3 +1,4 @@
+import sys
 # Django settings for sportbooking_frryd project.
 
 DEBUG = True
@@ -19,6 +20,10 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
+
+# Speed up testing immensely by running in-memory database instead of mysql.
+if 'test' in sys.argv:
+    DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
