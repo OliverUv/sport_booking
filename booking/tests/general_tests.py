@@ -12,7 +12,6 @@ from datetime import datetime, timedelta
 def add_test_data():
     user1 = User()
     user1.username = 'user1'
-    # user1.password = 'a'
     user1.set_password('a')
     user1.is_staff = True
     user1.is_superuser = True
@@ -42,10 +41,19 @@ def add_test_data():
     res1 = Reservation(user=user1, resource=field1, start=now, end=later)
     res1.save()
 
+    test_data = {
+            'users': [user1],
+            'resource_types': [footballfield],
+            'resources': [field1],
+            'reservations': [res1]
+            }
+
+    return test_data
+
 
 class GeneralTests(unittest.TestCase):
     def setUp(self):
-        add_test_data()
+        self.test_data = add_test_data()
 
     def test_ensure_user(self):
         self.assertEqual(1, User.objects.all().count())
@@ -54,10 +62,10 @@ class GeneralTests(unittest.TestCase):
 
 class ManualTests(LiveServerTestCase):
     def setUp(self):
-        add_test_data()
+        self.test_data = add_test_data()
 
     def test_run_test_server_with_test_data(self):
         try:
-            raw_input('\nAccepting tests on http://127.0.0.1:8081 until key pressed...\n')
+            raw_input('\nAccepting tests on http://127.0.0.1:8081 until Enter is pressed...\n')
         except EOFError:
             pass
