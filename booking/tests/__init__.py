@@ -1,1 +1,1 @@
-from general_tests import GeneralTests
+from general_tests import *

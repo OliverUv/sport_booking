@@ -2,6 +2,7 @@
 # Line above required to use swedish characters in file
 
 from django.utils import unittest
+from django.test import LiveServerTestCase
 from django.contrib.auth.models import User
 from booking.models import ResourceType, Resource, Reservation
 
@@ -11,6 +12,10 @@ from datetime import datetime, timedelta
 def add_test_data():
     user1 = User()
     user1.username = 'user1'
+    # user1.password = 'a'
+    user1.set_password('a')
+    user1.is_staff = True
+    user1.is_superuser = True
     user1.save()
 
     footballfield = ResourceType.objects.create()
@@ -45,3 +50,14 @@ class GeneralTests(unittest.TestCase):
     def test_ensure_user(self):
         self.assertEqual(1, User.objects.all().count())
         self.assertEqual(1, Reservation.objects.all().count())
+
+
+class ManualTests(LiveServerTestCase):
+    def setUp(self):
+        add_test_data()
+
+    def test_run_test_server_with_test_data(self):
+        try:
+            raw_input('\nAccepting tests on http://127.0.0.1:8081 until key pressed...\n')
+        except EOFError:
+            pass
