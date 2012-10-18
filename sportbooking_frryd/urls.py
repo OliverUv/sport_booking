@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^accounts/logout/$', 'booking.views.general.logout', name='logout'),
     url(r'^$', 'booking.views.general.start', name='start'),
+    url(r'^resource/(?P<resource_id>\d+)/$', 'booking.views.calendar.resource', name='resource'),
 
     url(r'^i18n/', include('django.conf.urls.i18n'))  # Enables internationalization
 )

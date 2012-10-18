@@ -1,11 +1,10 @@
 from django.http import Http404
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
+from booking.common import get_object_or_404
 
 from booking.models import Resource
-
-import json
 
 
 def resource(request, resource_id=None):
@@ -14,8 +13,9 @@ def resource(request, resource_id=None):
     """
     if resource_id is None:
         raise Http404
-    resource = get_object_or_404(Resource, pk=resource_id)
+    resource = get_object_or_404(Resource, resource_id)
     context = RequestContext(request, {
-        'resource': json.encode(resource)
-        })
+        'resource': {'id': resource.id,
+                    'name': resource.name}})
+
     return render_to_response('resource.html', context)
