@@ -1,4 +1,5 @@
 import sys
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 # Django settings for sportbooking_frryd project.
 
 DEBUG = True
@@ -99,6 +100,11 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
 #     'django.template.loaders.eggs.Loader',
 )
+
+# Adding template context processors here
+TEMPLATE_CONTEXT_PROCESSORS = TCP + (
+        'django.core.context_processors.request',
+        )
 
 MIDDLEWARE_CLASSES = (
     # The ordering of these matters! Consult

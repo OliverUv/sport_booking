@@ -11,20 +11,16 @@
 	<!-- Language selection -->
 	{% trans "Choose Language:" %}
 	<br/>
-	<li>
 	<form name="setLangEnglish" action="/i18n/setlang/" method="POST">{% csrf_token %}
-	    <input name="next" type="hidden" value="/" />
+	    <input name="next" type="hidden" value="{{ request.get_full_path }}" />
 	    <input type="hidden" name="language" value="en" />
 	    <a href="#" onclick="document.setLangEnglish.submit();return false;">English</a>
 	</form>
-	</li>
-	<li>
 	<form name="setLangSwedish" action="/i18n/setlang/" method="POST">{% csrf_token %}
-	    <input name="next" type="hidden" value="/" />
+	    <input name="next" type="hidden" value="{{ request.get_full_path }}" />
 	    <input type="hidden" name="language" value="sv" />
 	    <a href="#" onclick="document.setLangSwedish.submit();return false;">Swedish</a>
 	</form>                
-	</li>
 	{% if logged_in %}
 	    <a href='{% url logout %}'>Logout!</a>
 	{% else %}
