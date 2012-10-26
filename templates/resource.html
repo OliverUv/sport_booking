@@ -1,14 +1,22 @@
 {% extends "base.html" %}
 {% load i18n %}
 
+{% block head %}
+<link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}cal/fullcalendar.css' />
+<link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}cal/fullcalendar.print.css' media='print' />
+<script type='text/javascript' src='{{ STATIC_URL }}jquery-1.8.1.min.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}jquery-ui-1.8.23.custom.min.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}cal/fullcalendar.js'></script>
+<script>
+    $(document).ready( function() {
+	$('#calendar').fullCalendar({
+	})
+    });
+</script>
+{% endblock %}
+
 {% block content %}
 In language {{ lang }}
 Showing resource {{ resource.name }} with id {{ resource.id }}.
-<div class="calendar"/>
-    <script>
-	$(document).ready( function() {
-	    $('#calendar').fullCalendar({
-	    })
-	});
-    </script>
+<div id="calendar"/>
 {% endblock %}
