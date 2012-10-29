@@ -10,6 +10,18 @@
 <script>
     $(document).ready( function() {
 	$('#calendar').fullCalendar({
+	    firstDay: 1,
+	    defaultView: 'basicWeek',
+	    eventSources: [
+	    {
+		url: '/solid-reservations/{{ resource.id }}',
+		color: '#9acd32',
+		textColor: 'black'
+	    }, {
+		url: '/preliminary-reservations/{{ resource.id }}',
+		color: '#add8e6',
+		textColor: 'black'
+	    }]
 	})
     });
 </script>
@@ -19,4 +31,4 @@
 In language {{ lang }}
 Showing resource {{ resource.name }} with id {{ resource.id }}.
 <div id="calendar"/>
-{% endblock %}
+    {% endblock %}
