@@ -8,7 +8,7 @@ from booking.models import Reservation
 
 from booking.models import Resource
 import json
-import time
+import calendar
 
 
 def resource(request, resource_id=None):
@@ -25,6 +25,25 @@ def resource(request, resource_id=None):
     return render_to_response('resource.html', context)
 
 
+def add_solidity_annotations(reservations):
+    """
+    Adds a 'solid' parameter to each reservation, specifying whether
+    there already were other reservations made by the same user
+    when this one was made (and which obviously occurr after the time
+    when this booking was made).
+    """
+    for r in reservations:
+        solid_reservations = Reservation.objects.filter(
+                user=r.user,
+                resource=r.resource,
+                start__gt=r.time_created,
+                time_created__lt=r.time_created)
+        if solid_reservations.count() > 0:
+            r.solid = True
+        else:
+            r.solid = False
+
+
 def get_reservations(resource_id, start_time, end_time):
     if not resource_id or not start_time or not end_time:
         raise Http404
@@ -38,22 +57,25 @@ def get_reservations(resource_id, start_time, end_time):
     reservations = Reservation.objects.filter(
             resource=resource_id,
             start__range=(start_datetime, end_datetime))
+    add_solidity_annotations(reservations)
     return reservations
 
 
 def reservations_to_json(reservations):
     return json.dumps([{
         'title': r.user.username,
-        'start': time.mktime(r.start.timetuple()),
-        'end': time.mktime(r.end.timetuple())}
+        'start': calendar.timegm(r.start.timetuple()),
+        'end': calendar.timegm(r.end.timetuple())}
         for r in reservations])
 
 
 def solid_reservations(request, resource_id=None):
     reservations = get_reservations(resource_id, request.GET.get('start'), request.GET.get('end'))
+    reservations = filter(lambda x: x.solid, reservations)
     return HttpResponse(reservations_to_json(reservations))
 
 
 def preliminary_reservations(request, resource_id=None):
     reservations = get_reservations(resource_id, request.GET.get('start'), request.GET.get('end'))
+    reservations = filter(lambda x: not x.solid, reservations)
     return HttpResponse(reservations_to_json(reservations))
