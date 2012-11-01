@@ -11,7 +11,8 @@
     $(document).ready( function() {
 	$('#calendar').fullCalendar({
 	    firstDay: 1,
-	    defaultView: 'basicWeek',
+	    defaultView: 'agendaWeek',
+	    allDayDefault: false,
 	    eventSources: [
 	    {
 		url: '/solid-reservations/{{ resource.id }}',

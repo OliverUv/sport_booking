@@ -8,6 +8,7 @@ from booking.models import Reservation
 
 from booking.models import Resource
 import json
+import time
 
 
 def resource(request, resource_id=None):
@@ -27,6 +28,9 @@ def resource(request, resource_id=None):
 def get_reservations(resource_id, start_time, end_time):
     if not resource_id or not start_time or not end_time:
         raise Http404
+    start_time = int(start_time)
+    end_time = int(end_time)
+    resource_id = int(resource_id)
     start_datetime = datetime.fromtimestamp(start_time)
     # We need to add a day to endtime because of djangoisms
     # see https://docs.djangoproject.com/en/dev/ref/models/querysets/#range
@@ -40,16 +44,16 @@ def get_reservations(resource_id, start_time, end_time):
 def reservations_to_json(reservations):
     return json.dumps([{
         'title': r.user.username,
-        'start': r.start,
-        'end': r.end}
+        'start': time.mktime(r.start.timetuple()),
+        'end': time.mktime(r.end.timetuple())}
         for r in reservations])
 
 
 def solid_reservations(request, resource_id=None):
-    reservations = get_reservations(resource_id, request.GET.get('start', request.GET.get('end')))
+    reservations = get_reservations(resource_id, request.GET.get('start'), request.GET.get('end'))
     return HttpResponse(reservations_to_json(reservations))
 
 
 def preliminary_reservations(request, resource_id=None):
-    reservations = get_reservations(resource_id, request.GET.get('start', request.GET.get('end')))
+    reservations = get_reservations(resource_id, request.GET.get('start'), request.GET.get('end'))
     return HttpResponse(reservations_to_json(reservations))
