@@ -17,8 +17,7 @@ urlpatterns = patterns('',
     url(r'^accounts/logout/$', 'booking.views.general.logout', name='logout'),
     url(r'^$', 'booking.views.general.start', name='start'),
     url(r'^resource/(?P<resource_id>\d+)/$', 'booking.views.booking_calendar.resource', name='resource'),
-    url(r'^solid-reservations/(?P<resource_id>\d+)/$', 'booking.views.booking_calendar.solid_reservations', name='solid-reservations'),
-    url(r'^preliminary-reservations/(?P<resource_id>\d+)/$', 'booking.views.booking_calendar.preliminary_reservations', name='preliminary-reservations'),
+    url(r'^reservations/(?P<resource_id>\d+)/$', 'booking.views.booking_calendar.get_reservations', name='reservations'),
 
     url(r'^i18n/', include('django.conf.urls.i18n'))  # Enables internationalization
 )

@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 from hvad.models import TranslatableModel, TranslatedFields
 from validators import validate_liuid
 
@@ -57,3 +58,14 @@ class Reservation(models.Model):
 
     def __unicode__(self):
         return '%s booking' % [self.user.username]
+
+    def is_solid(self):
+        if self.start < timezone.now():
+            return True
+
+        conflicting_reservations = Reservation.objects.filter(
+                user=self.user,
+                resource=self.resource,
+                start__lt=self.start,
+                start__gt=timezone.now())
+        return conflicting_reservations.count() == 0

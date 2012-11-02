@@ -25,31 +25,39 @@ def resource(request, resource_id=None):
     return render_to_response('resource.html', context)
 
 
-def add_solidity_annotations(reservations):
+def add_color_annotations(user, reservations):
     """
-    Adds a 'solid' parameter to each reservation, specifying whether
-    there already were other reservations made by the same user
-    when this one was made (and which obviously occurr after the time
-    when this booking was made).
+    Adds colors to reservations so that they are represented correctly
+    to the user.
     """
+    background_colors = {
+            'own': {'solid': '#1e90ff', 'preliminary': '#afeeee'},
+            'other': {'solid': '#b22222', 'preliminary': '#f4a460'},
+            }
+
+    text_colors = {
+            'own': {'solid': '#ffffff', 'preliminary': '#000000'},
+            'other': {'solid': '#ffffff', 'preliminary': '#000000'},
+            }
+
     for r in reservations:
-        solid_reservations = Reservation.objects.filter(
-                user=r.user,
-                resource=r.resource,
-                start__gt=r.time_created,
-                time_created__lt=r.time_created)
-        if solid_reservations.count() > 0:
-            r.solid = True
-        else:
-            r.solid = False
+        display_as = 'other'
+        if user.is_authenticated() and user == r.user:
+            display_as = 'own'
+
+        r_status = 'solid' if r.is_solid() else 'preliminary'
+
+        r.bg_color = background_colors[display_as][r_status]
+        r.text_color = text_colors[display_as][r_status]
 
 
-def get_reservations(resource_id, start_time, end_time):
+def get_reservations(request, resource_id):
+    start_time = int(request.GET.get('start'))
+    end_time = int(request.GET.get('end'))
+    resource_id = int(resource_id)
     if not resource_id or not start_time or not end_time:
         raise Http404
-    start_time = int(start_time)
-    end_time = int(end_time)
-    resource_id = int(resource_id)
+
     start_datetime = datetime.fromtimestamp(start_time)
     # We need to add a day to endtime because of djangoisms
     # see https://docs.djangoproject.com/en/dev/ref/models/querysets/#range
@@ -57,25 +65,16 @@ def get_reservations(resource_id, start_time, end_time):
     reservations = Reservation.objects.filter(
             resource=resource_id,
             start__range=(start_datetime, end_datetime))
-    add_solidity_annotations(reservations)
-    return reservations
+    add_color_annotations(request.user, reservations)
+
+    return HttpResponse(reservations_to_json(reservations))
 
 
 def reservations_to_json(reservations):
     return json.dumps([{
         'title': r.user.username,
         'start': calendar.timegm(r.start.timetuple()),
-        'end': calendar.timegm(r.end.timetuple())}
+        'end': calendar.timegm(r.end.timetuple()),
+        'color': r.bg_color,
+        'textColor': r.text_color}
         for r in reservations])
-
-
-def solid_reservations(request, resource_id=None):
-    reservations = get_reservations(resource_id, request.GET.get('start'), request.GET.get('end'))
-    reservations = filter(lambda x: x.solid, reservations)
-    return HttpResponse(reservations_to_json(reservations))
-
-
-def preliminary_reservations(request, resource_id=None):
-    reservations = get_reservations(resource_id, request.GET.get('start'), request.GET.get('end'))
-    reservations = filter(lambda x: not x.solid, reservations)
-    return HttpResponse(reservations_to_json(reservations))

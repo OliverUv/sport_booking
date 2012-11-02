@@ -15,15 +15,8 @@
 	    allDayDefault: false,
 	    eventSources: [
 	    {
-		url: '/solid-reservations/{{ resource.id }}',
-		color: '#9acd32',
-		textColor: 'black'
-	    }, {
-		url: '/preliminary-reservations/{{ resource.id }}',
-		color: '#add8e6',
-		textColor: 'black'
-	    }]
-	})
+		url: '/reservations/{{ resource.id }}'
+	    }]})
     });
 </script>
 {% endblock %}
