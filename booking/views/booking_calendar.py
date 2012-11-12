@@ -1,6 +1,8 @@
-from django.http import Http404, HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.utils import timezone
 from django.utils.translation import ugettext as _
 from datetime import datetime, timedelta
 from booking.common import get_object_or_404
@@ -78,3 +80,22 @@ def reservations_to_json(reservations):
         'color': r.bg_color,
         'textColor': r.text_color}
         for r in reservations])
+
+
+@login_required
+def make_reservation(request):
+    start = request.POST.get('start', None)
+    end = request.POST.get('end', None)
+    resource_id = request.POST.get('resource_id', None)
+
+    if None in [start, end, resource_id]:
+        return HttpResponseBadRequest()
+
+    start = datetime.fromtimestamp(float(start))
+    end = datetime.fromtimestamp(float(end))
+
+    now = timezone.now()
+    if now > start or now > end:
+        return HttpResponseForbidden(_('Start and end times must be in the future.'))
+
+    return HttpResponse({'Success'})
