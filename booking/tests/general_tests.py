@@ -4,9 +4,10 @@
 from django.test import TestCase
 from django.test import LiveServerTestCase
 from django.test.client import Client
-from django.utils import timezone
 from django.contrib.auth.models import User
 from booking.models import ResourceType, Resource, Reservation
+from booking.common import utc_now, to_timestamp
+from booking import common
 
 from datetime import timedelta
 
@@ -38,8 +39,8 @@ def create_resource_type():
 def create_resource(resource_type):
     resource_id = Resource.objects.filter(resource_type=resource_type).count() + 1
     resource = Resource(resource_type=resource_type)
-    resource.longitude = resource_id + 100
-    resource.latitude = resource_id + 100
+    resource.longitude = resource_id + 100 + resource_id
+    resource.latitude = resource_id + 100 + resource_id
     resource.translate('en')
     resource.name = 'english resource name %s' % resource_id
     resource.specific_information = 'english resource info %s' % resource_id
@@ -57,11 +58,11 @@ def create_reservation(user, resource, start, end):
 
 
 def later(hours_later):
-    return timezone.now() + timedelta(hours=hours_later)
+    return utc_now() + timedelta(hours=hours_later)
 
 
 def earlier(hours_earlier):
-    return timezone.now() - timedelta(hours=hours_earlier)
+    return utc_now() - timedelta(hours=hours_earlier)
 
 
 def add_test_data():
@@ -74,6 +75,7 @@ def add_test_data():
     rest1 = create_resource_type()
     res1 = create_resource(rest1)
     res2 = create_resource(rest1)
+    res3 = create_resource(rest1)
 
     r1 = create_reservation(user1, res1, earlier(2), earlier(1))
     r2 = create_reservation(user1, res1, later(1), later(2))
@@ -92,7 +94,7 @@ def add_test_data():
     test_data = {
             'users': [user1, user2, user3, user4, user5],
             'resource_types': [rest1],
-            'resources': [res1, res2],
+            'resources': [res1, res2, res3],
             'reservations': [r1, r2, r3, r4, r5, r6, r7, r8, r9, r10]}
 
     return test_data
@@ -122,14 +124,114 @@ class GeneralTests(TestCase):
 
         self.assertTrue(r[9].is_solid())
 
-    def test_fail_new_reservation_in_past(self):
-        resource = self.test_data['resources'][1]
+    def test_simple_reservation_success(self):
+        resource = self.test_data['resources'][2]
 
         response = self.client.post('/make_reservation/', {
-            'start': earlier(2).timetuple(),
-            'end': earlier(1).timetuple(),
+            'start': to_timestamp(later(2)),
+            'end': to_timestamp(later(3)),
+            'resource_id': resource.id})
+        self.assertEqual(response.status_code, 200)
+
+    def test_fail_new_reservation_in_past(self):
+        resource = self.test_data['resources'][2]
+
+        response = self.client.post('/make_reservation/', {
+            'start': to_timestamp(earlier(2)),
+            'end': to_timestamp(earlier(1)),
             'resource_id': resource.id})
         self.assertEqual(response.status_code, 403)
+
+    def test_fail_new_reservation_starts_after_ends(self):
+        resource = self.test_data['resources'][2]
+
+        response = self.client.post('/make_reservation/', {
+            'start': to_timestamp(later(2)),
+            'end': to_timestamp(later(1)),
+            'resource_id': resource.id})
+        self.assertEqual(response.status_code, 403)
+
+    def test_fail_third_reservation(self):
+        resource = self.test_data['resources'][2]
+
+        response = self.client.post('/make_reservation/', {
+            'start': to_timestamp(later(1)),
+            'end': to_timestamp(later(2)),
+            'resource_id': resource.id})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/make_reservation/', {
+            'start': to_timestamp(later(3)),
+            'end': to_timestamp(later(4)),
+            'resource_id': resource.id})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/make_reservation/', {
+            'start': to_timestamp(later(5)),
+            'end': to_timestamp(later(6)),
+            'resource_id': resource.id})
+        self.assertEqual(response.status_code, 403)
+
+    def test_fail_unauthorized_reservation(self):
+        c = Client()
+        resource = self.test_data['resources'][2]
+
+        response = c.post('/make_reservation/', {
+            'start': to_timestamp(later(2)),
+            'end': to_timestamp(later(3)),
+            'resource_id': resource.id})
+        self.assertEqual(response.status_code, 302)
+        # Normally one would expect HTTP 401 for unauthorized requests,
+        # but django instead sends a redirect to the login page.
+
+
+class TimeTests(TestCase):
+    def setUp(self):
+        pass
+
+    def assert_approx_equal(self, dt1, dt2):
+        """
+        Checks that two datetime objects are equal without respects to
+        timezone or milliseconds, things that get lost in timestamp conversion.
+        """
+        self.assertEqual(dt1.date(), dt2.date())
+        self.assertEqual(dt1.time().hour, dt2.time().hour)
+        self.assertEqual(dt1.time().minute, dt2.time().minute)
+        self.assertEqual(dt1.time().second, dt2.time().second)
+
+    def test_utc_conversions(self):
+        now = common.utc_now()
+        now_ts = common.to_timestamp(now)
+        now_from_ts = common.from_timestamp(now_ts)
+        self.assert_approx_equal(now, now_from_ts)
+
+    def test_utc_sv_conversions(self):
+        now = common.utc_now()
+        local_now = common.as_local_time(now)
+
+        self.assertEqual(now, local_now)
+        self.assertNotEquals(now.tzname(), local_now.tzname())
+
+        ts_sv = common.to_timestamp(local_now)
+        ts_utc = common.to_timestamp(now)
+
+        self.assertEqual(ts_sv, ts_utc)
+
+        self.assert_approx_equal(common.from_timestamp(ts_sv), common.from_timestamp(ts_utc))
+
+    def test_sv_ts_sv(self):
+        utc_now = common.utc_now()
+        local_now = common.as_local_time(utc_now)
+
+        ts = common.to_timestamp(local_now)
+
+        utc_from_ts = common.from_timestamp(ts)
+        local_from_ts = common.as_local_time(utc_from_ts)
+
+        self.assert_approx_equal(utc_now, utc_from_ts)
+        self.assert_approx_equal(local_now, local_from_ts)
+        self.assertEqual(utc_now, local_now)
+        self.assertEqual(utc_from_ts, local_from_ts)
 
 
 class ManualTests(LiveServerTestCase):

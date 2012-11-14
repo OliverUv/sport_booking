@@ -1,16 +1,16 @@
 from django.contrib.auth.decorators import login_required
-from django.http import Http404, HttpResponse, HttpResponseBadRequest
+from django.http import Http404, HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.utils import timezone
 from django.utils.translation import ugettext as _
-from datetime import datetime, timedelta
+from datetime import timedelta
+
 from booking.common import get_object_or_404
 from booking.models import Reservation
-
 from booking.models import Resource
+from booking.common import to_timestamp, from_timestamp, utc_now
+
 import json
-import calendar
 
 
 def resource(request, resource_id=None):
@@ -60,10 +60,10 @@ def get_reservations(request, resource_id):
     if not resource_id or not start_time or not end_time:
         raise Http404
 
-    start_datetime = datetime.fromtimestamp(start_time)
+    start_datetime = from_timestamp(start_time)
     # We need to add a day to endtime because of djangoisms
     # see https://docs.djangoproject.com/en/dev/ref/models/querysets/#range
-    end_datetime = datetime.fromtimestamp(end_time) + timedelta(days=1)
+    end_datetime = from_timestamp(end_time) + timedelta(days=1)
     reservations = Reservation.objects.filter(
             resource=resource_id,
             start__range=(start_datetime, end_datetime))
@@ -75,8 +75,8 @@ def get_reservations(request, resource_id):
 def reservations_to_json(reservations):
     return json.dumps([{
         'title': r.user.username,
-        'start': calendar.timegm(r.start.timetuple()),
-        'end': calendar.timegm(r.end.timetuple()),
+        'start': to_timestamp(r.start),
+        'end': to_timestamp(r.end),
         'color': r.bg_color,
         'textColor': r.text_color}
         for r in reservations])
@@ -91,11 +91,27 @@ def make_reservation(request):
     if None in [start, end, resource_id]:
         return HttpResponseBadRequest()
 
-    start = datetime.fromtimestamp(float(start))
-    end = datetime.fromtimestamp(float(end))
+    start = from_timestamp(int(start))
+    end = from_timestamp(int(end))
+    resource_id = int(resource_id)
 
-    now = timezone.now()
-    if now > start or now > end:
+    now = utc_now()
+    if (now > start) or (now > end):
         return HttpResponseForbidden(_('Start and end times must be in the future.'))
+
+    if not (start < end):
+        return HttpResponseForbidden(_('Start time must be before end time.'))
+
+    outstanding_reservations = Reservation.objects.filter(
+            user=request.user,
+            start__gt=now,
+            resource=resource_id).count()
+
+    if outstanding_reservations > 1:
+        return HttpResponseForbidden(_('You may only make two reservations per resource.'))
+
+    r = Reservation(user=request.user, start=start, end=end)
+    r.resource_id = resource_id
+    r.save()
 
     return HttpResponse({'Success'})

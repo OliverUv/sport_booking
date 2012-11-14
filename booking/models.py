@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils import timezone
 from hvad.models import TranslatableModel, TranslatedFields
 from validators import validate_liuid
+
+from booking.common import utc_now
 
 
 class UserProfile(models.Model):
@@ -60,12 +61,12 @@ class Reservation(models.Model):
         return '%s booking' % [self.user.username]
 
     def is_solid(self):
-        if self.start < timezone.now():
+        if self.start < utc_now():
             return True
 
         conflicting_reservations = Reservation.objects.filter(
                 user=self.user,
                 resource=self.resource,
                 start__lt=self.start,
-                start__gt=timezone.now())
+                start__gt=utc_now())
         return conflicting_reservations.count() == 0
