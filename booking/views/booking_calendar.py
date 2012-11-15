@@ -95,6 +95,11 @@ def make_reservation(request):
     end = from_timestamp(int(end))
     resource_id = int(resource_id)
 
+    interval = end - start
+    max_interval = timedelta(hours=1)
+    if (interval > max_interval):
+        return HttpResponseForbidden(_('You may reserve at most an hour per reservation.'))
+
     now = utc_now()
     if (now > start) or (now > end):
         return HttpResponseForbidden(_('Start and end times must be in the future.'))
@@ -109,6 +114,14 @@ def make_reservation(request):
 
     if outstanding_reservations > 1:
         return HttpResponseForbidden(_('You may only make two reservations per resource.'))
+
+    possibly_concurrent_reservations = Reservation.objects.filter(
+            user=request.user,
+            start__gt=now)
+
+    concurrent_reservations = filter(lambda r: r.would_overlap(start, end), possibly_concurrent_reservations)
+    if len(concurrent_reservations) > 0:
+        return HttpResponseForbidden(_('You may not reserve two resources at the same time.'))
 
     r = Reservation(user=request.user, start=start, end=end)
     r.resource_id = resource_id

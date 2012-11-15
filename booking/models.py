@@ -70,3 +70,10 @@ class Reservation(models.Model):
                 start__lt=self.start,
                 start__gt=utc_now())
         return conflicting_reservations.count() == 0
+
+    def would_overlap(self, other_start, other_end):
+        latest_start = max(self.start, other_start)
+        earliest_end = min(self.end, other_end)
+        if latest_start < earliest_end:
+            return True
+        return False

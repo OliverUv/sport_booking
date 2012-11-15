@@ -76,6 +76,7 @@ def add_test_data():
     res1 = create_resource(rest1)
     res2 = create_resource(rest1)
     res3 = create_resource(rest1)
+    res4 = create_resource(rest1)
 
     r1 = create_reservation(user1, res1, earlier(2), earlier(1))
     r2 = create_reservation(user1, res1, later(1), later(2))
@@ -94,13 +95,13 @@ def add_test_data():
     test_data = {
             'users': [user1, user2, user3, user4, user5],
             'resource_types': [rest1],
-            'resources': [res1, res2, res3],
+            'resources': [res1, res2, res3, res4],
             'reservations': [r1, r2, r3, r4, r5, r6, r7, r8, r9, r10]}
 
     return test_data
 
 
-class GeneralTests(TestCase):
+class ReservationTests(TestCase):
     def setUp(self):
         self.test_data = add_test_data()
         self.client = Client()
@@ -171,6 +172,62 @@ class GeneralTests(TestCase):
             'end': to_timestamp(later(6)),
             'resource_id': resource.id})
         self.assertEqual(response.status_code, 403)
+
+    def test_fail_too_long_reservations(self):
+        resource1 = self.test_data['resources'][2]
+
+        response = self.client.post('/make_reservation/', {
+            'start': to_timestamp(later(1)),
+            'end': to_timestamp(later(3)),
+            'resource_id': resource1.id})
+        self.assertEqual(response.status_code, 403)
+
+        response = self.client.post('/make_reservation/', {
+            'start': to_timestamp(later(1)),
+            'end': to_timestamp(later(5)),
+            'resource_id': resource1.id})
+        self.assertEqual(response.status_code, 403)
+
+    def test_succeed_two_serial_reservations(self):
+        resource1 = self.test_data['resources'][2]
+
+        response = self.client.post('/make_reservation/', {
+            'start': to_timestamp(later(1)),
+            'end': to_timestamp(later(2)),
+            'resource_id': resource1.id})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/make_reservation/', {
+            'start': to_timestamp(later(2)),
+            'end': to_timestamp(later(3)),
+            'resource_id': resource1.id})
+        self.assertEqual(response.status_code, 200)
+
+    def test_fail_overlapping_reservations(self):
+        resource1 = self.test_data['resources'][2]
+        resource2 = self.test_data['resources'][3]
+
+        forbidden_reservations = [
+                (later(3.2), later(3.8)),
+                (later(3.1), later(3.9)),
+                (later(3.3), later(3.7)),
+                (later(3.2), later(3.3)),
+                (later(3.5), later(3.8)),
+                (later(3.5), later(4)),
+                (later(3), later(3.5))]
+
+        response = self.client.post('/make_reservation/', {
+            'start': to_timestamp(later(3.2)),
+            'end': to_timestamp(later(3.8)),
+            'resource_id': resource1.id})
+        self.assertEqual(response.status_code, 200)
+
+        for (start, end) in forbidden_reservations:
+            response = self.client.post('/make_reservation/', {
+                'start': to_timestamp(start),
+                'end': to_timestamp(end),
+                'resource_id': resource2.id})
+            self.assertEqual(response.status_code, 403)
 
     def test_fail_unauthorized_reservation(self):
         c = Client()
