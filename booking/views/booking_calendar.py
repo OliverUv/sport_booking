@@ -9,6 +9,7 @@ from booking.common import get_object_or_404
 from booking.models import Reservation
 from booking.models import Resource
 from booking.common import to_timestamp, from_timestamp, utc_now
+from booking.common import MAX_RESERVATION_LENGTH
 
 import json
 
@@ -65,6 +66,7 @@ def get_reservations(request, resource_id):
     # see https://docs.djangoproject.com/en/dev/ref/models/querysets/#range
     end_datetime = from_timestamp(end_time) + timedelta(days=1)
     reservations = Reservation.objects.filter(
+            deleted=False,
             resource=resource_id,
             start__range=(start_datetime, end_datetime))
     add_color_annotations(request.user, reservations)
@@ -96,9 +98,9 @@ def make_reservation(request):
     resource_id = int(resource_id)
 
     interval = end - start
-    max_interval = timedelta(hours=1)
+    max_interval = timedelta(hours=MAX_RESERVATION_LENGTH)
     if (interval > max_interval):
-        return HttpResponseForbidden(_('You may reserve at most an hour per reservation.'))
+        return HttpResponseForbidden(_('You may not reserve the resource for such a long time.'))
 
     now = utc_now()
     if (now > start) or (now > end):
@@ -108,23 +110,47 @@ def make_reservation(request):
         return HttpResponseForbidden(_('Start time must be before end time.'))
 
     outstanding_reservations = Reservation.objects.filter(
+            deleted=False,
             user=request.user,
-            start__gt=now,
+            end__gt=now,
             resource=resource_id).count()
 
     if outstanding_reservations > 1:
         return HttpResponseForbidden(_('You may only make two reservations per resource.'))
 
     possibly_concurrent_reservations = Reservation.objects.filter(
+            deleted=False,
             user=request.user,
-            start__gt=now)
-
+            end__gt=now)
     concurrent_reservations = filter(lambda r: r.would_overlap(start, end), possibly_concurrent_reservations)
     if len(concurrent_reservations) > 0:
         return HttpResponseForbidden(_('You may not reserve two resources at the same time.'))
+
+    possibly_overlapping_reservations = Reservation.objects.filter(
+            deleted=False,
+            end__gt=now,
+            resource=resource_id)
+
+    # Check if solid reservations prevent this one to be made
+    # Or if preliminary reservations prevent a preliminary reservation
+    # from being made.
+    for r in possibly_overlapping_reservations:
+        if r.would_overlap(start, end):
+            if outstanding_reservations > 0:
+                return HttpResponseForbidden(_("You can't override a reservation with a preliminary reservation."))
+            elif r.is_solid():
+                return HttpResponseForbidden(_('Somebody has already made a reservation here!'))
+
+    # Mark overriden preliminary bookings as deleted.
+    # TODO Send a message or something to whoever got their
+    # preliminary reservation deleted.
+    for r in possibly_overlapping_reservations:
+        if r.would_overlap(start, end):
+            r.deleted = True
+            r.save()
 
     r = Reservation(user=request.user, start=start, end=end)
     r.resource_id = resource_id
     r.save()
 
-    return HttpResponse({'Success'})
+    return HttpResponse(json.dumps({'status': 'success', 'id': r.id}))

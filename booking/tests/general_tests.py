@@ -5,11 +5,15 @@ from django.test import TestCase
 from django.test import LiveServerTestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from booking.models import ResourceType, Resource, Reservation
 from booking.common import utc_now, to_timestamp
+from booking.common import MAX_RESERVATION_LENGTH
 from booking import common
 
 from datetime import timedelta
+
+import json
 
 
 def create_user():
@@ -71,6 +75,7 @@ def add_test_data():
     user3 = create_user()
     user4 = create_user()
     user5 = create_user()
+    user6 = create_user()
 
     rest1 = create_resource_type()
     res1 = create_resource(rest1)
@@ -93,7 +98,7 @@ def add_test_data():
     r10 = create_reservation(user4, res2, later(7), later(8))
 
     test_data = {
-            'users': [user1, user2, user3, user4, user5],
+            'users': [user1, user2, user3, user4, user5, user6],
             'resource_types': [rest1],
             'resources': [res1, res2, res3, res4],
             'reservations': [r1, r2, r3, r4, r5, r6, r7, r8, r9, r10]}
@@ -130,7 +135,7 @@ class ReservationTests(TestCase):
 
         response = self.client.post('/make_reservation/', {
             'start': to_timestamp(later(2)),
-            'end': to_timestamp(later(3)),
+            'end': to_timestamp(later(2 + MAX_RESERVATION_LENGTH)),
             'resource_id': resource.id})
         self.assertEqual(response.status_code, 200)
 
@@ -173,18 +178,14 @@ class ReservationTests(TestCase):
             'resource_id': resource.id})
         self.assertEqual(response.status_code, 403)
 
-    def test_fail_too_long_reservations(self):
+    def test_fail_too_long_reservation(self):
         resource1 = self.test_data['resources'][2]
+        start = 0
+        end = 1 + MAX_RESERVATION_LENGTH
 
         response = self.client.post('/make_reservation/', {
-            'start': to_timestamp(later(1)),
-            'end': to_timestamp(later(3)),
-            'resource_id': resource1.id})
-        self.assertEqual(response.status_code, 403)
-
-        response = self.client.post('/make_reservation/', {
-            'start': to_timestamp(later(1)),
-            'end': to_timestamp(later(5)),
+            'start': to_timestamp(later(start)),
+            'end': to_timestamp(later(end)),
             'resource_id': resource1.id})
         self.assertEqual(response.status_code, 403)
 
@@ -228,6 +229,71 @@ class ReservationTests(TestCase):
                 'end': to_timestamp(end),
                 'resource_id': resource2.id})
             self.assertEqual(response.status_code, 403)
+
+    def test_fail_reserve_busy_resource(self):
+        c = Client()
+        other_user = self.test_data['users'][5]
+        c.login(username=other_user.username, password='pass')
+
+        resource1 = self.test_data['resources'][2]
+
+        response = c.post('/make_reservation/', {
+            'start': to_timestamp(later(1)),
+            'end': to_timestamp(later(2)),
+            'resource_id': resource1.id})
+        self.assertEqual(response.status_code, 200)
+
+        colliding_reservations = [
+                (later(0.5), later(1.1)),
+                (later(1), later(2)),
+                (later(1.1), later(2.1)),
+                (later(1.9), later(2.1))]
+
+        for (start, end) in colliding_reservations:
+            response = self.client.post('/make_reservation/', {
+                'start': to_timestamp(start),
+                'end': to_timestamp(end),
+                'resource_id': resource1.id})
+            self.assertEqual(response.status_code, 403)
+
+    def test_reserve_over_preliminary(self):
+        c = Client()
+        other_user = self.test_data['users'][5]
+        c.login(username=other_user.username, password='pass')
+
+        resource1 = self.test_data['resources'][2]
+
+        response = c.post('/make_reservation/', {
+            'start': to_timestamp(later(1)),
+            'end': to_timestamp(later(2)),
+            'resource_id': resource1.id})
+        self.assertEqual(response.status_code, 200)
+        res_content = json.loads(response.content)
+        id_res1 = res_content['id']
+
+        response = c.post('/make_reservation/', {
+            'start': to_timestamp(later(3)),
+            'end': to_timestamp(later(4)),
+            'resource_id': resource1.id})
+        self.assertEqual(response.status_code, 200)
+        res_content = json.loads(response.content)
+        id_res2 = res_content['id']
+
+        response = self.client.post('/make_reservation/', {
+            'start': to_timestamp(later(3)),
+            'end': to_timestamp(later(4)),
+            'resource_id': resource1.id})
+        self.assertEqual(response.status_code, 200)
+        res_content = json.loads(response.content)
+        id_res3 = res_content['id']
+
+        res1 = get_object_or_404(Reservation, pk=int(id_res1))
+        res2 = get_object_or_404(Reservation, pk=int(id_res2))
+        res3 = get_object_or_404(Reservation, pk=int(id_res3))
+
+        self.assertFalse(res1.deleted)
+        self.assertTrue(res2.deleted)
+        self.assertFalse(res3.deleted)
 
     def test_fail_unauthorized_reservation(self):
         c = Client()

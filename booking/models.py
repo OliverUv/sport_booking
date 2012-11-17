@@ -56,6 +56,7 @@ class Reservation(models.Model):
     time_created = models.DateTimeField(auto_now_add=True)
     start = models.DateTimeField()
     end = models.DateTimeField()
+    deleted = models.BooleanField(default=False)
 
     def __unicode__(self):
         return '%s booking' % [self.user.username]
