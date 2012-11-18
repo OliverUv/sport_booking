@@ -256,6 +256,51 @@ class ReservationTests(TestCase):
                 'resource_id': resource1.id})
             self.assertEqual(response.status_code, 403)
 
+    def test_fail_override_with_preliminary(self):
+        c = Client()
+        other_user = self.test_data['users'][5]
+        c.login(username=other_user.username, password='pass')
+
+        resource1 = self.test_data['resources'][2]
+
+        response = c.post('/make_reservation/', {
+            'start': to_timestamp(later(3)),
+            'end': to_timestamp(later(4)),
+            'resource_id': resource1.id})
+        self.assertEqual(response.status_code, 200)
+        res_content = json.loads(response.content)
+        id_res1 = res_content['id']
+
+        response = c.post('/make_reservation/', {
+            'start': to_timestamp(later(5)),
+            'end': to_timestamp(later(6)),
+            'resource_id': resource1.id})
+        self.assertEqual(response.status_code, 200)
+        res_content = json.loads(response.content)
+        id_res2 = res_content['id']
+
+        response = self.client.post('/make_reservation/', {
+            'start': to_timestamp(later(1)),
+            'end': to_timestamp(later(2)),
+            'resource_id': resource1.id})
+        self.assertEqual(response.status_code, 200)
+        res_content = json.loads(response.content)
+        id_res3 = res_content['id']
+
+        response = self.client.post('/make_reservation/', {
+            'start': to_timestamp(later(1)),
+            'end': to_timestamp(later(2)),
+            'resource_id': resource1.id})
+        self.assertEqual(response.status_code, 403)
+
+        res1 = get_object_or_404(Reservation, pk=int(id_res1))
+        res2 = get_object_or_404(Reservation, pk=int(id_res2))
+        res3 = get_object_or_404(Reservation, pk=int(id_res3))
+
+        self.assertFalse(res1.deleted)
+        self.assertFalse(res2.deleted)
+        self.assertFalse(res3.deleted)
+
     def test_reserve_over_preliminary(self):
         c = Client()
         other_user = self.test_data['users'][5]
