@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from booking.models import ResourceType, Resource, Reservation
 from booking.common import utc_now, to_timestamp
-from booking.common import MAX_RESERVATION_LENGTH
+from django.conf import settings
 from booking import common
 
 from datetime import timedelta
@@ -135,7 +135,7 @@ class ReservationTests(TestCase):
 
         response = self.client.post('/make_reservation/', {
             'start': to_timestamp(later(2)),
-            'end': to_timestamp(later(2 + MAX_RESERVATION_LENGTH)),
+            'end': to_timestamp(later(2 + settings.MAX_RESERVATION_LENGTH)),
             'resource_id': resource.id})
         self.assertEqual(response.status_code, 200)
 
@@ -181,7 +181,7 @@ class ReservationTests(TestCase):
     def test_fail_too_long_reservation(self):
         resource1 = self.test_data['resources'][2]
         start = 0
-        end = 1 + MAX_RESERVATION_LENGTH
+        end = 1 + settings.MAX_RESERVATION_LENGTH
 
         response = self.client.post('/make_reservation/', {
             'start': to_timestamp(later(start)),

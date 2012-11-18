@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from django.http import Http404, HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -9,7 +10,6 @@ from booking.common import get_object_or_404
 from booking.models import Reservation
 from booking.models import Resource
 from booking.common import to_timestamp, from_timestamp, utc_now
-from booking.common import MAX_RESERVATION_LENGTH
 
 import json
 
@@ -33,15 +33,8 @@ def add_color_annotations(user, reservations):
     Adds colors to reservations so that they are represented correctly
     to the user.
     """
-    background_colors = {
-            'own': {'solid': '#1e90ff', 'preliminary': '#afeeee'},
-            'other': {'solid': '#b22222', 'preliminary': '#f4a460'},
-            }
-
-    text_colors = {
-            'own': {'solid': '#ffffff', 'preliminary': '#000000'},
-            'other': {'solid': '#ffffff', 'preliminary': '#000000'},
-            }
+    background_colors = settings.CALENDAR_COLORS['background']
+    text_colors = settings.CALENDAR_COLORS['test']
 
     for r in reservations:
         display_as = 'other'
@@ -98,7 +91,7 @@ def make_reservation(request):
     resource_id = int(resource_id)
 
     interval = end - start
-    max_interval = timedelta(hours=MAX_RESERVATION_LENGTH)
+    max_interval = timedelta(hours=settings.MAX_RESERVATION_LENGTH)
     if (interval > max_interval):
         return HttpResponseForbidden(_('You may not reserve the resource for such a long time.'))
 

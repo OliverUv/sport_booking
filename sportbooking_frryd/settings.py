@@ -2,6 +2,20 @@ import sys
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 # Django settings for sportbooking_frryd project.
 
+# Constants, other settings things for the project:
+MAX_RESERVATION_LENGTH = 1  # in hours
+
+CALENDAR_COLORS = {
+    'background': {
+        'own': {'solid': '#1e90ff', 'preliminary': '#afeeee'},
+        'other': {'solid': '#b22222', 'preliminary': '#f4a460'},
+        },
+    'text':  {
+        'own': {'solid': '#ffffff', 'preliminary': '#000000'},
+        'other': {'solid': '#ffffff', 'preliminary': '#000000'},
+        }}
+
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 

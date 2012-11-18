@@ -10,9 +10,6 @@ import pytz
 LOCAL = timezone('Europe/Stockholm')
 UTC = pytz.utc
 
-# Global constants
-MAX_RESERVATION_LENGTH = 1  # in hours
-
 
 def get_object_or_404(object_type, key):
     language = get_language()
