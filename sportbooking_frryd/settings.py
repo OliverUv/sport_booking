@@ -52,6 +52,7 @@ TIME_ZONE = 'Europe/Stockholm'
 LANGUAGE_CODE = 'en-us'
 
 LANGUAGE_COOKIE_NAME = 'frryd_language_choice_cookie'
+CSRF_COOKIE_NAME = 'frryd_csrf_cookie'
 
 SITE_ID = 1
 
@@ -180,12 +181,21 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler'
+            }
     },
     'loggers': {
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['mail_admins', 'console'],
             'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.request2': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
             'propagate': True,
         },
     }

@@ -34,7 +34,7 @@ def add_color_annotations(user, reservations):
     to the user.
     """
     background_colors = settings.CALENDAR_COLORS['background']
-    text_colors = settings.CALENDAR_COLORS['test']
+    text_colors = settings.CALENDAR_COLORS['text']
 
     for r in reservations:
         display_as = 'other'
@@ -77,19 +77,7 @@ def reservations_to_json(reservations):
         for r in reservations])
 
 
-@login_required
-def make_reservation(request):
-    start = request.POST.get('start', None)
-    end = request.POST.get('end', None)
-    resource_id = request.POST.get('resource_id', None)
-
-    if None in [start, end, resource_id]:
-        return HttpResponseBadRequest()
-
-    start = from_timestamp(int(start))
-    end = from_timestamp(int(end))
-    resource_id = int(resource_id)
-
+def do_make_reservation(start, end, resource_id, user):
     interval = end - start
     max_interval = timedelta(hours=settings.MAX_RESERVATION_LENGTH)
     if (interval > max_interval):
@@ -104,7 +92,7 @@ def make_reservation(request):
 
     outstanding_reservations = Reservation.objects.filter(
             deleted=False,
-            user=request.user,
+            user=user,
             end__gt=now,
             resource=resource_id).count()
 
@@ -113,7 +101,7 @@ def make_reservation(request):
 
     possibly_concurrent_reservations = Reservation.objects.filter(
             deleted=False,
-            user=request.user,
+            user=user,
             end__gt=now)
     concurrent_reservations = filter(lambda r: r.would_overlap(start, end), possibly_concurrent_reservations)
     if len(concurrent_reservations) > 0:
@@ -142,8 +130,38 @@ def make_reservation(request):
             r.deleted = True
             r.save()
 
-    r = Reservation(user=request.user, start=start, end=end)
+    r = Reservation(user=user, start=start, end=end)
     r.resource_id = resource_id
     r.save()
 
     return HttpResponse(json.dumps({'status': 'success', 'id': r.id}))
+
+
+@login_required
+def single_click_reservation(request):
+    ts = request.POST.get('timestamp', None)
+    resource_id = request.POST.get('resource_id', None)
+    if None in [ts, resource_id]:
+        return HttpResponseBadRequest()
+
+    start = from_timestamp(int(ts))
+    start = start.replace(minute=0)
+    end = start + timedelta(hour=1)
+
+    return do_make_reservation(start, end, resource_id, request.user)
+
+
+@login_required
+def make_reservation(request):
+    start = request.POST.get('start', None)
+    end = request.POST.get('end', None)
+    resource_id = request.POST.get('resource_id', None)
+
+    if None in [start, end, resource_id]:
+        return HttpResponseBadRequest()
+
+    start = from_timestamp(int(start))
+    end = from_timestamp(int(end))
+    resource_id = int(resource_id)
+
+    return do_make_reservation(start, end, resource_id, request.user)

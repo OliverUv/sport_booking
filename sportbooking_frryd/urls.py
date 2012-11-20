@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^resource/(?P<resource_id>\d+)/$', 'booking.views.booking_calendar.resource', name='resource'),
     url(r'^reservations/(?P<resource_id>\d+)/$', 'booking.views.booking_calendar.get_reservations', name='reservations'),
     url(r'^make_reservation/$', 'booking.views.booking_calendar.make_reservation', name='make_reservation'),
+    url(r'^single_click_reservation/$', 'booking.views.booking_calendar.single_click_reservation', name='single_click_reservation'),
 
     url(r'^i18n/', include('django.conf.urls.i18n'))  # Enables internationalization
 )

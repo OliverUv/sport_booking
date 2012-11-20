@@ -7,16 +7,40 @@
 <script type='text/javascript' src='{{ STATIC_URL }}jquery-1.8.1.min.js'></script>
 <script type='text/javascript' src='{{ STATIC_URL }}jquery-ui-1.8.23.custom.min.js'></script>
 <script type='text/javascript' src='{{ STATIC_URL }}cal/fullcalendar.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}common.js'></script>
 <script>
+    function onDayClick(date, allDay, jsEvent, view) {
+	var theData = {};
+	theData['timestamp'] = date.getTime()/1000;
+	theData['resource_id'] = {{ resource.id }}
+	$.ajax({
+	    url: "{% url single_click_reservation %}",
+	    type: "POST",
+	    dataType: "json",
+	    data: theData,
+	    }).done(function() {
+		$('#calendar').fullCalendar('refetchEvents');
+	    });
+    }
+
     $(document).ready( function() {
 	$('#calendar').fullCalendar({
 	    firstDay: 1,
 	    defaultView: 'agendaWeek',
 	    allDayDefault: false,
-	    eventSources: [
-	    {
-		url: '/reservations/{{ resource.id }}'
-	    }]})
+	    allDaySlot: false,
+	    defaultEventMinutes: 60,
+	    firstHour: 10,
+	    columnFormat: 'ddd d/M',
+	    titleFormat: {
+		month: 'MMMM yyyy',                             // September 2009
+		week: "MMM d[',' yyyy]{ '&#8212;'[ MMM] d',' yyyy}", // Sep 7 - 13 2009
+		day: 'dddd, MMM d, yyyy'                  // Tuesday, Sep 8, 2009
+	    },
+	    eventSources: [{url: "{% url reservations resource.id %}"}],
+
+	    dayClick: onDayClick
+	})
     });
 </script>
 {% endblock %}

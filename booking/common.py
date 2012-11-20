@@ -16,7 +16,7 @@ def get_object_or_404(object_type, key):
     if language not in ['en', 'sv']:
         language = 'en'
 
-    obj = object_type.objects.language(language).get(pk=key)
+    obj = object_type.objects.language(language).get(id=int(key))
     if obj is None:
         raise Http404
     return obj

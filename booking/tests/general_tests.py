@@ -48,6 +48,7 @@ def create_resource(resource_type):
     resource.translate('en')
     resource.name = 'english resource name %s' % resource_id
     resource.specific_information = 'english resource info %s' % resource_id
+    resource.save()
     resource.translate('sv')
     resource.name = 'swedish resource name %s' % resource_id
     resource.specific_information = 'swedish resource info %s' % resource_id
