@@ -1,6 +1,14 @@
+fix .save() translation bug
+fix csrf ajax stuffs
+
+Reserve via calendar
+    drag n drop
 Fix CAS login
     Fix user registration
 Fix HTTP 404/500 views
 Localize calendar date display etc
 Integrate google maps
 Fix so we can see who caused a deletion of a preliminary reservation.
+Write translations
+
+
