@@ -72,6 +72,12 @@ class Reservation(models.Model):
                 start__gt=utc_now())
         return conflicting_reservations.count() == 0
 
+    def delete_and_report(self):
+        # TODO Send a message or something to whoever got their
+        # preliminary reservation deleted.
+        self.deleted = True
+        self.save()
+
     def would_overlap(self, other_start, other_end):
         latest_start = max(self.start, other_start)
         earliest_end = min(self.end, other_end)

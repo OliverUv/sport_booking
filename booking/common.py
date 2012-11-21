@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, HttpResponseBadRequest, HttpResponseForbidden, HttpResponse
 from django.utils.translation import get_language
 from pytz import timezone
 from datetime import datetime
@@ -6,6 +6,7 @@ from datetime import datetime
 import calendar
 import django.utils
 import pytz
+import json
 
 LOCAL = timezone('Europe/Stockholm')
 UTC = pytz.utc
@@ -20,6 +21,20 @@ def get_object_or_404(object_type, key):
     if obj is None:
         raise Http404
     return obj
+
+
+def http_badrequest(message):
+    return HttpResponseBadRequest(json.dumps({'status': 'failed', 'message': message}), content_type='application/json')
+
+
+def http_forbidden(message):
+    if message is None or message == '':
+        message = 'Request was made with bad parameters.'
+    return HttpResponseForbidden(json.dumps({'status': 'failed', 'message': message}), content_type='application/json')
+
+
+def http_json_response(json_response):
+    return HttpResponse(json.dumps(json_response), content_type='application/json')
 
 
 def to_timestamp(datetime):

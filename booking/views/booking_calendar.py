@@ -1,6 +1,5 @@
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from django.http import Http404, HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
@@ -10,6 +9,7 @@ from booking.common import get_object_or_404
 from booking.models import Reservation
 from booking.models import Resource
 from booking.common import to_timestamp, from_timestamp, utc_now
+from booking.common import http_forbidden, http_badrequest, http_json_response
 
 import json
 
@@ -19,7 +19,7 @@ def resource(request, resource_id=None):
     Shows today's bookings for the specified resource.
     """
     if resource_id is None:
-        raise Http404
+        return http_badrequest(_('No resource id given.'))
     resource = get_object_or_404(Resource, resource_id)
     context = RequestContext(request, {
         'resource': {'id': resource.id,
@@ -52,7 +52,7 @@ def get_reservations(request, resource_id):
     end_time = int(request.GET.get('end'))
     resource_id = int(resource_id)
     if not resource_id or not start_time or not end_time:
-        raise Http404
+        return http_badrequest('')
 
     start_datetime = from_timestamp(start_time)
     # We need to add a day to endtime because of djangoisms
@@ -64,31 +64,32 @@ def get_reservations(request, resource_id):
             start__range=(start_datetime, end_datetime))
     add_color_annotations(request.user, reservations)
 
-    return HttpResponse(reservations_to_json(reservations))
+    return http_json_response(reservations_to_json_struct(reservations))
 
 
-def reservations_to_json(reservations):
-    return json.dumps([{
+def reservations_to_json_struct(reservations):
+    return [{
         'title': r.user.username,
+        'id': r.id,
         'start': to_timestamp(r.start),
         'end': to_timestamp(r.end),
         'color': r.bg_color,
         'textColor': r.text_color}
-        for r in reservations])
+        for r in reservations]
 
 
 def do_make_reservation(start, end, resource_id, user):
     interval = end - start
     max_interval = timedelta(hours=settings.MAX_RESERVATION_LENGTH)
     if (interval > max_interval):
-        return HttpResponseForbidden(_('You may not reserve the resource for such a long time.'))
+        return http_forbidden(_('You may not reserve the resource for such a long time.'))
 
     now = utc_now()
     if (now > start) or (now > end):
-        return HttpResponseForbidden(_('Start and end times must be in the future.'))
+        return http_forbidden(_('Start and end times must be in the future.'))
 
     if not (start < end):
-        return HttpResponseForbidden(_('Start time must be before end time.'))
+        return http_forbidden(_('Start time must be before end time.'))
 
     outstanding_reservations = Reservation.objects.filter(
             deleted=False,
@@ -97,7 +98,7 @@ def do_make_reservation(start, end, resource_id, user):
             resource=resource_id).count()
 
     if outstanding_reservations > 1:
-        return HttpResponseForbidden(_('You may only make two reservations per resource.'))
+        return http_forbidden(_('You may only make two reservations per resource.'))
 
     possibly_concurrent_reservations = Reservation.objects.filter(
             deleted=False,
@@ -105,7 +106,7 @@ def do_make_reservation(start, end, resource_id, user):
             end__gt=now)
     concurrent_reservations = filter(lambda r: r.would_overlap(start, end), possibly_concurrent_reservations)
     if len(concurrent_reservations) > 0:
-        return HttpResponseForbidden(_('You may not reserve two resources at the same time.'))
+        return http_forbidden(_('You may not reserve two resources at the same time.'))
 
     possibly_overlapping_reservations = Reservation.objects.filter(
             deleted=False,
@@ -118,23 +119,20 @@ def do_make_reservation(start, end, resource_id, user):
     for r in possibly_overlapping_reservations:
         if r.would_overlap(start, end):
             if outstanding_reservations > 0:
-                return HttpResponseForbidden(_("You can't override a reservation with a preliminary reservation."))
+                return http_forbidden(_("You can't override a reservation with a preliminary reservation."))
             elif r.is_solid():
-                return HttpResponseForbidden(_('Somebody has already made a reservation here!'))
+                return http_forbidden(_('Somebody has already made a reservation here!'))
 
     # Mark overriden preliminary bookings as deleted.
-    # TODO Send a message or something to whoever got their
-    # preliminary reservation deleted.
     for r in possibly_overlapping_reservations:
         if r.would_overlap(start, end):
-            r.deleted = True
-            r.save()
+            r.delete_and_report()
 
     r = Reservation(user=user, start=start, end=end)
     r.resource_id = resource_id
     r.save()
 
-    return HttpResponse(json.dumps({'status': 'success', 'id': r.id}))
+    return http_json_response(json.dumps({'status': 'success', 'id': r.id}))
 
 
 @login_required
@@ -142,13 +140,27 @@ def single_click_reservation(request):
     ts = request.POST.get('timestamp', None)
     resource_id = request.POST.get('resource_id', None)
     if None in [ts, resource_id]:
-        return HttpResponseBadRequest()
+        return http_badrequest('')
 
     start = from_timestamp(int(ts))
     start = start.replace(minute=0)
-    end = start + timedelta(hour=1)
+    end = start + timedelta(hours=1)
 
     return do_make_reservation(start, end, resource_id, request.user)
+
+
+@login_required
+def delete_reservation(request):
+    r_id = request.POST.get('id', None)
+    if r_id is None:
+        return http_badrequest(_('No request id provided.'))
+    r = Reservation.objects.filter(id=int(r_id))
+    num_deleted = 0
+    for reservation in r:
+        num_deleted += 1
+        reservation.delete_and_report()
+
+    return http_json_response(json.dumps({'status': 'success', 'deleted': num_deleted}))
 
 
 @login_required
@@ -158,7 +170,7 @@ def make_reservation(request):
     resource_id = request.POST.get('resource_id', None)
 
     if None in [start, end, resource_id]:
-        return HttpResponseBadRequest()
+        return http_badrequest('')
 
     start = from_timestamp(int(start))
     end = from_timestamp(int(end))
