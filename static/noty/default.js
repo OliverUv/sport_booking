@@ -45,12 +45,14 @@
 			});
 
 			this.$message.css({
-				fontSize: '13px',
+				fontSize: '15px',
 				lineHeight: '16px',
 				textAlign: 'center',
-				padding: '8px 10px 9px',
+				padding: '8px 10px 10px',
 				width: 'auto',
-				position: 'relative'
+				position: 'relative',
+			        textShadow: '0px 0px 5px #000000',
+				letterSpacing: '1px'
 			});
 
 			this.$closeButton.css({
@@ -98,7 +100,7 @@
 						border: '1px solid #eee',
 						boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"
 					});
-					this.$message.css({fontSize: '13px', textAlign: 'center'});
+					this.$message.css({fontSize: '15px', textAlign: 'center'});
 				break;
 				case 'topLeft': case 'topRight':
 				case 'bottomLeft': case 'bottomRight':
@@ -108,7 +110,7 @@
 						border: '1px solid #eee',
 						boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"
 					});
-					this.$message.css({fontSize: '13px', textAlign: 'left'});
+					this.$message.css({fontSize: '15px', textAlign: 'left'});
 				break;
 				case 'bottom':
 					this.$bar.css({

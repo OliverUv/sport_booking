@@ -11,8 +11,6 @@ from booking.models import Resource
 from booking.common import to_timestamp, from_timestamp, utc_now
 from booking.common import http_forbidden, http_badrequest, http_json_response
 
-import json
-
 
 def resource(request, resource_id=None):
     """
@@ -132,7 +130,7 @@ def do_make_reservation(start, end, resource_id, user):
     r.resource_id = resource_id
     r.save()
 
-    return http_json_response(json.dumps({'status': 'success', 'id': r.id}))
+    return http_json_response({'status': 'success', 'id': r.id})
 
 
 @login_required
@@ -160,7 +158,7 @@ def delete_reservation(request):
         num_deleted += 1
         reservation.delete_and_report()
 
-    return http_json_response(json.dumps({'status': 'success', 'deleted': num_deleted}))
+    return http_json_response({'status': 'success', 'deleted': num_deleted})
 
 
 @login_required

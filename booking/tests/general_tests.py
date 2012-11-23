@@ -33,6 +33,7 @@ def create_resource_type():
     resource_type.translate('en')
     resource_type.type_name = 'english resource type name %s' % resource_type_id
     resource_type.general_information = 'english general info for rt %s' % resource_type_id
+    resource_type.save()
     resource_type.translate('sv')
     resource_type.type_name = 'swedish resource type name %s' % resource_type_id
     resource_type.general_information = 'swedish general info for rt %s' % resource_type_id

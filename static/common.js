@@ -54,7 +54,7 @@ function showAjaxFailure(data) {
 	text: result.message,
         type: 'error',
         dismissQueue: true,
-        layout: 'topRight'
-
+        layout: 'topRight',
+	timeout: 3800
     });
 }

@@ -20,10 +20,38 @@
 	    }).fail(showAjaxFailure);
     }
 
+    function onDragEvent(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view){
+	$('#calendar').fullCalendar('refetchEvents');
+    }
+
+    function removeEventDialogue(event, jsEvent, view) {
+	n = noty({
+	    text: "Do you want to remove the event " + eventDetails,
+	    dismissQueue: true,
+	    layout: 'top',
+	    buttons: [
+	    {
+		addClass: 'btn btn-danger', text: 'Delete', onClick: function($noty) {
+
+		    $noty.close();
+		    // TODO Delete the event
+		}
+	    },
+	    {
+		addClass: 'btn btn-primary', text: 'Cancel', onClick: function($noty) {
+		    $noty.close();
+		}
+
+	    }]
+	});
+    }
+
     $(document).ready( function() {
 	$('#calendar').fullCalendar({
 	    firstDay: 1,
 	    defaultView: 'agendaWeek',
+	    editable: true,
+	    disableResizing: true,
 	    allDayDefault: false,
 	    allDaySlot: false,
 	    defaultEventMinutes: 60,
@@ -35,7 +63,8 @@
 		day: 'dddd, MMM d, yyyy'                  // Tuesday, Sep 8, 2009
 	    },
 	    eventSources: [{url: "{% url reservations resource.id %}"}],
-	    dayClick: onDayClick
+	    dayClick: onDayClick,
+	    eventClick: removeEventDialogue
 	})
     });
 </script>
