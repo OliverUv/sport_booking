@@ -62,11 +62,14 @@ class Reservation(models.Model):
         return '%s booking' % [self.user.username]
 
     def is_solid(self):
+        if self.deleted == True:
+            return False
         if self.start < utc_now():
             return True
 
         conflicting_reservations = Reservation.objects.filter(
                 user=self.user,
+                deleted=False,
                 resource=self.resource,
                 start__lt=self.start,
                 start__gt=utc_now())

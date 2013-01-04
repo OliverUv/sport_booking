@@ -155,8 +155,9 @@ def delete_reservation(request):
     r = Reservation.objects.filter(id=int(r_id))
     num_deleted = 0
     for reservation in r:
-        num_deleted += 1
-        reservation.delete_and_report()
+        if request.user.id == reservation.user_id:
+            num_deleted += 1
+            reservation.delete_and_report()
 
     return http_json_response({'status': 'success', 'deleted': num_deleted})
 

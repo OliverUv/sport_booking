@@ -78,12 +78,14 @@ def add_test_data():
     user4 = create_user()
     user5 = create_user()
     user6 = create_user()
+    user7 = create_user()
 
     rest1 = create_resource_type()
     res1 = create_resource(rest1)
     res2 = create_resource(rest1)
     res3 = create_resource(rest1)
     res4 = create_resource(rest1)
+    res5 = create_resource(rest1)
 
     r1 = create_reservation(user1, res1, earlier(2), earlier(1))
     r2 = create_reservation(user1, res1, later(1), later(2))
@@ -99,11 +101,13 @@ def add_test_data():
 
     r10 = create_reservation(user4, res2, later(7), later(8))
 
+    r11 = create_reservation(user7, res5, later(2), later(3))
+
     test_data = {
-            'users': [user1, user2, user3, user4, user5, user6],
+            'users': [user1, user2, user3, user4, user5, user6, user7],
             'resource_types': [rest1],
-            'resources': [res1, res2, res3, res4],
-            'reservations': [r1, r2, r3, r4, r5, r6, r7, r8, r9, r10]}
+            'resources': [res1, res2, res3, res4, res5],
+            'reservations': [r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11]}
 
     return test_data
 
@@ -114,6 +118,11 @@ class ReservationTests(TestCase):
         self.client = Client()
         self.user = self.test_data['users'][4]
         logged_in = self.client.login(username=self.user.username, password='pass')
+        self.assertTrue(logged_in)
+
+        self.client2 = Client()
+        self.user2 = self.test_data['users'][6]
+        logged_in = self.client2.login(username=self.user2.username, password='pass')
         self.assertTrue(logged_in)
 
     def test_ensure_solidness(self):
@@ -132,6 +141,63 @@ class ReservationTests(TestCase):
 
         self.assertTrue(r[9].is_solid())
 
+        self.assertTrue(r[10].is_solid())
+
+    def test_delete_reservation_success(self):
+        r_id = self.test_data['reservations'][10].id
+        response = self.client2.post('/delete_reservation/', {
+            'id': r_id})
+        self.assertEqual(response.status_code, 200)
+        res_content = json.loads(response.content)
+
+        self.assertEqual(1, res_content['deleted'])
+        res = Reservation.objects.get(id=r_id)
+        self.assertTrue(res.deleted)
+
+    def test_fail_delete_others_reservation(self):
+        r_id = self.test_data['reservations'][9].id
+        response = self.client.post('/delete_reservation/', {
+            'id': r_id})
+        self.assertEqual(response.status_code, 200)
+        res_content = json.loads(response.content)
+
+        self.assertEqual(0, res_content['deleted'])
+        res = Reservation.objects.get(id=r_id)
+        self.assertFalse(res.deleted)
+
+    def test_reserve_over_deleted_success(self):
+        res = self.test_data['reservations'][10]
+        response = self.client2.post('/delete_reservation/', {
+            'id': res.id})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/make_reservation/', {
+            'start': to_timestamp(res.start),
+            'end': to_timestamp(res.end),
+            'resource_id': res.resource_id})
+        self.assertEqual(response.status_code, 200)
+        res_content = json.loads(response.content)
+        self.assertEqual(1, Reservation.objects.filter(id=res_content['id']).count())
+
+    def test_deleted_solidity(self):
+        res = self.test_data['reservations'][10]
+        self.assertTrue(res.is_solid())
+
+        response = self.client2.post('/make_reservation/', {
+            'start': to_timestamp(later(4)),
+            'end': to_timestamp(later(5)),
+            'resource_id': res.resource_id})
+        self.assertEqual(response.status_code, 200)
+        res_content = json.loads(response.content)
+        self.assertFalse(Reservation.objects.get(id=res_content['id']).is_solid())
+        self.assertTrue(res.is_solid())
+
+        response = self.client2.post('/delete_reservation/', {
+            'id': res.id})
+
+        self.assertTrue(Reservation.objects.get(id=res_content['id']).is_solid())
+        self.assertFalse(Reservation.objects.get(id=res.id).is_solid())
+
     def test_simple_reservation_success(self):
         resource = self.test_data['resources'][2]
 
@@ -140,6 +206,8 @@ class ReservationTests(TestCase):
             'end': to_timestamp(later(2 + settings.MAX_RESERVATION_LENGTH)),
             'resource_id': resource.id})
         self.assertEqual(response.status_code, 200)
+        res_content = json.loads(response.content)
+        self.assertEqual(1, Reservation.objects.filter(id=res_content['id']).count())
 
     def test_fail_new_reservation_in_past(self):
         resource = self.test_data['resources'][2]
@@ -199,12 +267,16 @@ class ReservationTests(TestCase):
             'end': to_timestamp(later(2)),
             'resource_id': resource1.id})
         self.assertEqual(response.status_code, 200)
+        res_content = json.loads(response.content)
+        self.assertEqual(1, Reservation.objects.filter(id=res_content['id']).count())
 
         response = self.client.post('/make_reservation/', {
             'start': to_timestamp(later(2)),
             'end': to_timestamp(later(3)),
             'resource_id': resource1.id})
         self.assertEqual(response.status_code, 200)
+        res_content = json.loads(response.content)
+        self.assertEqual(1, Reservation.objects.filter(id=res_content['id']).count())
 
     def test_fail_overlapping_reservations(self):
         resource1 = self.test_data['resources'][2]
