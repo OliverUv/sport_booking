@@ -1,14 +1,15 @@
 Sportbooking
 ============
 
-A system for tracking bookings for the different football fields, pool tables, volleyball fields and tennis courts that FRRyd are responsible for.
+A system for tracking reservations for the different football fields, pool tables, volleyball fields and tennis courts that FRRyd are responsible for.
 
 Requirements
 ----------
 * Python 2.7
 * Django 1.4
-* django-hvad
-* [Python Imaging Library](http://www.pythonware.com/products/pil/)
+* [django-hvad](https://github.com/KristianOellegaard/django-hvad)
+* [django-cas](https://bitbucket.org/cpcc/django-cas/overview)
+* [Python Imaging Library](http://www.pythonware.com/products/pil)
 
 Setup
 -----
