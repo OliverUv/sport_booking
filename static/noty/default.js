@@ -68,7 +68,7 @@
 				padding: 5,
 				textAlign: 'right',
 				borderTop: '1px solid #ccc',
-				backgroundColor: '#fff'
+				backgroundColor: '#9e7e7e'
 			});
 
 			this.$buttons.find('button').css({

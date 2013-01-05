@@ -26,7 +26,7 @@ def resource(request, resource_id=None):
     return render_to_response('resource.html', context)
 
 
-def add_color_annotations(user, reservations):
+def add_reservation_annotations(user, reservations):
     """
     Adds colors to reservations so that they are represented correctly
     to the user.
@@ -36,8 +36,10 @@ def add_color_annotations(user, reservations):
 
     for r in reservations:
         display_as = 'other'
+        r.is_own = False
         if user.is_authenticated() and user == r.user:
             display_as = 'own'
+            r.is_own = True
 
         r_status = 'solid' if r.is_solid() else 'preliminary'
 
@@ -60,7 +62,7 @@ def get_reservations(request, resource_id):
             deleted=False,
             resource=resource_id,
             start__range=(start_datetime, end_datetime))
-    add_color_annotations(request.user, reservations)
+    add_reservation_annotations(request.user, reservations)
 
     return http_json_response(reservations_to_json_struct(reservations))
 
@@ -68,6 +70,7 @@ def get_reservations(request, resource_id):
 def reservations_to_json_struct(reservations):
     return [{
         'title': r.user.username,
+        'is_own': r.is_own,
         'id': r.id,
         'start': to_timestamp(r.start),
         'end': to_timestamp(r.end),
@@ -152,14 +155,14 @@ def delete_reservation(request):
     r_id = request.POST.get('id', None)
     if r_id is None:
         return http_badrequest(_('No request id provided.'))
-    r = Reservation.objects.filter(id=int(r_id))
-    num_deleted = 0
+    r = list(Reservation.objects.filter(id=int(r_id)))
     for reservation in r:
-        if request.user.id == reservation.user_id:
-            num_deleted += 1
+        if request.user.id != reservation.user_id:
+            return http_forbidden(_('You may only delete your own events.'))
+    for reservation in r:
             reservation.delete_and_report()
 
-    return http_json_response({'status': 'success', 'deleted': num_deleted})
+    return http_json_response({'status': 'success', 'deleted': len(r)})
 
 
 @login_required

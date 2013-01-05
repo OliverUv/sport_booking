@@ -158,10 +158,7 @@ class ReservationTests(TestCase):
         r_id = self.test_data['reservations'][9].id
         response = self.client.post('/delete_reservation/', {
             'id': r_id})
-        self.assertEqual(response.status_code, 200)
-        res_content = json.loads(response.content)
-
-        self.assertEqual(0, res_content['deleted'])
+        self.assertEqual(response.status_code, 403)
         res = Reservation.objects.get(id=r_id)
         self.assertFalse(res.deleted)
 

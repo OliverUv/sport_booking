@@ -24,26 +24,45 @@
 	$('#calendar').fullCalendar('refetchEvents');
     }
 
-    function removeEventDialogue(event, jsEvent, view) {
+    function deleteEvent(eventId) {
 	n = noty({
-	    text: "Do you want to remove the event " + eventDetails,
+	    text: "Do you want to remove event #" + eventId,
+	    type: 'error',
 	    dismissQueue: true,
-	    layout: 'top',
+	    layout: 'center',
 	    buttons: [
 	    {
 		addClass: 'btn btn-danger', text: 'Delete', onClick: function($noty) {
-
 		    $noty.close();
-		    // TODO Delete the event
+		    $.ajax({
+			url: "{% url delete_reservation %}",
+			type: "POST",
+			dataType: "json",
+			data: {id: eventId},
+			}).done(function() {
+			    $('#calendar').fullCalendar('refetchEvents');
+			}).fail(showAjaxFailure);
 		}
 	    },
 	    {
 		addClass: 'btn btn-primary', text: 'Cancel', onClick: function($noty) {
 		    $noty.close();
+		    $('#calendar').fullCalendar('refetchEvents');
 		}
 
 	    }]
 	});
+    }
+
+    function showEventInfo(calEvent) {
+    }
+
+    function onEventClick(calEvent, jsEvent, view) {
+	if (calEvent.is_own) {
+	    deleteEvent(calEvent.id);
+	} else {
+	    showEventInfo(calEvent);
+	}
     }
 
     $(document).ready( function() {
@@ -64,7 +83,7 @@
 	    },
 	    eventSources: [{url: "{% url reservations resource.id %}"}],
 	    dayClick: onDayClick,
-	    eventClick: removeEventDialogue
+	    eventClick: onEventClick
 	})
     });
 </script>
