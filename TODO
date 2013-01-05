@@ -2,11 +2,22 @@ Fix map
     integrate map
     create icons
     get coordinates and places
+
 Fix data collection on user registration
+Write script to add all the default data
+Database versioning/migration ?
 Fix HTTP 404/500 views
 Localize calendar date display etc
-Fix so we can see who caused a deletion of a preliminary reservation.
 Write translations
+CSS styling time!
 
+Release !
+    Edit Allowed referers for google maps api: https://code.google.com/apis/console/
+
+Mobile
+    Styling
+    Detect where the user is, physically
 
 Reservation drag n drop
+Fix so we can see who caused a deletion of a preliminary reservation.
+Translation of maps ui (?language=blalba)

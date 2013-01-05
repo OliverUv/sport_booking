@@ -1,8 +1,11 @@
 {% load i18n %}
+<!DOCTYPE html>
 <html>
     <head>
     	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title>{% trans "FR Ryd location booking" context "site title" %}</title>
+
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}style.css"></link>
 
 	<script type='text/javascript' src='{{ STATIC_URL }}jquery-1.8.1.min.js'></script>
 	<script type='text/javascript' src='{{ STATIC_URL }}jquery-ui-1.8.23.custom.min.js'></script>
@@ -14,10 +17,29 @@
 	<script type='text/javascript' src='{{ STATIC_URL }}noty/default.js'></script>
 
 	<script type='text/javascript' src='{{ STATIC_URL }}common.js'></script>
+
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJaXyMWLetAc4MfLKjtl86kPeuhi1Ukuc&sensor=false"></script>
+	<script type="text/javascript">
+	    function initializeMap() {
+		var mapOptions = {
+		    center: new google.maps.LatLng(58.410334, 15.563014),
+		    zoom: 16,
+		    mapTypeId: google.maps.MapTypeId.SATELLITE,
+		    disableDefaultUI: true,
+		    panControl: false,
+		    zoomControl: false,
+		    mapTypeControl: false,
+		    scaleControl: false,
+		    streetViewControl: false,
+		    overviewMapControl: false
+		};
+		var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+	    }
+	</script>
 	{% block head %}
 	{% endblock %}
     </head>
-    <body>
+    <body onload="initializeMap()">
 	<!-- Language selection -->
 	{% trans "Choose Language:" %}
 	<br/>
@@ -36,7 +58,7 @@
 	{% else %}
 	    <a href='{% url login %}'>Login</a>
 	{% endif %}
-
+	<div id="map_canvas"></div>
 	{% block content %}
 	{% endblock %}
     </body>
