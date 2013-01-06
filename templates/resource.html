@@ -55,6 +55,7 @@
     }
 
     function showEventInfo(calEvent) {
+	<!-- TODO -->
     }
 
     function onEventClick(calEvent, jsEvent, view) {
@@ -65,7 +66,7 @@
 	}
     }
 
-    $(document).ready( function() {
+    function initialize() {
 	$('#calendar').fullCalendar({
 	    firstDay: 1,
 	    defaultView: 'agendaWeek',
@@ -102,12 +103,14 @@
 	    "{{ r.name }}",
 	    "{% url resource r.id %}");
 	{% endfor %}
-    });
+    }
+
+    $(document).ready(initialize);
 </script>
 {% endblock %}
 
 {% block content %}
 Showing resource {{ resource.name }} with id {{ resource.id }}.
-<div id="map_canvas"/>
-<div id="calendar"/>
+<div id="map_canvas"></div>
+<div id="calendar"></div>
 {% endblock %}
