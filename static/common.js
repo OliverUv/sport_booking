@@ -82,13 +82,16 @@ function addIcon(map, latitude, longitude, image_url, resource_name, resource_ur
 	    new google.maps.Size(50, 49),
 	    new google.maps.Point(0,0), // origin, if in sprite with many icons
 	    new google.maps.Point(anchorX, anchorY)); // anchor
-    var icon = new google.maps.Marker({
+    var marker = new google.maps.Marker({
           position: myLatLng,
           map: map,
           icon: image,
 	  title: resource_name,
 	  zIndex: zIndex
       });
+    google.maps.event.addListener(marker, 'click', function() {
+	window.location = resource_url;
+    });
 }
 
 function addArrowIcon(map, latitude, longitude, image_url, resource_name, resource_url) {
