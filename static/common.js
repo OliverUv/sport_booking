@@ -76,32 +76,25 @@ function initializeMap(map_element_id, latitude, longitude) {
     return map;
 }
 
-function addArrowIcon(map, latitude, longitude, image_url, resource_name, resource_url) {
+function addIcon(map, latitude, longitude, image_url, resource_name, resource_url, anchorX, anchorY, zIndex) {
     var myLatLng = new google.maps.LatLng(latitude, longitude);
     var image = new google.maps.MarkerImage(image_url,
 	    new google.maps.Size(50, 49),
 	    new google.maps.Point(0,0), // origin, if in sprite with many icons
-	    new google.maps.Point(25, 49)); // anchor
+	    new google.maps.Point(anchorX, anchorY)); // anchor
     var icon = new google.maps.Marker({
           position: myLatLng,
           map: map,
           icon: image,
 	  title: resource_name,
-	  zIndex: 2
+	  zIndex: zIndex
       });
 }
 
+function addArrowIcon(map, latitude, longitude, image_url, resource_name, resource_url) {
+    addIcon(map, latitude, longitude, image_url, resource_name, resource_url, 25, 49, 2);
+}
+
 function addResourceIcon(map, latitude, longitude, image_url, resource_name, resource_url) {
-    var myLatLng = new google.maps.LatLng(latitude, longitude);
-    var image = new google.maps.MarkerImage(image_url,
-	    new google.maps.Size(50, 49),
-	    new google.maps.Point(0,0), // origin, if in sprite with many icons
-	    new google.maps.Point(25, 25)); // anchor
-    var icon = new google.maps.Marker({
-          position: myLatLng,
-          map: map,
-          icon: image,
-	  title: resource_name,
-	  zIndex: 1
-      });
+    addIcon(map, latitude, longitude, image_url, resource_name, resource_url, 25, 25, 1);
 }
