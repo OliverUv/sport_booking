@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls import patterns, include, url
 
 
@@ -24,3 +25,9 @@ urlpatterns = patterns('',
 
     url(r'^i18n/', include('django.conf.urls.i18n'))  # Enables internationalization
 )
+
+if settings.DEBUG:
+    # media files (images, css, javascript, etc.)
+    urlpatterns += patterns('',
+        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+        'document_root': settings.MEDIA_ROOT}))

@@ -3,6 +3,7 @@ from django.conf import settings
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
+from django.utils.translation import get_language
 from datetime import timedelta
 
 from booking.common import get_object_or_404
@@ -18,10 +19,12 @@ def resource(request, resource_id=None):
     """
     if resource_id is None:
         return http_badrequest(_('No resource id given.'))
+    language = get_language()
+    resources = Resource.objects.language(language).all()
     resource = get_object_or_404(Resource, resource_id)
     context = RequestContext(request, {
-        'resource': {'id': resource.id,
-                    'name': resource.name}})
+        'resource': resource,
+        'resources': resources})
 
     return render_to_response('resource.html', context)
 

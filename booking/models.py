@@ -49,6 +49,10 @@ class Resource(TranslatableModel):
     def __unicode__(self):
         return self.safe_translation_getter('name', 'Resource: %s' % self.pk)
 
+    def image_url(self):
+        # TODO make callers prefetch image url instead
+        return self.resource_type.image.url
+
 
 class Reservation(models.Model):
     resource = models.ForeignKey(Resource, related_name='reservations')
@@ -80,6 +84,7 @@ class Reservation(models.Model):
         # preliminary reservation deleted.
         self.deleted = True
         self.save()
+    delete_and_report.alters_data = True
 
     def would_overlap(self, other_start, other_end):
         latest_start = max(self.start, other_start)

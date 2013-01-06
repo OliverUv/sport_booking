@@ -84,13 +84,30 @@
 	    eventSources: [{url: "{% url reservations resource.id %}"}],
 	    dayClick: onDayClick,
 	    eventClick: onEventClick
-	})
+	});
+
+	map = initializeMap("map_canvas", {{ resource.latitude }}, {{ resource.longitude }});
+	addArrowIcon(map,
+	    {{ resource.latitude }},
+	    {{ resource.longitude }},
+	    "{{ STATIC_URL }}images/down.png",
+	    "{{ resource.name }}",
+	    "{% url resource resource.id %}");
+
+	{% for r in resources %}
+	addResourceIcon(map,
+	    {{ r.latitude }},
+	    {{ r.longitude }},
+	    "{{ r.image_url }}",
+	    "{{ r.name }}",
+	    "{% url resource r.id %}");
+	{% endfor %}
     });
 </script>
 {% endblock %}
 
 {% block content %}
-In language {{ lang }}
 Showing resource {{ resource.name }} with id {{ resource.id }}.
+<div id="map_canvas"/>
 <div id="calendar"/>
-    {% endblock %}
+{% endblock %}

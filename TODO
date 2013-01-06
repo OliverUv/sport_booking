@@ -2,6 +2,7 @@ Fix map
     integrate map
     create icons
     get coordinates and places
+    make map markers respond to clicks
 
 Fix data collection on user registration
 Write script to add all the default data
@@ -20,4 +21,5 @@ Mobile
 
 Reservation drag n drop
 Fix so we can see who caused a deletion of a preliminary reservation.
+Fix pre-fetching of images when all resources are pulled (right now 1 extra DB-query per resource)
 Translation of maps ui (?language=blalba)

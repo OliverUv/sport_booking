@@ -1,7 +1,26 @@
 {% extends "base.html" %}
 {% load i18n %}
 
+{% block head %}
+<script>
+    function initialize(){
+	map = initializeMap("map_canvas", 58.410334, 15.563014);
+	{% for r in resources %}
+	addResourceIcon(map,
+	    {{ r.latitude }},
+	    {{ r.longitude }},
+	    "{{ r.image_url }}",
+	    "{{ r.name }}",
+	    "{% url resource r.id %}");
+	{% endfor %}
+    }
+
+    $(document).ready(initialize);
+</script>
+{% endblock %}
+
 {% block content %}
 {{ welc }}<br/>
 Currently speaking {{ current_language }}
+<div id="map_canvas"></div>
 {% endblock %}
