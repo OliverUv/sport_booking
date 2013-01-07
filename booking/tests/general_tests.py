@@ -132,6 +132,16 @@ def preserve_count(object_type):
     return real_decorator
 
 
+def diff_count(object_type, diff):
+    def real_decorator(function):
+        def wrapper(self, *args, **kwargs):
+            objects = object_count(object_type)
+            function(self, *args, **kwargs)
+            self.assertEqual(diff, object_count(object_type) - objects)
+        return wrapper
+    return real_decorator
+
+
 class GeneralTests(TestCase):
     def test_profile_completed(self):
         username = 'user'
@@ -188,6 +198,7 @@ class ReservationTests(TestCase):
 
         self.assertTrue(r[10].is_solid())
 
+    @preserve_count(Reservation)
     def test_delete_reservation_success(self):
         r_id = self.test_data['reservations'][10].id
         response = self.client2.post('/delete_reservation/', {
@@ -199,6 +210,7 @@ class ReservationTests(TestCase):
         res = Reservation.objects.get(id=r_id)
         self.assertTrue(res.deleted)
 
+    @preserve_count(Reservation)
     def test_fail_delete_others_reservation(self):
         r_id = self.test_data['reservations'][9].id
         response = self.client.post('/delete_reservation/', {
@@ -207,6 +219,7 @@ class ReservationTests(TestCase):
         res = Reservation.objects.get(id=r_id)
         self.assertFalse(res.deleted)
 
+    @diff_count(Reservation, 1)
     def test_reserve_over_deleted_success(self):
         res = self.test_data['reservations'][10]
         response = self.client2.post('/delete_reservation/', {
@@ -240,6 +253,7 @@ class ReservationTests(TestCase):
         self.assertTrue(Reservation.objects.get(id=res_content['id']).is_solid())
         self.assertFalse(Reservation.objects.get(id=res.id).is_solid())
 
+    @diff_count(Reservation, 1)
     def test_simple_reservation_success(self):
         resource = self.test_data['resources'][2]
 
@@ -264,6 +278,7 @@ class ReservationTests(TestCase):
             'resource_id': resource.id})
         self.assertEqual(response.status_code, 403)
 
+    @preserve_count(Reservation)
     def test_fail_new_reservation_in_past(self):
         resource = self.test_data['resources'][2]
 
@@ -273,6 +288,7 @@ class ReservationTests(TestCase):
             'resource_id': resource.id})
         self.assertEqual(response.status_code, 403)
 
+    @preserve_count(Reservation)
     def test_fail_new_reservation_starts_after_ends(self):
         resource = self.test_data['resources'][2]
 
@@ -282,6 +298,7 @@ class ReservationTests(TestCase):
             'resource_id': resource.id})
         self.assertEqual(response.status_code, 403)
 
+    @diff_count(Reservation, 2)
     def test_fail_third_reservation(self):
         resource = self.test_data['resources'][2]
 
@@ -303,6 +320,7 @@ class ReservationTests(TestCase):
             'resource_id': resource.id})
         self.assertEqual(response.status_code, 403)
 
+    @preserve_count(Reservation)
     def test_fail_too_long_reservation(self):
         resource1 = self.test_data['resources'][2]
         start = 0
@@ -314,6 +332,7 @@ class ReservationTests(TestCase):
             'resource_id': resource1.id})
         self.assertEqual(response.status_code, 403)
 
+    @diff_count(Reservation, 2)
     def test_succeed_two_serial_reservations(self):
         resource1 = self.test_data['resources'][2]
 
@@ -333,6 +352,7 @@ class ReservationTests(TestCase):
         res_content = json.loads(response.content)
         self.assertTrue(Reservation.objects.filter(id=res_content['id']).exists())
 
+    @diff_count(Reservation, 1)
     def test_fail_overlapping_reservations(self):
         resource1 = self.test_data['resources'][2]
         resource2 = self.test_data['resources'][3]
@@ -385,6 +405,7 @@ class ReservationTests(TestCase):
                 'resource_id': resource1.id})
             self.assertEqual(response.status_code, 403)
 
+    @diff_count(Reservation, 3)
     def test_fail_override_with_preliminary(self):
         c = Client()
         other_user = self.test_data['users'][5]
@@ -430,6 +451,7 @@ class ReservationTests(TestCase):
         self.assertFalse(res2.deleted)
         self.assertFalse(res3.deleted)
 
+    @diff_count(Reservation, 3)
     def test_reserve_over_preliminary(self):
         c = Client()
         other_user = self.test_data['users'][5]
@@ -469,6 +491,7 @@ class ReservationTests(TestCase):
         self.assertTrue(res2.deleted)
         self.assertFalse(res3.deleted)
 
+    @preserve_count(Reservation)
     def test_fail_unauthorized_reservation(self):
         c = Client()
         resource = self.test_data['resources'][2]
