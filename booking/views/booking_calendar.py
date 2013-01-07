@@ -111,6 +111,7 @@ def do_make_reservation(start, end, resource_id, user):
             deleted=False,
             user=user,
             end__gt=now)
+    possibly_concurrent_reservations = filter(lambda r: r.user.profile.completed(), possibly_concurrent_reservations)
     concurrent_reservations = filter(lambda r: r.would_overlap(start, end), possibly_concurrent_reservations)
     if len(concurrent_reservations) > 0:
         return http_forbidden(_('You may not reserve two resources at the same time.'))
@@ -119,6 +120,7 @@ def do_make_reservation(start, end, resource_id, user):
             deleted=False,
             end__gt=now,
             resource=resource_id)
+    possibly_overlapping_reservations = filter(lambda r: r.user.profile.completed(), possibly_overlapping_reservations)
 
     # Check if solid reservations prevent this one to be made
     # Or if preliminary reservations prevent a preliminary reservation
