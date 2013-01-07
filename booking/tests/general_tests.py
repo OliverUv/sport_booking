@@ -24,6 +24,12 @@ def create_user():
     user.is_staff = True
     user.is_superuser = True
     user.save()
+    p = user.profile
+    p.postal_number = 58434
+    p.phone_number = 0720226044
+    p.full_name = 'boop derpatron'
+    p.save()
+
     return user
 
 
@@ -110,6 +116,31 @@ def add_test_data():
             'reservations': [r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11]}
 
     return test_data
+
+
+class GeneralTests(TestCase):
+    def test_profile_completed(self):
+        username = 'user'
+        password = 'pass'
+        user = User.objects.create_user(username, 'user@test.com', password)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save()
+
+        profile = user.profile
+        self.assertFalse(profile.completed())
+        profile.phone_number = 0720226044
+        profile.save()
+        self.assertFalse(profile.completed())
+        profile.postal_number = 5
+        profile.save()
+        self.assertFalse(profile.completed())
+        profile.postal_number = 58436
+        profile.save()
+        self.assertFalse(profile.completed())
+        profile.full_name = 'barang bambadang'
+        profile.save()
+        self.assertTrue(profile.completed())
 
 
 class ReservationTests(TestCase):

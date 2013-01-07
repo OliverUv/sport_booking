@@ -65,6 +65,7 @@ def get_reservations(request, resource_id):
             deleted=False,
             resource=resource_id,
             start__range=(start_datetime, end_datetime))
+    reservations = filter(lambda r: r.user.profile.completed(), reservations)
     add_reservation_annotations(request.user, reservations)
 
     return http_json_response(reservations_to_json_struct(reservations))
@@ -83,6 +84,8 @@ def reservations_to_json_struct(reservations):
 
 
 def do_make_reservation(start, end, resource_id, user):
+    if user.profile.completed() == False:
+        return http_forbidden(_('You must complete your profile before making reservations.'))
     interval = end - start
     max_interval = timedelta(hours=settings.MAX_RESERVATION_LENGTH)
     if (interval > max_interval):

@@ -3,6 +3,8 @@ Fix map
     get coordinates and places
 
 Fix data collection on user registration
+    Profile page
+Users can be banned
 Write script to add all the default data
 Database versioning/migration ?
 Fix HTTP 404/500 views

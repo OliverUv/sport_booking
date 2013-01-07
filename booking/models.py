@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
 from hvad.models import TranslatableModel, TranslatedFields
-from validators import validate_liuid
 
 from booking.common import utc_now
 
@@ -9,13 +8,36 @@ from booking.common import utc_now
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
 
-    postal_number = models.IntegerField()
-    phone_number = models.CharField(max_length=40)
-    liuid = models.CharField(max_length=8, validators=[validate_liuid])
+    full_name = models.CharField(max_length=200, blank=True)
+    postal_number = models.IntegerField(blank=True, null=True)
+    phone_number = models.CharField(max_length=40, blank=True, null=True)
     registration_time = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return self.user.username
+
+    def completed(self):
+        if self.postal_number is None:
+            return False
+        if len(str(self.postal_number)) != 5:
+            return False  # TODO ensure is in allowed postalcodes
+        if self.phone_number is None:
+            return False
+        if not self.full_name:
+            return False
+
+        return True
+
+
+def get_or_create_profile(user):
+    p = list(UserProfile.objects.filter(user=user))
+    if p:
+        return p[0]
+    p = UserProfile(user=user)
+    p.save()
+    return p
+
+User.profile = property(get_or_create_profile)
 
 
 class Remark(models.Model):
@@ -26,6 +48,12 @@ class Remark(models.Model):
 
     def __unicode__(self):
         return self.user
+
+
+class Ban(models.Model):
+    time_created = models.DateTimeField(auto_now_add=True)
+    explanation = models.TextField()
+    user = models.ForeignKey(User, related_name='banned')
 
 
 class ResourceType(TranslatableModel):
