@@ -118,6 +118,20 @@ def add_test_data():
     return test_data
 
 
+def object_count(object_type):
+    return object_type.objects.all().count()
+
+
+def preserve_count(object_type):
+    def real_decorator(function):
+        def wrapper(self, *args, **kwargs):
+            objects = object_count(object_type)
+            function(self, *args, **kwargs)
+            self.assertEqual(objects, object_count(object_type))
+        return wrapper
+    return real_decorator
+
+
 class GeneralTests(TestCase):
     def test_profile_completed(self):
         username = 'user'
@@ -205,7 +219,7 @@ class ReservationTests(TestCase):
             'resource_id': res.resource_id})
         self.assertEqual(response.status_code, 200)
         res_content = json.loads(response.content)
-        self.assertEqual(1, Reservation.objects.filter(id=res_content['id']).count())
+        self.assertTrue(Reservation.objects.filter(id=res_content['id']).exists())
 
     def test_deleted_solidity(self):
         res = self.test_data['reservations'][10]
@@ -235,7 +249,20 @@ class ReservationTests(TestCase):
             'resource_id': resource.id})
         self.assertEqual(response.status_code, 200)
         res_content = json.loads(response.content)
-        self.assertEqual(1, Reservation.objects.filter(id=res_content['id']).count())
+        self.assertTrue(Reservation.objects.filter(id=res_content['id']).exists())
+
+    @preserve_count(Reservation)
+    def test_incomplete_profile_reservation_failure(self):
+        resource = self.test_data['resources'][2]
+        profile = self.user.profile
+        profile.full_name = ''
+        profile.save()
+
+        response = self.client.post('/make_reservation/', {
+            'start': to_timestamp(later(2)),
+            'end': to_timestamp(later(2 + settings.MAX_RESERVATION_LENGTH)),
+            'resource_id': resource.id})
+        self.assertEqual(response.status_code, 403)
 
     def test_fail_new_reservation_in_past(self):
         resource = self.test_data['resources'][2]
@@ -296,7 +323,7 @@ class ReservationTests(TestCase):
             'resource_id': resource1.id})
         self.assertEqual(response.status_code, 200)
         res_content = json.loads(response.content)
-        self.assertEqual(1, Reservation.objects.filter(id=res_content['id']).count())
+        self.assertTrue(Reservation.objects.filter(id=res_content['id']).exists())
 
         response = self.client.post('/make_reservation/', {
             'start': to_timestamp(later(2)),
@@ -304,7 +331,7 @@ class ReservationTests(TestCase):
             'resource_id': resource1.id})
         self.assertEqual(response.status_code, 200)
         res_content = json.loads(response.content)
-        self.assertEqual(1, Reservation.objects.filter(id=res_content['id']).count())
+        self.assertTrue(Reservation.objects.filter(id=res_content['id']).exists())
 
     def test_fail_overlapping_reservations(self):
         resource1 = self.test_data['resources'][2]
