@@ -39,7 +39,7 @@
 	{% if request.user.is_authenticated %}
 	Hello {{ request.user.username }}! <a href='{% url logout %}'>Logout!</a>
 	    {% if not request.user.profile.completed %}
-	    You must complete your <a href='{% url profile %}'>profile</a> before making reservations.<br/>
+	    You must complete your <a href='{% url profile request.user.username %}'>profile</a> before making reservations.<br/>
 	    {% endif %}
 	{% else %}
 	    <a href='{% url login %}'>Login</a>

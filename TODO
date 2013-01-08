@@ -5,9 +5,9 @@ Fix map
 Fix data collection on user registration
     Profile page
 Users can be banned
-Write script to add all the default data
+Make start-page resources inserted with middleware!
 Database versioning/migration ?
-Fix HTTP 404/500 views
+Fix HTTP 404/403/500 views
 Localize calendar date display etc
 Write translations
 CSS styling time!
@@ -20,6 +20,7 @@ Mobile
     Detect where the user is, physically
 
 Reservation drag n drop
+Fix redirects around profile requirements instead of errors.
 Fix so we can see who caused a deletion of a preliminary reservation.
 Fix pre-fetching of images when all resources are pulled (right now 1 extra DB-query per resource)
 Translation of maps ui (?language=blalba)

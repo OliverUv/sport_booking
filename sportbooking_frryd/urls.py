@@ -1,8 +1,5 @@
 from django.conf import settings
 from django.conf.urls import patterns, include, url
-from django.views.generic import ListView
-from booking.models import UserProfile
-
 
 # These two lines enable the admin interface
 from django.contrib import admin
@@ -18,7 +15,7 @@ urlpatterns = patterns('',
 
     url(r'^accounts/login/$', 'django_cas.views.login', name='login'),
     url(r'^accounts/logout/$', 'django_cas.views.logout', name='logout'),
-    url(r'^profile/$', ListView.as_view(model=UserProfile, template_name='profile.html'), name='profile'),
+    url(r'^profile/(?P<username>\w+)/$', 'booking.views.general.profile', name='profile'),
     url(r'^$', 'booking.views.general.start', name='start'),
     url(r'^resource/(?P<resource_id>\d+)/$', 'booking.views.booking_calendar.resource', name='resource'),
     url(r'^reservations/(?P<resource_id>\d+)/$', 'booking.views.booking_calendar.get_reservations', name='reservations'),

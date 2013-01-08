@@ -2,10 +2,9 @@
 {% load i18n %}
 
 {% block content %}
-    <h2>Profiles</h2>
-    <ul>
-        {% for profile in object_list %}
-            <li>{{ profile.full_name }}</li>
-        {% endfor %}
-    </ul>
+Your profile, bum!
+<form action="{{ request.path_info }}" method="post">{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>
 {% endblock %}

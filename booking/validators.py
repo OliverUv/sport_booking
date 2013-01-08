@@ -19,3 +19,11 @@ def is_valid_liuid(value):
 def validate_liuid(value):
     if not is_valid_liuid(value):
         raise ValidationError(_("You did not input a valid liu-id."))
+
+
+def validate_postalnumber(value):
+    if not isinstance(value, (int, long)):
+        return False
+    if len(str(value)) != 5:
+        return False
+    return True
