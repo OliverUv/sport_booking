@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from hvad.models import TranslatableModel, TranslatedFields
 
+from booking.validators import validate_postalnumber
 from booking.common import utc_now
 
 
@@ -9,8 +10,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
 
     full_name = models.CharField(max_length=200, blank=True)
-    postal_number = models.IntegerField(blank=True, null=True)
-    phone_number = models.CharField(max_length=40, blank=True, null=True)
+    postal_number = models.IntegerField(blank=True, null=True, validators=[validate_postalnumber])
+    phone_number = models.CharField(max_length=40, blank=True)
     registration_time = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
