@@ -13,6 +13,8 @@ class UserProfile(models.Model):
     postal_number = models.IntegerField(blank=True, null=True, validators=[validate_postalnumber])
     phone_number = models.CharField(max_length=40, blank=True)
     registration_time = models.DateTimeField(auto_now_add=True)
+    ban_reason = models.TextField(max_length=1000, blank=True, default='')
+    is_banned = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.user.username
@@ -49,12 +51,6 @@ class Remark(models.Model):
 
     def __unicode__(self):
         return self.user
-
-
-class Ban(models.Model):
-    time_created = models.DateTimeField(auto_now_add=True)
-    explanation = models.TextField()
-    user = models.ForeignKey(User, related_name='banned')
 
 
 class ResourceType(TranslatableModel):
@@ -121,3 +117,10 @@ class Reservation(models.Model):
         if latest_start < earliest_end:
             return True
         return False
+
+    def valid_user(self):
+        if self.user.profile.is_banned:
+            return False
+        if not self.user.profile.completed():
+            return False
+        return True

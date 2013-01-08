@@ -2,9 +2,6 @@ Fix map
     create icons
     get coordinates and places
 
-Fix data collection on user registration
-    Profile page
-Users can be banned
 Make start-page resources inserted with middleware!
 Database versioning/migration ?
 Fix HTTP 404/403/500 views
@@ -20,6 +17,7 @@ Mobile
     Detect where the user is, physically
 
 Reservation drag n drop
+Show notification on profile saved, user banned
 Fix redirects around profile requirements instead of errors.
 Fix so we can see who caused a deletion of a preliminary reservation.
 Fix pre-fetching of images when all resources are pulled (right now 1 extra DB-query per resource)

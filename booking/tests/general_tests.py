@@ -266,6 +266,19 @@ class ReservationTests(TestCase):
         self.assertTrue(Reservation.objects.filter(id=res_content['id']).exists())
 
     @preserve_count(Reservation)
+    def test_banned_reservation_failure(self):
+        resource = self.test_data['resources'][2]
+        profile = self.user.profile
+        profile.banned = 'banned because of tests'
+        profile.save()
+
+        response = self.client.post('/make_reservation/', {
+            'start': to_timestamp(later(2)),
+            'end': to_timestamp(later(2 + settings.MAX_RESERVATION_LENGTH)),
+            'resource_id': resource.id})
+        self.assertEqual(response.status_code, 403)
+
+    @preserve_count(Reservation)
     def test_incomplete_profile_reservation_failure(self):
         resource = self.test_data['resources'][2]
         profile = self.user.profile
