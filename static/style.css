@@ -32,13 +32,9 @@ html, body { height: 100%; margin: 0px; padding: 0px; }
     background-color: #101010;
 }
 
-/* Mobile */
-@media handheld, only screen and (max-width: 767px) { 
-    .topcol {
-	text-align: center;
-	float: left;
-	width: 33%;
-    }
+.h1 {
+    font-size: 110%;
+    font-weight: bold;
 }
 
 #map_canvas {
@@ -65,4 +61,30 @@ html, body { height: 100%; margin: 0px; padding: 0px; }
     min-height: 4px;
     background-color: #101010;
     margin-bottom: 10px;
+}
+
+#resource_info_column {
+    padding-top: 20px;
+}
+
+/* Mobile */
+@media handheld, only screen and (max-width: 767px) { 
+    .topcol {
+	text-align: center;
+	float: left;
+	width: 33%;
+    }
+}
+
+/* Short screens */
+@media handheld, only screen and (max-height: 450px){
+    .hide-on-short {
+	display: none !important;
+    }
+    h1 {
+	margin: 0;
+	padding: 0;
+    }
+    #resource_divider { margin-bottom: 0px; }
+    #resource_info_column { padding-top: 0px; }
 }

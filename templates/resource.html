@@ -9,24 +9,20 @@
 <script>
     function initialize() {
 	function on_win_resize() {
-	    var win_height = $(window).height();
-	    var other_height = 0;
-	    var elements = ['all-tops', 'resource_map_canvas', 'resource_divider'];
-	    for (var i = 0; i < elements.length; i++) {
-	      other_height += $("#" + elements[i]).height();
+	    if (is_mobile()) {
+		$("#resource_info_column").after($("#resource_calendar"));
+	    } else {
+		$("#resource_info_column").before($("#resource_calendar"));
 	    }
-	    var new_height = win_height - other_height - 10; // margin offset
-	    if (new_height < 350) {
-		new_height = 350;
+
+	    var win_height = $(window).height();
+	    var top_pos = $("#resource_calendar").position().top;
+	    var new_height = win_height - top_pos;
+	    if (is_short()) {
+		new_height = win_height;
 	    }
 	    $("#resource_calendar").fullCalendar('option', 'height', new_height);
 
-	    var win_width = $(window).width();
-	    if (win_width < 767) {
-		$("#info_column").after($("#resource_calendar"));
-	    } else {
-		$("#info_column").before($("#resource_calendar"));
-	    }
 	};
 
 	calendarData = {
@@ -67,15 +63,15 @@
 {% endblock %}
 
 {% block content %}
-<div id="resource_map_canvas"></div>
+<div id="resource_map_canvas" class="hide-on-short"></div>
 <div class="container" id="resource_divider">
     <div class="row"></div>
 </div>
 <div class="row">
     <div id="resource_calendar" class="eightcol"></div>
-    <div class="fourcol last" id="info_column">
+    <div class="fourcol last" id="resource_info_column">
 	<h1>{{ resource.name }}</h1>
-
+	<p class="hide-on-mobile">{{ resource.specific_information }}</p>
     </div>
 </div>
 {% endblock %}

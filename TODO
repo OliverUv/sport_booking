@@ -2,6 +2,9 @@ Fix map
     create icons
     get coordinates and places
 
+Rules page
+resource type page
+Menu
 Fix HTTP 404/403/500 views
 Redirect to rules after edit profile
 Database versioning/migration ?
@@ -9,6 +12,7 @@ Localize calendar date display etc
 Write translations
 
 Release !
+    Minify scripts and CSS
     Edit Allowed referers for google maps api: https://code.google.com/apis/console/
 
 GPS Detect where the user is, physically

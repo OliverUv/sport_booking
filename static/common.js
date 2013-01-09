@@ -59,9 +59,17 @@ function showAjaxFailure(data) {
     });
 }
 
+function is_mobile() {
+    return $(window).width() < 767;
+}
+
+function is_short() {
+    return $(window).height() < 350;
+}
+
 function fill_element(resize_element_id, elements) {
     var win_width = $(window).width();
-    if (win_width < 767) {
+    if (is_mobile()) {
 	var win_height = $(window).height();
 	var other_height = 0;
 	for (var i = 0; i < elements.length; i++) {
