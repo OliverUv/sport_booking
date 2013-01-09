@@ -60,6 +60,7 @@ function initializeCalendar(calendarData) {
 	allDaySlot: false,
 	defaultEventMinutes: 60,
 	firstHour: 10,
+	height: 500,
 	columnFormat: 'ddd d/M',
 	titleFormat: {
 	    month: 'MMMM yyyy',                             // September 2009

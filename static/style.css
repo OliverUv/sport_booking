@@ -27,7 +27,7 @@ html, body { height: 100%; margin: 0px; padding: 0px; }
     text-align: right;
 }
 
-.start-divider {
+.start_divider {
     min-height: 30px;
     background-color: #101010;
 }
@@ -55,4 +55,14 @@ html, body { height: 100%; margin: 0px; padding: 0px; }
     position: relative;
     overflow: hidden;
     display: block;
+}
+
+#resource_calendar {
+    height: 100%;
+}
+
+#resource_divider {
+    min-height: 4px;
+    background-color: #101010;
+    margin-bottom: 10px;
 }

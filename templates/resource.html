@@ -8,14 +8,36 @@
 <script type='text/javascript' src='{{ STATIC_URL }}cal/calendar_logic.js'></script>
 <script>
     function initialize() {
+	function on_win_resize() {
+	    var win_height = $(window).height();
+	    var other_height = 0;
+	    var elements = ['all-tops', 'resource_map_canvas', 'resource_divider'];
+	    for (var i = 0; i < elements.length; i++) {
+	      other_height += $("#" + elements[i]).height();
+	    }
+	    var new_height = win_height - other_height - 10; // margin offset
+	    if (new_height < 350) {
+		new_height = 350;
+	    }
+	    $("#resource_calendar").fullCalendar('option', 'height', new_height);
+
+	    var win_width = $(window).width();
+	    if (win_width < 767) {
+		$("#info_column").after($("#resource_calendar"));
+	    } else {
+		$("#info_column").before($("#resource_calendar"));
+	    }
+	};
+
 	calendarData = {
-	    element_id: "calendar",
+	    element_id: "resource_calendar",
 	    resource_id: {{ resource.id }},
 	    reservation_url: "{% url single_click_reservation %}",
 	    delete_url: "{% url delete_reservation %}",
 	    resource_event_url: "{% url reservations resource.id %}"};
-
 	initializeCalendar(calendarData);
+	$(window).bind("resize", on_win_resize);
+	on_win_resize();
 
 	mapData = {
 	    element_id: "resource_map_canvas",
@@ -46,9 +68,14 @@
 
 {% block content %}
 <div id="resource_map_canvas"></div>
-<div class="container start-divider">
+<div class="container" id="resource_divider">
     <div class="row"></div>
 </div>
-Showing resource {{ resource.name }} with id {{ resource.id }}.
-<div id="calendar"></div>
+<div class="row">
+    <div id="resource_calendar" class="eightcol"></div>
+    <div class="fourcol last" id="info_column">
+	<h1>{{ resource.name }}</h1>
+
+    </div>
+</div>
 {% endblock %}

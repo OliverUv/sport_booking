@@ -4,8 +4,8 @@
 {% block head %}
 <script>
     function initialize(){
-	$(window).bind("resize", function() {fill_element("map_canvas", "all-tops");});
-	fill_element("map_canvas", "all-tops");
+	$(window).bind("resize", function() {fill_element("map_canvas", ["all-tops"]);});
+	fill_element("map_canvas", ["all-tops"]);
 
 	mapData = {
 	    element_id: "map_canvas",
@@ -29,7 +29,7 @@
 
 {% block content %}
 <div id="map_canvas"></div>
-<div class="hide-on-phone container start-divider">
+<div class="hide-on-phone container start_divider">
     <div class="row"> </div>
 </div>
 {% endblock %}
