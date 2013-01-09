@@ -7,16 +7,15 @@
 <script type='text/javascript' src='{{ STATIC_URL }}cal/fullcalendar.js'></script>
 <script type='text/javascript' src='{{ STATIC_URL }}cal/calendar_logic.js'></script>
 <script>
-    function onDayClick(date, allDay, jsEvent, view) {
-	generalOnDayClick(date, allDay, jsEvent, view, {{ resource.id }}, "{% url single_click_reservation %}");
-    }
-
-    function onEventClick(calEvent, jsEvent, view) {
-	generalOnEventClick(calEvent, jsEvent, view, "{% url delete_reservation %}");
-    }
-
     function initialize() {
-	initializeCalendar("{% url reservations resource.id %}", onDayClick, onEventClick);
+	calendarData = {
+	    element_id: "calendar",
+	    resource_id: {{ resource.id }},
+	    reservation_url: "{% url single_click_reservation %}",
+	    delete_url: "{% url delete_reservation %}",
+	    resource_event_url: "{% url reservations resource.id %}"};
+
+	initializeCalendar(calendarData);
 
 	map = initializeMap("map_canvas", {{ resource.latitude }}, {{ resource.longitude }});
 	addArrowIcon(map,
@@ -42,6 +41,8 @@
 
 {% block content %}
 Showing resource {{ resource.name }} with id {{ resource.id }}.
-<div id="map_canvas"></div>
-<div id="calendar"></div>
+<div class="row">
+    <div id="map_canvas" class="sixcol"></div>
+    <div id="calendar" class="sixcol"></div>
+</div>
 {% endblock %}
