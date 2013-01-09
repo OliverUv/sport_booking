@@ -20,10 +20,6 @@
 	    }).fail(showAjaxFailure);
     }
 
-    function onDragEvent(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view){
-	$('#calendar').fullCalendar('refetchEvents');
-    }
-
     function deleteEvent(eventId) {
 	n = noty({
 	    text: "Do you want to remove event #" + eventId,

@@ -4,8 +4,8 @@
 {% block head %}
 <script>
     function initialize(){
-	$(window).bind("resize", function() {resize_map("map_canvas", "all-tops");});
-	resize_map("map_canvas", "all-tops");
+	$(window).bind("resize", function() {fill_element("map_canvas", "all-tops");});
+	fill_element("map_canvas", "all-tops");
 	map = initializeMap("map_canvas", 58.410334, 15.563014);
 	{% for r in resources %}
 	addResourceIcon(map,
