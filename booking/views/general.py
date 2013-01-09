@@ -2,13 +2,12 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.contrib.auth import logout as do_logout
 from django.http import HttpResponseRedirect
-from django.template import RequestContext
 from django.utils import translation
 from django.utils.translation import ugettext as _
 from django import forms
 
 from booking.models import Resource, UserProfile, User
-from booking.common import http_forbidden_page
+from booking.common import http_forbidden_page, build_request_context
 
 
 class UserProfileForm(forms.ModelForm):
@@ -35,7 +34,7 @@ def profile(request, username):
     else:
         form = UserProfileForm(instance=request.user.profile)
 
-    context = RequestContext(request, {'form': form})
+    context = build_request_context(request, {'form': form})
     return render_to_response('profile.html', context)
 
 
@@ -52,18 +51,15 @@ def ban(request, username):
     else:
         form = BanUserForm(instance=user.profile)
 
-    context = RequestContext(request, {'form': form})
+    context = build_request_context(request, {'form': form})
     return render_to_response('ban.html', context)
 
 
 def start(request):
     language = translation.get_language()
     resources = Resource.objects.language(language).all()
-    context = RequestContext(request, {
-        'resources': resources,
-        'logged_in': request.user.is_authenticated(),
-        'current_language': language,
-        'welc': _('Welcome')})
+    context = build_request_context(request, {
+        'resources': resources})
     return render_to_response('start.html', context)
 
 

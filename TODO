@@ -2,19 +2,15 @@ Fix map
     create icons
     get coordinates and places
 
-Make start-page resources inserted with middleware!
-Database versioning/migration ?
 Fix HTTP 404/403/500 views
+Database versioning/migration ?
 Localize calendar date display etc
 Write translations
-CSS styling time!
 
 Release !
     Edit Allowed referers for google maps api: https://code.google.com/apis/console/
 
-Mobile
-    Styling
-    Detect where the user is, physically
+GPS Detect where the user is, physically
 
 Reservation drag n drop
 Show notification on profile saved, user banned

@@ -1,7 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.shortcuts import render_to_response
-from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils.translation import get_language
 from datetime import timedelta
@@ -9,7 +8,7 @@ from datetime import timedelta
 from booking.common import get_object_or_404
 from booking.models import Reservation
 from booking.models import Resource
-from booking.common import to_timestamp, from_timestamp, utc_now
+from booking.common import to_timestamp, from_timestamp, utc_now, build_request_context
 from booking.common import http_forbidden, http_badrequest, http_json_response
 
 
@@ -22,7 +21,7 @@ def resource(request, resource_id=None):
     language = get_language()
     resources = Resource.objects.language(language).all()
     resource = get_object_or_404(Resource, resource_id)
-    context = RequestContext(request, {
+    context = build_request_context(request, {
         'resource': resource,
         'resources': resources})
 

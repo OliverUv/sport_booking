@@ -25,6 +25,17 @@ def get_object_or_404(object_type, key):
     return obj
 
 
+def build_request_context(request, values):
+    if values is None:
+        values = {}
+    # Add resources that base.html depends on:
+    language = get_language()
+    base = {
+            'language': language}
+    values['base'] = base
+    return RequestContext(request, values)
+
+
 def http_badrequest(message):
     return HttpResponseBadRequest(json.dumps({'status': 'failed', 'message': message}), content_type='application/json')
 
@@ -38,7 +49,7 @@ def http_forbidden(message):
 def http_forbidden_page(request, message):
     if message is None or message == '':
         message = 'Request was made with bad parameters.'
-    context = RequestContext(request, {'message': message})
+    context = build_request_context(request, {'message': message})
     return render_to_response('403.html', context)
 
 
