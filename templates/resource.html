@@ -17,7 +17,12 @@
 
 	initializeCalendar(calendarData);
 
-	map = initializeMap("resource_map_canvas", {{ resource.latitude }}, {{ resource.longitude }});
+	mapData = {
+	    element_id: "resource_map_canvas",
+	    latitude: {{ resource.latitude }},
+	    longitude: {{ resource.longitude }} };
+	map = initializeMap(mapData);
+
 	addArrowIcon(map,
 	    {{ resource.latitude }},
 	    {{ resource.longitude }},
@@ -40,9 +45,10 @@
 {% endblock %}
 
 {% block content %}
-Showing resource {{ resource.name }} with id {{ resource.id }}.
-<div class="row">
-    <div id="resource_map_canvas" class="sixcol"></div>
-    <div id="calendar" class="sixcol"></div>
+<div id="resource_map_canvas"></div>
+<div class="container start-divider">
+    <div class="row"></div>
 </div>
+Showing resource {{ resource.name }} with id {{ resource.id }}.
+<div id="calendar"></div>
 {% endblock %}

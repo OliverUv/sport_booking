@@ -3,6 +3,7 @@ Fix map
     get coordinates and places
 
 Fix HTTP 404/403/500 views
+Redirect to rules after edit profile
 Database versioning/migration ?
 Localize calendar date display etc
 Write translations

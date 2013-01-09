@@ -1,6 +1,6 @@
-function initializeMap(map_element_id, latitude, longitude) {
+function initializeMap(data) {
     var mapOptions = {
-	center: new google.maps.LatLng(latitude, longitude),
+	center: new google.maps.LatLng(data.latitude, data.longitude),
 	zoom: 16,
 	mapTypeId: google.maps.MapTypeId.SATELLITE,
 	disableDefaultUI: true,
@@ -11,7 +11,7 @@ function initializeMap(map_element_id, latitude, longitude) {
 	streetViewControl: false,
 	overviewMapControl: false
     };
-    var map = new google.maps.Map(document.getElementById(map_element_id), mapOptions);
+    var map = new google.maps.Map(document.getElementById(data.element_id), mapOptions);
     return map;
 }
 

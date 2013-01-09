@@ -50,7 +50,7 @@ html, body { height: 100%; margin: 0px; padding: 0px; }
 }
 
 #resource_map_canvas {
-    height: 500px;
+    height: 100px;
     width: 100%;
     position: relative;
     overflow: hidden;

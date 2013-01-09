@@ -6,7 +6,13 @@
     function initialize(){
 	$(window).bind("resize", function() {fill_element("map_canvas", "all-tops");});
 	fill_element("map_canvas", "all-tops");
-	map = initializeMap("map_canvas", 58.410334, 15.563014);
+
+	mapData = {
+	    element_id: "map_canvas",
+	    latitude: 58.410334,
+	    longitude: 15.563014};
+	map = initializeMap(mapData);
+
 	{% for r in resources %}
 	addResourceIcon(map,
 	    {{ r.latitude }},
