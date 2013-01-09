@@ -4,6 +4,8 @@
 {% block head %}
 <script>
     function initialize(){
+	$(window).bind("resize", function() {resize_map("map_canvas", "all-tops");});
+	resize_map("map_canvas", "all-tops");
 	map = initializeMap("map_canvas", 58.410334, 15.563014);
 	{% for r in resources %}
 	addResourceIcon(map,
@@ -21,4 +23,7 @@
 
 {% block content %}
 <div id="map_canvas"></div>
+<div class="hide-on-phone container start-divider">
+    <div class="row"> </div>
+</div>
 {% endblock %}

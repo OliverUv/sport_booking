@@ -24,6 +24,7 @@
 	{% endblock %}
     </head>
     <body>
+    <div id="all-tops">
 	<div class="container row toprow">
 	    {% if base.language == "en" %}
 	    <div class="tencol topcol">
@@ -79,7 +80,8 @@
 		phone menu
 	    </div>
 	</div>
-	{% block content %}
-	{% endblock %}
+    </div>
+    {% block content %}
+    {% endblock %}
     </body>
 </html>

@@ -59,6 +59,17 @@ function showAjaxFailure(data) {
     });
 }
 
+function resize_map(map_element_id, related_size_element) {
+    var win_width = $(window).width();
+    if (win_width < 767) {
+	var win_height = $(window).height();
+	var other_height = $("#" + related_size_element).height();
+	$("#" + map_element_id).height(win_height - other_height);
+    } else {
+	$("#" + map_element_id).height(500);
+    }
+};
+
 function initializeMap(map_element_id, latitude, longitude) {
     var mapOptions = {
 	center: new google.maps.LatLng(latitude, longitude),

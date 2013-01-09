@@ -79,6 +79,7 @@ img {
 
 .show-on-phone, .show-on-tablet, .hide-on-desktop {
   display: none;
+  height: 0px;
 }
 
 .show-on-desktop, .hide-on-phone, .hide-on-tablet {
@@ -91,6 +92,7 @@ img {
 @media only screen and (max-device-width: 800px), only screen and (device-width: 1024px) and (device-height: 600px), only screen and (width: 1280px) and (orientation: landscape), only screen and (device-width: 800px) {
 	.show-on-phone, .hide-on-tablet, .show-on-desktop {
     display: none;
+    height: 0px;
   }
   
   .hide-on-desktop, .hide-on-phone, .show-on-tablet {
@@ -110,6 +112,7 @@ img {
   
   .hide-on-phone, .show-on-tablet, .show-on-desktop {
     display: none;
+    height: 0px;
   }
   
   .hide-on-desktop, .show-on-phone, .hide-on-tablet {
