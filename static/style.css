@@ -1,14 +1,5 @@
 html, body { height: 100%; margin: 0px; padding: 0px; }
 
-/* #map_canvas { height: 500px; width: 500px } */
-#map_canvas {
-    height: 500px;
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    display: block;
-}
-
 .profilewarningspan {
     cursor: hand;
     cursor: pointer;
@@ -48,4 +39,20 @@ html, body { height: 100%; margin: 0px; padding: 0px; }
 	float: left;
 	width: 33%;
     }
+}
+
+#map_canvas {
+    height: 500px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    display: block;
+}
+
+#resource_map_canvas {
+    height: 500px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    display: block;
 }
