@@ -1,3 +1,6 @@
+var default_longitude = 15.563014;
+var default_latitude = 58.410334;
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -63,20 +66,40 @@ function is_mobile() {
     return $(window).width() < 767;
 }
 
+function is_not_mobile() {
+    return !is_mobile();
+}
+
+function always_true() {
+    return true;
+}
+
 function is_short() {
     return $(window).height() < 350;
 }
 
-function fill_element(resize_element_id, elements) {
+function fill_element(resize_element_id) {
     var win_width = $(window).width();
     if (is_mobile()) {
 	var win_height = $(window).height();
-	var other_height = 0;
-	for (var i = 0; i < elements.length; i++) {
-	  other_height += $("#" + elements[i]).height();
-	}
-	$("#" + resize_element_id).height(win_height - other_height);
+	var top_pos = $("#" + resize_element_id).position().top;
+	$("#" + resize_element_id).height(win_height - top_pos);
     } else {
 	$("#" + resize_element_id).height(500);
     }
 };
+
+function set_percent_height(element_id, proportion) {
+    var win_height = $(window).height();
+    $("#" + element_id).height(win_height*proportion);
+}
+
+function ensure_height(element_id, proportion, conditional) {
+    $(window).bind("resize", function() {
+	if (conditional()) {
+	    set_percent_height(element_id, proportion);
+	}
+    });
+    if (conditional())
+	set_percent_height(element_id, proportion);
+}

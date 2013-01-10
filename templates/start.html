@@ -4,13 +4,13 @@
 {% block head %}
 <script>
     function initialize(){
-	$(window).bind("resize", function() {fill_element("map_canvas", ["all-tops"]);});
-	fill_element("map_canvas", ["all-tops"]);
+	$(window).bind("resize", function() {fill_element("map_canvas");});
+	fill_element("map_canvas");
 
 	mapData = {
 	    element_id: "map_canvas",
-	    latitude: 58.410334,
-	    longitude: 15.563014};
+	    latitude: default_latitude,
+	    longitude: default_longitude};
 	map = initializeMap(mapData);
 
 	{% for r in resources %}

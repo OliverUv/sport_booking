@@ -2,14 +2,21 @@ Fix map
     create icons
     get coordinates and places
 
+check commit logs for errors
+mobile rt map should not cover all
+ensure height of all calendars is min_height or win_height
+resource type page map centered based on resources
+refactor fill_element to be as ensure_height w/ ensurance
+
 Rules page
-resource type page
 Menu
 Fix HTTP 404/403/500 views
 Redirect to rules after edit profile
 Database versioning/migration ?
+Theme calendar
 Localize calendar date display etc
 Write translations
+?? Draw line from resource type name to image ??
 
 Release !
     Minify scripts and CSS

@@ -25,10 +25,10 @@
 	{% endblock %}
     </head>
     <body>
-    <div id="all-tops">
+    <div id="all_tops">
 	<div class="container row toprow">
 	    {% if base.language == "en" %}
-	    <div class="tencol topcol">
+	    <div class="ninecol topcol">
 	    <form name="setLangSwedish" action="/i18n/setlang/" method="POST">{% csrf_token %}
 		<input name="next" type="hidden" value="{{ request.get_full_path }}" />
 		<input type="hidden" name="language" value="sv" />
@@ -36,7 +36,7 @@
 	    </form>
 	    </div>
 	    {% else %}
-	    <div class="tencol topcol">
+	    <div class="ninecol topcol">
 	    <form name="setLangEnglish" action="/i18n/setlang/" method="POST">{% csrf_token %}
 		<input name="next" type="hidden" value="{{ request.get_full_path }}" />
 		<input type="hidden" name="language" value="en" />
@@ -50,11 +50,11 @@
 		    <a href='{% url profile request.user.username %}'>{{ request.user.username }}</a>
 		{% endif %}
 	    </div>
-	    <div class="onecol last logspace topcol">
+	    <div class="twocol last logspace topcol">
 		{% if request.user.is_authenticated %}
-		    <a href='{% url logout %}'>Logout!</a>
+		    <a href='{% url logout %}'>Logout</a>
 		{% else %}
-		    <a href='{% url login %}'>Login</a>
+		<a href='{% url login %}'>Login</a><br/>{% trans "with liu-id"%}
 		{% endif %}
 	    </div>
 	</div>

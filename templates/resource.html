@@ -26,6 +26,7 @@
 	};
 
 	calendarData = {
+	    view: 'agendaWeek',
 	    element_id: "resource_calendar",
 	    resource_id: {{ resource.id }},
 	    reservation_url: "{% url single_click_reservation %}",
@@ -71,7 +72,7 @@
     <div id="resource_calendar" class="eightcol"></div>
     <div class="fourcol last" id="resource_info_column">
 	<h1>{{ resource.name }}</h1>
-	<p class="hide-on-mobile">{{ resource.specific_information }}</p>
+	<p class="hide-on-phone">{{ resource.specific_information }}</p>
     </div>
 </div>
 {% endblock %}

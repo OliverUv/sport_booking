@@ -51,9 +51,9 @@ function initializeCalendar(calendarData) {
 	}
     }
 
-    $('#' + calendarData.element_id).fullCalendar({
+    calData = {
 	firstDay: 1,
-	defaultView: 'agendaWeek',
+	defaultView: calendarData.view,
 	editable: true,
 	disableResizing: true,
 	allDayDefault: false,
@@ -70,5 +70,9 @@ function initializeCalendar(calendarData) {
 	eventSources: [{url: calendarData.resource_event_url}],
 	dayClick: onDayClick,
 	eventClick: onEventClick
-    });
+    };
+    if (calendarData.hasOwnProperty('header')) {
+	calData.header = calendarData.header;
+    }
+    $('#' + calendarData.element_id).fullCalendar(calData);
 }

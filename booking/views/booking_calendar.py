@@ -6,15 +6,14 @@ from django.utils.translation import get_language
 from datetime import timedelta
 
 from booking.common import get_object_or_404
-from booking.models import Reservation
-from booking.models import Resource
+from booking.models import Reservation, ResourceType, Resource
 from booking.common import to_timestamp, from_timestamp, utc_now, build_request_context
 from booking.common import http_forbidden, http_badrequest, http_json_response
 
 
 def resource(request, resource_id=None):
     """
-    Shows today's bookings for the specified resource.
+    Shows bookings for the specified resource.
     """
     if resource_id is None:
         return http_badrequest(_('No resource id given.'))
@@ -26,6 +25,37 @@ def resource(request, resource_id=None):
         'resources': resources})
 
     return render_to_response('resource.html', context)
+
+
+def resource_type(request, resource_t_id=None):
+    """
+    Shows bookings for the specified resource type.
+    """
+    if resource_t_id is None:
+        return http_badrequest(_('No resource type id given.'))
+
+    resource_type = get_object_or_404(ResourceType, resource_t_id)
+    resources = list(resource_type.resources.all())
+    # Sort resources by longitude so that calendar columns correspond to
+    # the map shown above them.
+    resources = sorted(resources, key=lambda r: r.longitude)
+
+    # Calculate margins and calendar widths
+    resource_count = len(resources)
+    total_width = 100
+    width_sans_margins = 58.2
+    margin_width = total_width - width_sans_margins
+
+    cal_width = width_sans_margins / resource_count
+    cal_margin = margin_width / (resource_count - 1)
+
+    context = build_request_context(request, {
+        'cal_width': cal_width,
+        'cal_margin': cal_margin,
+        'resource_type': resource_type,
+        'resources': resources})
+
+    return render_to_response('resource_type.html', context)
 
 
 def add_reservation_annotations(user, reservations):

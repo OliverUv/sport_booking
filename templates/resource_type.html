@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block head %}
+<link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}cal/fullcalendar.css' />
+<link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}cal/fullcalendar.print.css' media='print' />
+<script type='text/javascript' src='{{ STATIC_URL }}cal/fullcalendar.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}cal/calendar_logic.js'></script>
+<script>
+    function initialize() {
+	<!-- $(window).bind("resize", function() {fill_element("rt_map_canvas");}); -->
+	<!-- fill_element("rt_map_canvas"); -->
+	ensure_height("rt_map_canvas", 0.634, always_true);
+
+	mapData = {
+	    element_id: "rt_map_canvas",
+	    latitude: default_latitude,
+	    longitude: default_longitude};
+	map = initializeMap(mapData);
+
+	{% for r in resources %}
+	calendarData = {
+	    view: 'agendaDay',
+	    header: false,
+	    element_id: "resource_calendar{{ r.id }}",
+	    resource_id: {{ r.id }},
+	    reservation_url: "{% url single_click_reservation %}",
+	    delete_url: "{% url delete_reservation %}",
+	    resource_event_url: "{% url reservations r.id %}"};
+	initializeCalendar(calendarData);
+
+	function on_win_resize{{ r.id }}() {
+	    var win_height = $(window).height();
+	    var top_pos = $("#resource_calendar{{ r.id }}").position().top;
+	    var new_height = win_height - top_pos;
+	    if (is_short()) {
+		new_height = win_height;
+	    }
+	    $("#resource_calendar").fullCalendar('option', 'height', new_height);
+	};
+
+	$(window).bind("resize", on_win_resize{{ r.id }});
+	on_win_resize{{ r.id }}();
+
+	addResourceIcon(map,
+	    {{ r.latitude }},
+	    {{ r.longitude }},
+	    "{{ r.image_url }}",
+	    "{{ r.name }}",
+	    "{% url resource r.id %}");
+	{% endfor %}
+    }
+
+    $(document).ready(initialize);
+</script>
+{% endblock %}
+
+{% block content %}
+<div id="rt_map_canvas"></div>
+<div class="container" id="resource_divider">
+    <div class="row"></div>
+</div>
+
+<div class="row show-on-phone">
+    <h1>{{ resource_type.name }}</h1>
+    <div class="twelevecol">
+	<ul>
+	    {% for r in resources %}
+	    <li><a href="{% url resource r.id %}">{{ r.name }}</a></li>
+	    {% endfor %}
+	</ul>
+    </div>
+</div>
+
+<div class="row hide-on-phone">
+{% for r in resources %}
+    {% if not forloop.last %}
+    <div class="rt_col" style="width: {{ cal_width }}%; margin-right: {{ cal_margin }}%;">
+    {% else %}
+    <div class="rt_col" style="width: {{ cal_width }}%; margin-right: 0;">
+    {% endif %}
+	<h2 class="centered">{{ r.name }}</h2>
+	<div id="resource_calendar{{ r.id }}" class="daycal"></div>
+    </div>
+{% endfor %}
+</div>
+{% endblock %}
