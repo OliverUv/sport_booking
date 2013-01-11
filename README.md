@@ -13,9 +13,8 @@ Requirements
 
 Setup
 -----
-Make appropriate changes in the file sportbooking_frryd/settings.py. The following must
-be set up:
-* DEBUG = false  (no need to change TEMPLATE_DEBUG)
+Make appropriate changes in the file sportbooking_frryd/settings.py. The following must be set up:
+* DEBUG = false (no need to change TEMPLATE_DEBUG)
 * ADMINS - should contain information for admins.
 * DATABASES - must contain appropriate settings for the server's database.
 * MEDIA_ROOT - should point to a place on the web server where media files (images) can be placed by django, and accessed by clients of the web server. Make sure the web server can read and write to this directory. This is used for images uploaded via the admin interface.
