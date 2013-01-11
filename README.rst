@@ -23,7 +23,7 @@ Make appropriate changes in the file sportbooking_frryd/settings.py. The followi
 * MEDIA_URL - the base of the address pointing to the media files, as seen from a client of the web server.
 * TEMPLATE_DIRS - must include a full absolute path to the template directory
 
-Ensure that the required database exists. Run ```python manage.py syncdb``` from the project root.
+Ensure that the required database exists. Run ``python manage.py syncdb`` from the project root.
 
 Internationalization
 ====================
