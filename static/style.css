@@ -63,6 +63,9 @@ h2 {
     float: left;
     width: 33%;
     display: block;
+    text-shadow: 
+	1px 1px 0 rgba(0, 168, 255, 1),
+	2px 2px 0 rgba(255, 0, 180, 0.5);
 
     padding-top: 0;
     padding-bottom: 0;
@@ -100,7 +103,10 @@ h2 {
     font-size:4em;
     margin-right:0.10em;
     line-height:90%;
-    text-shadow: 0.05em 0.05em #C0C0C0;
+    /* text-shadow: 0.05em 0.05em #C0C0C0; */
+    text-shadow: 
+	0.04em 0.04em 0 rgba(0, 168, 255, 0.6),
+	0.05em 0.05em 0 rgba(255, 0, 180, 0.45);
 }
 
 .start_divider {
@@ -271,4 +277,22 @@ h2 {
     width: 65%;
     margin-left: 20%;
     margin-right: 15%;
+}
+
+a {
+    font-weight: bold;
+    font-size: 115%;
+    color: #101010;
+    text-shadow: 
+	1px 1px 1px rgba(0, 168, 255, 0.6),
+	-1px -1px 1px rgba(255, 0, 180, 0.45);
+}
+
+a:link {
+}
+a:visited {
+}
+a:hover {
+}
+a:active {
 }
