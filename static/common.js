@@ -77,29 +77,3 @@ function always_true() {
 function is_short() {
     return $(window).height() < 350;
 }
-
-function fill_element(resize_element_id) {
-    var win_width = $(window).width();
-    if (is_mobile()) {
-	var win_height = $(window).height();
-	var top_pos = $("#" + resize_element_id).position().top;
-	$("#" + resize_element_id).height(win_height - top_pos);
-    } else {
-	$("#" + resize_element_id).height(500);
-    }
-};
-
-function set_percent_height(element_id, proportion) {
-    var win_height = $(window).height();
-    $("#" + element_id).height(win_height*proportion);
-}
-
-function ensure_height(element_id, proportion, conditional) {
-    $(window).bind("resize", function() {
-	if (conditional()) {
-	    set_percent_height(element_id, proportion);
-	}
-    });
-    if (conditional())
-	set_percent_height(element_id, proportion);
-}

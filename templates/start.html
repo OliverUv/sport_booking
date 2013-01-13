@@ -2,10 +2,26 @@
 {% load i18n %}
 
 {% block head %}
+<script type='text/javascript' src='{{ STATIC_URL }}jquery.textfill.js'></script>
 <script>
+    function set_sizes() {
+	var win_height = $(window).height();
+
+	if (is_mobile()) {
+	    var map_top_pos = $("#map_canvas").top
+	    $("#map_canvas").height(win_height - map_top_pos);
+	} else {
+	    $("#map_canvas").height(win_height * 0.634);
+	}
+
+	var bottom_top_pos = $("#start_bottom_row").position().top;
+	$("#start_bottom_row").height(win_height - bottom_top_pos);
+	$("#start_title_box").textfill({maxFontPixels: 0});
+    };
+
     function initialize(){
-	$(window).bind("resize", function() {fill_element("map_canvas");});
-	fill_element("map_canvas");
+	$(window).bind("resize", set_sizes);
+	set_sizes();
 
 	mapData = {
 	    element_id: "map_canvas",
@@ -31,5 +47,13 @@
 <div id="map_canvas"></div>
 <div class="hide-on-phone container start_divider">
     <div class="row"> </div>
+</div>
+<div id="start_bottom_row" class="hide-on-phone">
+    <div id="start_title_box">
+       <span id="start_title">FR Ryd</span>
+    </div>
+    <div id="start_text">
+	{% trans "This is the reservation system for FR Ryd's resources. We have football fields, tennis courts, a volleyball field and a pool table room that any Ryd resident can use. After you log in with your liu-id and fill in your profile details, click on the resources on the map above to get to their booking pages. Also click around in the menu to find more useful pages. Oh! And don't forget to "%} <a href="{% url rules %}">{% trans "read the rules!" %}</a>
+    </div>
 </div>
 {% endblock %}

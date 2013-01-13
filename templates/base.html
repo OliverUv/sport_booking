@@ -8,7 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}1140.css"></link>
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}style.css"></link>
 
-	<script type='text/javascript' src='{{ STATIC_URL }}jquery-1.8.1.min.js'></script>
+	<script type='text/javascript' src='{{ STATIC_URL }}jquery-1.8.1.js'></script>
 	<script type='text/javascript' src='{{ STATIC_URL }}jquery-ui-1.8.23.custom.min.js'></script>
 
 	<script type='text/javascript' src='{{ STATIC_URL }}noty/jquery.noty.js'></script>
@@ -25,7 +25,7 @@
 	{% endblock %}
     </head>
     <body>
-    <div id="all_tops">
+    <div id="top_rows">
 	<div class="container row toprow">
 	    {% if base.language == "en" %}
 	    <div class="ninecol topcol">
@@ -57,6 +57,8 @@
 		<a href='{% url login %}'>Login</a><br/>{% trans "with liu-id"%}
 		{% endif %}
 	    </div>
+	</div>
+	<div id="top_rows_bottom">
 	</div>
 
 	{% if request.user.is_authenticated %}

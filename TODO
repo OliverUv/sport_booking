@@ -2,11 +2,9 @@ Fix map
     create icons
     get coordinates and places
 
-check commit logs for errors
-mobile rt map should not cover all
-ensure height of all calendars is min_height or win_height
+vim shortcuts for git things & for shut window
+Start page layouting
 resource type page map centered based on resources
-refactor fill_element to be as ensure_height w/ ensurance
 
 Rules page
 Menu
@@ -30,3 +28,19 @@ Fix redirects around profile requirements instead of errors.
 Fix so we can see who caused a deletion of a preliminary reservation.
 Fix pre-fetching of images when all resources are pulled (right now 1 extra DB-query per resource)
 Translation of maps ui (?language=blalba)
+
+
+6 
+
+http://www.apricum.net/2012/03/25/free-photoshop-patterns-2/
+http://shoe-fly.deviantart.com/art/Pattern-set-2-61176365
+http://faded-ink.deviantart.com/art/Pretty-Plaids-001-30258497
+http://crazykira-resources.deviantart.com/art/Patterns-23-93684999
+http://luthienblack.deviantart.com/art/Green-Patterns-35866483
+
+Hi!
+
+I'm designing a reservation system for my residents association's football fields, volleyball fields, etc. I'm doing this work for free for them, and they are non-profit. I really like your patterns and would appreciate it if you emailed me written permission to use them as backgrounds for the website. Will of course email you a link so you can see how it turned out afterward if you want :)
+
+Warm regard,
+Oliver Uvman
