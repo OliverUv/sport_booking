@@ -2,7 +2,6 @@ html, body {
     height: 100%;
     margin: 0px;
     padding: 0px;
-    /* background-color: #F9F9F9; */
     background-image:url('images/bg.jpg');
 }
 
@@ -29,14 +28,7 @@ h2 {
 .menuspan {
     background-color: #101010;
     color: #AAAAAA;
-    height: 50px;
-}
-
-#menu_row {
-  display: block;
-  width: auto;
-  margin: 0 auto 0 auto;
-  overflow: hidden;
+    height: 20px;
 }
 
 .menu_image {
@@ -208,3 +200,11 @@ h2 {
     #resource_divider { margin-bottom: 0px; }
     #resource_info_column { padding-top: 0px; }
 }
+
+/* Menu things */
+#fl_menu{position:absolute; left:0px; z-index:9999; width:150px; height:20px;}
+#fl_menu .label{padding-left:20px; line-height:20px; font-size:14px; font-weight:bold; background:#101010; color:#fff; letter-spacing:7px;}
+#fl_menu .menu{display:none;}
+#fl_menu .menu .menu_item{display:block; background:#101010; color:#bbb; border-top:1px solid #333; padding:10px 20px; font-family:Arial, Helvetica, sans-serif; font-size:12px; text-decoration:none;}
+#fl_menu .menu a.menu_item:hover{background:#101010; color:#fff;}
+.content{width:520px; margin:20px auto;}
