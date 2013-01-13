@@ -83,14 +83,14 @@
 	<div class="hide-on-phone container menuspan">
 	    <div id="fl_menu">
 		<div class="menu_decorator"></div>
-		<div class="label">MENU &lt; &lt; </div>
+		<div class="label">&lt; &lt; MENU</div>
 		<div class="menu">
-		<a class="menu_item" href="{% url start %}"><div class="menu_item_text textfill"><span>Home</span></div></a>
-		<a class="menu_item" href="{% url rules %}"><div class="menu_item_text textfill"><span>Rules</span></div></a>
+		<a class="menu_item" href="{% url start %}"><div class="menu_item_text">Home</div></a>
+		<a class="menu_item" href="{% url rules %}"><div class="menu_item_text">Rules</div></a>
 		{% for r in base.resource_types %}
 		<a class="menu_item" href="{% url resource_type r.id %}">
 		    <img class="menu_item_image" src="{{ r.image.url }}" alt="{{ r.type_name }}s"/>
-		    <div class="menu_item_text textfill"><span>{{ r.type_name }}s</span></div>
+		    <div class="menu_item_text">{{ r.type_name }}s</div>
 		</a>
 		{% endfor %}
 		</div>
