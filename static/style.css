@@ -29,7 +29,25 @@ h2 {
 .menuspan {
     background-color: #101010;
     color: #AAAAAA;
-    min-height: 15px;
+    height: 50px;
+}
+
+#menu_row {
+  display: block;
+  width: auto;
+  margin: 0 auto 0 auto;
+  overflow: hidden;
+}
+
+.menu_image {
+    margin-right: 25px;
+    opacity: 0.5;
+    filter:alpha(opacity=50);
+}
+
+.menu_image:hover {
+    opacity: 0.8;
+    filter:alpha(opacity=80);
 }
 
 .toprow {

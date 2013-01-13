@@ -2,13 +2,14 @@ Fix map
     create icons
     get coordinates and places
 
-vim shortcuts for git things & for shut window
-Start page layouting
-resource type page map centered based on resources
 
-Rules page
-Menu
+Menu http://manos.malihu.gr/jquery-floating-menu/
+anchor stylings red/blue 3d glassy things
+put js at bottom of pages
+
 Fix HTTP 404/403/500 views
+resource type page map centered based on resources
+Rules page
 Redirect to rules after edit profile
 Database versioning/migration ?
 Theme calendar

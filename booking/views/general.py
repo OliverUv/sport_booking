@@ -2,12 +2,34 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.contrib.auth import logout as do_logout
 from django.http import HttpResponseRedirect
+from django.template import RequestContext
 from django.utils import translation
 from django.utils.translation import ugettext as _
+from django.utils.translation import get_language
 from django import forms
 
-from booking.models import Resource, UserProfile, User
-from booking.common import http_forbidden_page, build_request_context
+from booking.models import Resource, UserProfile, User, ResourceType
+
+
+def build_request_context(request, values):
+    if values is None:
+        values = {}
+    # Add resources that base.html depends on:
+    language = get_language()
+    resource_types = ResourceType.objects.language(language).all()
+
+    base = {
+        'resource_types': resource_types,
+        'language': language}
+    values['base'] = base
+    return RequestContext(request, values)
+
+
+def http_forbidden_page(request, message):
+    if message is None or message == '':
+        message = 'Request was made with bad parameters.'
+    context = build_request_context(request, {'message': message})
+    return render_to_response('403.html', context)
 
 
 class UserProfileForm(forms.ModelForm):

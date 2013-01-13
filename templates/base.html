@@ -1,3 +1,6 @@
+{% comment %}
+ vim:ft=htmldjango
+{% endcomment %}
 {% load i18n %}
 <!DOCTYPE html>
 <html>
@@ -58,8 +61,6 @@
 		{% endif %}
 	    </div>
 	</div>
-	<div id="top_rows_bottom">
-	</div>
 
 	{% if request.user.is_authenticated %}
 	    {% if not request.user.profile.completed %}
@@ -73,9 +74,15 @@
 	    {% endif %}
 	{% endif %}
 
+	<div id="top_rows_bottom">
+	</div>
+
 	<div class="hide-on-phone container menuspan">
-	    <div class="row">
-		desktop menu
+	    <div id="menu_row">
+		MENU
+		{% for r in base.resource_types %}
+		<a href="{% url resource_type r.id %}"><img class="menu_image" src="{{ r.image.url }}" alt="{{ r.name }}"></a>
+		{% endfor %}
 	    </div>
 	</div>
 	<div class="show-on-phone container menuspan">

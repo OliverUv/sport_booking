@@ -7,8 +7,9 @@ from datetime import timedelta
 
 from booking.common import get_object_or_404
 from booking.models import Reservation, ResourceType, Resource
-from booking.common import to_timestamp, from_timestamp, utc_now, build_request_context
+from booking.common import to_timestamp, from_timestamp, utc_now
 from booking.common import http_forbidden, http_badrequest, http_json_response
+from booking.views.general import build_request_context
 
 
 def resource(request, resource_id=None):
