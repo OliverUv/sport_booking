@@ -10,6 +10,8 @@
 	var bottom_divider_height = 30;
 	var bottom_height = bottom_row_height + bottom_divider_height;
 	$("#start_divider").height = 30;
+	$("#start_divider").show();
+	$("#start_bottom_row").show();
 
 	var map_top_pos = $("#map_canvas").position().top;
 	if (is_mobile()) {
@@ -18,6 +20,7 @@
 	    var map_height = win_height - (map_top_pos + bottom_height);
 	    if (map_height <= 0) {
 		$("#start_divider").hide();
+		$("#start_bottom_row").hide();
 		$("#map_canvas").height(win_height - map_top_pos);
 	    } else {
 		$("#map_canvas").height(map_height);
