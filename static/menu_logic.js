@@ -17,6 +17,8 @@ function initializeMenu() {
 	function(){ //mouse over
 	    $fl_menu_label.fadeTo($menu_fade_speed, 1);
 	    $fl_menu_menu.fadeIn($menu_fade_speed);
+	    fill_items = $(".textfill");
+	    fill_items.textfill({maxFontPixels: 20});
 	},
 	function(){ //mouse out
 	    $fl_menu_label.fadeTo($menu_fade_speed, $closed_menu_opacity);

@@ -15,6 +15,8 @@
 	<script type='text/javascript' src='{{ STATIC_URL }}jquery-ui-1.8.23.custom.min.js'></script>
 	<script type="text/javascript" src="{{ STATIC_URL }}jquery.easing.1.3.js"></script>
 
+	<script type='text/javascript' src='{{ STATIC_URL }}jquery.textfill.js'></script>
+
 	<script type='text/javascript' src='{{ STATIC_URL }}noty/jquery.noty.js'></script>
 	<script type='text/javascript' src='{{ STATIC_URL }}noty/top.js'></script>
 	<script type='text/javascript' src='{{ STATIC_URL }}noty/center.js'></script>
@@ -83,12 +85,12 @@
 		<div class="menu_decorator"></div>
 		<div class="label">MENU &lt; &lt; </div>
 		<div class="menu">
-		<a class="menu_item" href="{% url start %}">Home</a>
-		<a class="menu_item" href="{% url rules %}">Rules</a>
+		<a class="menu_item" href="{% url start %}"><div class="menu_item_text textfill"><span>Home</span></div></a>
+		<a class="menu_item" href="{% url rules %}"><div class="menu_item_text textfill"><span>Rules</span></div></a>
 		{% for r in base.resource_types %}
 		<a class="menu_item" href="{% url resource_type r.id %}">
 		    <img class="menu_item_image" src="{{ r.image.url }}" alt="{{ r.type_name }}s"/>
-		    <div class="menu_item_text">{{ r.type_name }}s</div>
+		    <div class="menu_item_text textfill"><span>{{ r.type_name }}s</span></div>
 		</a>
 		{% endfor %}
 		</div>

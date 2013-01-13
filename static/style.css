@@ -231,6 +231,7 @@ h2 {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     text-decoration: none;
+    text-align: right;
 }
 .content{
     width: 520px;
@@ -261,4 +262,11 @@ h2 {
     top: 0px;
     width: 10px;
     background: #202020;
+}
+#fl_menu .menu_item_text {
+    position: relative;
+    height: 100%;
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
 }
