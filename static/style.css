@@ -31,17 +31,6 @@ h2 {
     height: 20px;
 }
 
-.menu_image {
-    margin-right: 25px;
-    opacity: 0.5;
-    filter:alpha(opacity=50);
-}
-
-.menu_image:hover {
-    opacity: 0.8;
-    filter:alpha(opacity=80);
-}
-
 .toprow {
     min-height: 30px;
     padding-top: 6px;
@@ -202,9 +191,74 @@ h2 {
 }
 
 /* Menu things */
-#fl_menu{position:absolute; left:0px; z-index:9999; width:150px; height:20px;}
-#fl_menu .label{padding-left:20px; line-height:20px; font-size:14px; font-weight:bold; background:#101010; color:#fff; letter-spacing:7px;}
-#fl_menu .menu{display:none;}
-#fl_menu .menu .menu_item{display:block; background:#101010; color:#bbb; border-top:1px solid #333; padding:10px 20px; font-family:Arial, Helvetica, sans-serif; font-size:12px; text-decoration:none;}
-#fl_menu .menu a.menu_item:hover{background:#101010; color:#fff;}
-.content{width:520px; margin:20px auto;}
+#fl_menu{
+    position: absolute;
+    left: 0px;
+    z-index: 9999;
+    width: 300px;
+    height: 20px;
+}
+#fl_menu_hover{
+    position: absolute;
+    left: 0px;
+    z-index: 9997;
+    /* opacity: 0; */
+    /* filter: alpha(opacity=0); */
+    width: 300px;
+    height: 200px;
+}
+#fl_menu .label{
+    z-index: 9998;
+    padding-left: 20px; 
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 7px;
+}
+#fl_menu .menu {
+    z-index: 9998;
+    display: none;
+}
+#fl_menu .menu .menu_item{
+    display: block;
+    background: #101010;
+    color: #bbb;
+    border-top: 1px solid #202020;
+    border-left: 10px solid #202020;
+    padding: 10px 20px;
+    height: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    text-decoration: none;
+}
+.content{
+    width: 520px;
+    margin: 20px auto;
+}
+#fl_menu .menu .menu_item img {
+    margin-right: 25px;
+    opacity:  0.5;
+    filter: alpha(opacity=50);
+}
+#fl_menu .menu .menu_item:hover img {
+    opacity: 0.86;
+    filter: alpha(opacity=86);
+}
+#fl_menu .menu a.menu_item:hover {
+    background: #101010;
+    color: #fff;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+}
+#fl_menu .menu_item_image {
+    float: left;
+    overflow: hidden;
+}
+#fl_menu .menu_decorator {
+    position: absolute;
+    height: 100%;
+    top: 0px;
+    width: 10px;
+    background: #202020;
+}

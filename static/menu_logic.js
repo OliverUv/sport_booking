@@ -5,9 +5,11 @@ $menu_fade_speed=500; //milliseconds
 $closed_menu_opacity=0.75;
 
 //cache vars
+$fl_menu_hover=$("#fl_menu_hover");
 $fl_menu=$("#fl_menu");
 $fl_menu_menu=$("#fl_menu .menu");
 $fl_menu_label=$("#fl_menu .label");
+$fl_menu_items=$(".menu_item");
 
 function initializeMenu() {
     menuPosition=$('#fl_menu').position().top;
