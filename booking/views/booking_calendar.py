@@ -91,9 +91,9 @@ def get_reservations(request, resource_id):
     # see https://docs.djangoproject.com/en/dev/ref/models/querysets/#range
     end_datetime = from_timestamp(end_time) + timedelta(days=1)
     reservations = Reservation.objects.filter(
-            deleted=False,
-            resource=resource_id,
-            start__range=(start_datetime, end_datetime))
+        deleted=False,
+        resource=resource_id,
+        start__range=(start_datetime, end_datetime))
     reservations = filter(lambda r: r.valid_user(), reservations)
     add_reservation_annotations(request.user, reservations)
 
@@ -113,7 +113,7 @@ def reservations_to_json_struct(reservations):
 
 
 def do_make_reservation(start, end, resource_id, user):
-    if user.profile.completed() == False:
+    if not user.profile.completed():
         return http_forbidden(_('You must complete your profile before making reservations.'))
     if user.profile.is_banned:
         return http_forbidden(_('You are banned. Stated reason: ') + user.profile.ban_reason + _(' Contact FRRyd for further information.'))
@@ -131,27 +131,27 @@ def do_make_reservation(start, end, resource_id, user):
         return http_forbidden(_('Start time must be before end time.'))
 
     outstanding_reservations = Reservation.objects.filter(
-            deleted=False,
-            user=user,
-            end__gt=now,
-            resource=resource_id).count()
+        deleted=False,
+        user=user,
+        end__gt=now,
+        resource=resource_id).count()
 
     if outstanding_reservations > 1:
         return http_forbidden(_('You may only make two reservations per resource.'))
 
     possibly_concurrent_reservations = Reservation.objects.filter(
-            deleted=False,
-            user=user,
-            end__gt=now)
+        deleted=False,
+        user=user,
+        end__gt=now)
     possibly_concurrent_reservations = filter(lambda r: r.valid_user(), possibly_concurrent_reservations)
     concurrent_reservations = filter(lambda r: r.would_overlap(start, end), possibly_concurrent_reservations)
     if len(concurrent_reservations) > 0:
         return http_forbidden(_('You may not reserve two resources at the same time.'))
 
     possibly_overlapping_reservations = Reservation.objects.filter(
-            deleted=False,
-            end__gt=now,
-            resource=resource_id)
+        deleted=False,
+        end__gt=now,
+        resource=resource_id)
     possibly_overlapping_reservations = filter(lambda r: r.valid_user(), possibly_overlapping_reservations)
 
     # Check if solid reservations prevent this one to be made
