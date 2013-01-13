@@ -6,23 +6,31 @@
 <script>
     function set_sizes() {
 	var win_height = $(window).height();
+	var bottom_row_height = 200;
+	var bottom_divider_height = 30;
+	var bottom_height = bottom_row_height + bottom_divider_height;
+	$("#start_divider").height = 30;
 
+	var map_top_pos = $("#map_canvas").position().top;
 	if (is_mobile()) {
-	    var map_top_pos = $("#map_canvas").top
 	    $("#map_canvas").height(win_height - map_top_pos);
 	} else {
-	    $("#map_canvas").height(win_height * 0.634);
-	}
+	    var map_height = win_height - (map_top_pos + bottom_height);
+	    if (map_height <= 0) {
+		$("#start_divider").hide();
+		$("#map_canvas").height(win_height - map_top_pos);
+	    } else {
+		$("#map_canvas").height(map_height);
+	    }
 
-	var bottom_top_pos = $("#start_bottom_row").position().top;
-	$("#start_bottom_row").height(win_height - bottom_top_pos);
-	$("#start_title_box").textfill({maxFontPixels: 0});
+	    $("#start_title_box").textfill({maxFontPixels: 0});
+
+	    var start_text_height = $("#start_text").height();
+	    $("#start_text").css("margin-top", (bottom_row_height - start_text_height) * 0.47);
+	}
     };
 
     function initialize(){
-	$(window).bind("resize", set_sizes);
-	set_sizes();
-
 	mapData = {
 	    element_id: "map_canvas",
 	    latitude: default_latitude,
@@ -37,6 +45,9 @@
 	    "{{ r.name }}",
 	    "{% url resource r.id %}");
 	{% endfor %}
+
+	$(window).bind("resize", set_sizes);
+	set_sizes();
     }
 
     $(document).ready(initialize);
@@ -52,8 +63,10 @@
     <div id="start_title_box">
        <span id="start_title">FR Ryd</span>
     </div>
-    <div id="start_text">
-	{% trans "This is the reservation system for FR Ryd's resources. We have football fields, tennis courts, a volleyball field and a pool table room that any Ryd resident can use. After you log in with your liu-id and fill in your profile details, click on the resources on the map above to get to their booking pages. Also click around in the menu to find more useful pages. Oh! And don't forget to "%} <a href="{% url rules %}">{% trans "read the rules!" %}</a>
+    <div id="start_text_box">
+	<div id="start_text">
+	{% trans "This is the reservation system for FR Ryd's resources. We have football fields, tennis courts, a volleyball field and a pool table room that any Ryd resident can use. After you log in with your liu-id and fill in your profile details, click on the resources on the map above to get to their booking pages. Also click around in the menu to find more useful pages. Oh! And don't forget to " %} <a href="{% url rules %}">{% trans "read the rules!" %}</a>
+	</div>
     </div>
 </div>
 {% endblock %}
