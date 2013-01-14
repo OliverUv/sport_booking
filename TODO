@@ -5,20 +5,24 @@ Fix map
 
 anchor stylings red/blue 3d glassy things
 style profile page so it can be used
-put js at bottom of pages
 mobile menu
-
-Fix HTTP 404/403/500 views
-resource type page map centered based on resources
+Fix Swedish numbers having commas!
 Rules page
-Redirect to rules after edit profile
+Fix HTTP 404/403/500 views
+Fixa bara svenska & engelska i Admin vy
+Write translations
+Fix pluralization of resource types
+
 Database versioning/migration ?
+put js at bottom of pages
+resource type page map centered based on resources
+Redirect to rules after edit profile
 Theme calendar
 Localize calendar date display etc
-Write translations
 ?? Draw line from resource type name to image ??
 
 Release !
+    Make own graphics
     Minify scripts and CSS
     Edit Allowed referers for google maps api: https://code.google.com/apis/console/
 
@@ -31,13 +35,10 @@ Fix so we can see who caused a deletion of a preliminary reservation.
 Fix pre-fetching of images when all resources are pulled (right now 1 extra DB-query per resource)
 Translation of maps ui (?language=blalba)
 
-
-6 
-
 http://www.apricum.net/2012/03/25/free-photoshop-patterns-2/
 http://shoe-fly.deviantart.com/art/Pattern-set-2-61176365
 http://faded-ink.deviantart.com/art/Pretty-Plaids-001-30258497
-http://crazykira-resources.deviantart.com/art/Patterns-23-93684999
+http://crazykira-resources.deviantart.com/art/Patterns-23-93684999 << 6th
 http://luthienblack.deviantart.com/art/Green-Patterns-35866483
 
 Hi!
