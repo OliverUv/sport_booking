@@ -29,6 +29,15 @@
 
 	    var start_text_height = $("#start_text").height();
 	    $("#start_text").css("margin-top", (bottom_row_height - start_text_height) * 0.47);
+
+	    var start_title_height = $("#start_title").height();
+	    var adjustment = 1680 - $(window).width();
+	    if (adjustment > 0) {
+		adjustment = adjustment / 1680;
+	    } else {
+		adjustment = 0;
+	    }
+	    $("#start_title_box").css("padding-top", (bottom_row_height - start_title_height) * 0.50 * adjustment);
 	}
     };
 
