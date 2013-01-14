@@ -29,9 +29,13 @@
 
 	    $("#start_title_box").textfill({maxFontPixels: 0});
 
+	    // Center start text horizontally.
 	    var start_text_height = $("#start_text").height();
 	    $("#start_text").css("margin-top", (bottom_row_height - start_text_height) * 0.47);
 
+	    // The title gets weirdly centered because the larger the font is,
+	    // the larger its empty area above the text (but within text bounding box)
+	    // gets. This adjusts for that, while also centering the text horizontally.
 	    var start_title_height = $("#start_title").height();
 	    var adjustment = 1680 - $(window).width();
 	    if (adjustment > 0) {
