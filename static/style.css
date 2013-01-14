@@ -289,10 +289,24 @@ a {
 }
 
 a:link {
+    color: #101010;
+    text-shadow: 
+	1px 1px 1px rgba(0, 168, 255, 0.6),
+	-1px -1px 1px rgba(255, 0, 180, 0.45);
 }
 a:visited {
+    color: #100010;
+    text-shadow: 
+	1px 1px 1px rgba(0, 168, 255, 0.40),
+	-1px -1px 1px rgba(255, 0, 180, 0.60);
 }
 a:hover {
+    text-shadow: 
+	1px 1px 1px rgba(0, 168, 255, 0.6),
+	-1px -1px 1px rgba(255, 0, 180, 0.45);
 }
 a:active {
+    text-shadow: 
+	1px 1px 1px rgba(0, 168, 255, 0.6),
+	-1px -1px 1px rgba(255, 0, 180, 0.45);
 }
