@@ -7,7 +7,6 @@ Rules page
 Fix HTTP 404/403/500 views
 Fixa bara svenska & engelska i Admin vy
 Write translations
-Fix pluralization of resource types
 
 Database versioning/migration ?
 put js at bottom of pages
@@ -30,6 +29,7 @@ Fix redirects around profile requirements instead of errors.
 Fix so we can see who caused a deletion of a preliminary reservation.
 Fix pre-fetching of images when all resources are pulled (right now 1 extra DB-query per resource)
 Translation of maps ui (?language=blalba)
+Local flavourize https://github.com/django/django-localflavor-se
 
 http://www.apricum.net/2012/03/25/free-photoshop-patterns-2/
 http://shoe-fly.deviantart.com/art/Pattern-set-2-61176365

@@ -68,14 +68,14 @@ def create_resource(resource_type, longitude, latitude, name, info, swe_name, sw
 
 def add_initial_data(debug):
     fbf = create_resource_type('resource_type_images/football.jpg',
-            'Football field',
+            'Football fields',
             'On the football fields you can play as much football as you want. They truly are magical things.',
-            'Fotbollsplan',
+            'Fotbollsplaner',
             'som man spelar fotboll på :)')
     tns = create_resource_type('resource_type_images/tennisball.jpg',
-            'Tennis court',
+            'Tennis courts',
             'Where tennis can be played.',
-            'Tennisplan',
+            'Tennisplaner',
             'Där man spelar lite tennis ibland.')
 
     fa = create_resource(fbf, 15.56774, 58.410758, 'Paper', 'a place', 'Papper', 'en plats')

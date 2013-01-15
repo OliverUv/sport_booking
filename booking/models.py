@@ -56,8 +56,8 @@ class Remark(models.Model):
 class ResourceType(TranslatableModel):
     image = models.ImageField(upload_to='resource_type_images', blank=True)
     translations = TranslatedFields(
-            type_name=models.CharField(max_length=255),
-            general_information=models.TextField(blank=True))
+        type_name=models.CharField(max_length=255, help_text='Pluralized form, e.g. "Football fields".'),
+        general_information=models.TextField(blank=True))
 
     def __unicode__(self):
         return self.safe_translation_getter('type_name', 'ResourceType: %s' % self.pk)
@@ -68,8 +68,8 @@ class Resource(TranslatableModel):
     longitude = models.DecimalField(max_digits=10, decimal_places=6)
     latitude = models.DecimalField(max_digits=10, decimal_places=6)
     translations = TranslatedFields(
-            name=models.CharField(max_length=255),
-            specific_information=models.TextField())
+        name=models.CharField(max_length=255),
+        specific_information=models.TextField())
 
     def __unicode__(self):
         return self.safe_translation_getter('name', 'Resource: %s' % self.pk)
@@ -91,17 +91,17 @@ class Reservation(models.Model):
         return '%s booking' % [self.user.username]
 
     def is_solid(self):
-        if self.deleted == True:
+        if self.deleted:
             return False
         if self.start < utc_now():
             return True
 
         conflicting_reservations = Reservation.objects.filter(
-                user=self.user,
-                deleted=False,
-                resource=self.resource,
-                start__lt=self.start,
-                start__gt=utc_now())
+            user=self.user,
+            deleted=False,
+            resource=self.resource,
+            start__lt=self.start,
+            start__gt=utc_now())
         return conflicting_reservations.count() == 0
 
     def delete_and_report(self):
