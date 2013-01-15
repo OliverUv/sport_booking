@@ -120,8 +120,15 @@ h2 {
   min-height: 1px;
 }
 
+.rt_cal_container {
+    padding: 0 1% 0 1%;
+}
+
 .fc-content {
     background-color: #FFFFFF;
+    box-shadow:
+	4px 4px 0px rgba(0, 168, 255, 0.2),
+	8px 8px 0px rgba(255, 0, 180, 0.1);
 }
 
 .daycal {
