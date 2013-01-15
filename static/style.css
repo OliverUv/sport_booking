@@ -5,21 +5,6 @@ html, body {
     background-image:url('images/bg.jpg');
 }
 
-/* Shadow on the bottom of the page */
-body:before 
-{
-    content: "";
-    position: fixed;
-    bottom: -10px;
-    left: 0;
-    width: 100%;
-    height: 10px;
-    z-index: 0;
-    -webkit-box-shadow: 0px -7px 50px rgba(0,0,0,.8);
-    -moz-box-shadow: 0px -7px 50px rgba(0,0,0,.8);
-    box-shadow: 0px -7px 50px rgba(0,0,0,.8);
-}
-
 h1 {
     margin-top: 0px;
 }
@@ -48,8 +33,8 @@ h2 {
 
 .toprow {
     font-size: 110%;
-    min-height: 30px;
-    padding-top: 6px;
+    height: 30px;
+    line-height: 30px;
 }
 
 .logspace {
@@ -236,6 +221,15 @@ h2 {
 	float: left;
 	width: 33%;
     }
+    .toprow {
+	font-size: 120%;
+	height: 50px;
+	line-height: 50px;
+	padding-top: 0;
+    }
+    .menuspan {
+	height: 50px;
+    }
 }
 
 /* Short screens */
@@ -252,7 +246,7 @@ h2 {
 }
 
 /* Menu things */
-#fl_menu{
+#fl_menu, #mb_menu {
     position: absolute;
     left: 0px;
     z-index: 9999;
@@ -260,14 +254,14 @@ h2 {
     height: 20px;
     text-align: right;
 }
-#fl_menu_hover{
+#fl_menu_hover {
     position: absolute;
     left: 0px;
     z-index: 9999;
     width: 300px;
     height: 120px;
 }
-#fl_menu .label{
+#fl_menu .label, #mb_menu .label {
     z-index: 9999;
     padding-left: 20px; 
     line-height: 20px;
@@ -281,7 +275,7 @@ h2 {
     z-index: 9999;
     display: none;
 }
-#fl_menu .menu .menu_item{
+#fl_menu .menu .menu_item, #mb_menu .menu .menu_item {
     display: block;
     background: #101010;
     color: #bbb;
@@ -289,47 +283,69 @@ h2 {
     border-left: 10px solid #202020;
     padding: 10px 20px;
     height: 50px;
-    /* font-family: Arial, Helvetica, sans-serif; */
-    font-size: 12px;
+    font-size: 13px;
     text-decoration: none;
 }
-.content{
-    width: 520px;
-    margin: 20px auto;
-}
-#fl_menu .menu .menu_item img {
+#fl_menu .menu .menu_item img, #mb_menu .menu .menu_item img {
     margin-right: 25px;
     opacity:  0.5;
     filter: alpha(opacity=50);
 }
-#fl_menu .menu .menu_item:hover img {
+#fl_menu .menu .menu_item:hover img, #mb_menu .menu .menu_item:hover img {
     opacity: 0.86;
     filter: alpha(opacity=86);
 }
-#fl_menu .menu a.menu_item:hover {
+#fl_menu .menu a.menu_item:hover, #mb_menu .menu a.menu_item:hover {
     background: #101010;
     color: #fff;
     opacity: 0.8;
     filter: alpha(opacity=80);
 }
-#fl_menu .menu_item_image {
+#fl_menu .menu_item_image, #mb_menu .menu_item_image {
     float: left;
     overflow: hidden;
 }
-#fl_menu .menu_decorator {
+#fl_menu .menu_decorator, #mb_menu .menu_decorator {
     position: absolute;
     height: 100%;
     top: 0px;
     width: 10px;
     background: #202020;
 }
-#fl_menu .menu_item_text {
+#fl_menu .menu_item_text, #mb_menu .menu_item_text {
     position: relative;
     font-size: 1.5em;
     height: 100%;
     width: 65%;
     margin-left: 20%;
     margin-right: 15%;
+}
+
+#mb_menu {
+    width: 100%;
+    height: 50px;
+    padding: 0;
+}
+
+#mb_menu .menu {
+    display: none;
+}
+
+#mb_menu .label {
+    font-size: 180%;
+    cursor: hand;
+    cursor: pointer;
+    text-align: center;
+    height: 50px;
+    padding: 0;
+    line-height: 50px;
+    margin: 0;
+}
+
+#mb_menu .menu .menu_item {
+    font-size: 180%;
+    border-top: 1px solid #202020;
+    border-left: none;
 }
 
 a {
@@ -363,17 +379,16 @@ a:active {
 	-1px -1px 1px rgba(255, 100, 180, 0.45);
 }
 
-#fl_menu a, #fl_menu a:link, #fl_menu a:visited {
+#fl_menu a, #fl_menu a:link, #fl_menu a:visited, #mb_menu a, #mb_menu a:link, #mb_menu a:visited {
     font-weight: bold;
-    /* color: #fff; */
     font-size: 130%;
     text-shadow: none;
 }
-#fl_menu a:hover {
+#fl_menu a:hover, #mb_menu a:hover {
     color: #fff;
     text-shadow: none;
 }
-#fl_menu a:active {
+#fl_menu a:active, #mb_menu a:active {
     color: #fff;
     text-shadow: 
 	1px 1px 1px rgba(0, 168, 255, 0.6),

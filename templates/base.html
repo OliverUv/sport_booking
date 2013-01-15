@@ -98,8 +98,18 @@
 	    </div>
 	</div>
 	<div class="show-on-phone container menuspan">
-	    <div class="row">
-		phone menu
+	    <div id="mb_menu">
+		<div class="label" onclick="toggle_mb_menu();">MENU</div>
+		<div class="menu">
+		<a class="menu_item" href="{% url start %}"><div class="menu_item_text">Home</div></a>
+		<a class="menu_item" href="{% url rules %}"><div class="menu_item_text">Rules</div></a>
+		{% for r in base.resource_types %}
+		<a class="menu_item" href="{% url resource_type r.id %}">
+		    <img class="menu_item_image" src="{{ r.image.url }}" alt="{{ r.type_name }}s"/>
+		    <div class="menu_item_text">{{ r.type_name }}s</div>
+		</a>
+		{% endfor %}
+		</div>
 	    </div>
 	</div>
     </div>

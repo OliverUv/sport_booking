@@ -11,6 +11,9 @@ $fl_menu_menu=$("#fl_menu .menu");
 $fl_menu_label=$("#fl_menu .label");
 $fl_menu_items=$(".menu_item");
 
+$mb_menu_menu=$("#mb_menu .menu");
+$mb_menu_label=$("#mb_menu .label");
+
 function initializeMenu() {
     menuPosition=$('#fl_menu').position().top;
     var in_menu = false;
@@ -55,6 +58,19 @@ function initializeMenu() {
 	    timeout_id = id;
 	}
     );
+}
+
+var mb_menu_visible = false;
+function toggle_mb_menu() {
+    if (mb_menu_visible) {
+	$mb_menu_label.fadeTo($menu_fade_speed, $closed_menu_opacity);
+	$mb_menu_menu.fadeOut($menu_fade_speed);
+	mb_menu_visible = false;
+    } else {
+	$mb_menu_menu.fadeIn($menu_fade_speed);
+	$mb_menu_label.fadeTo($menu_fade_speed, 1);
+	mb_menu_visible = true;
+    }
 }
 
 $(window).load(initializeMenu);
