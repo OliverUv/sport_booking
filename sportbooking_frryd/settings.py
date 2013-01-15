@@ -9,11 +9,11 @@ CALENDAR_COLORS = {
     'background': {
         'own': {'solid': '#1e90ff', 'preliminary': '#afeeee'},
         'other': {'solid': '#b22222', 'preliminary': '#f4a460'},
-        },
+    },
     'text':  {
         'own': {'solid': '#ffffff', 'preliminary': '#000000'},
         'other': {'solid': '#ffffff', 'preliminary': '#000000'},
-        }}
+    }}
 
 
 DEBUG = True
@@ -62,7 +62,7 @@ USE_I18N = True
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
-USE_L10N = True
+USE_L10N = False
 
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
