@@ -1,7 +1,10 @@
 function initializeMap(data) {
+    var zoom_level = 16;
+    if (is_mobile())
+	zoom_level = 15;
     var mapOptions = {
 	center: new google.maps.LatLng(data.latitude, data.longitude),
-	zoom: 16,
+	zoom: zoom_level,
 	mapTypeId: google.maps.MapTypeId.SATELLITE,
 	disableDefaultUI: true,
 	panControl: false,

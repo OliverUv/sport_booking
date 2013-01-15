@@ -9,8 +9,10 @@
 	var bottom_divider_height = 30;
 	var bottom_height = bottom_row_height + bottom_divider_height;
 	$("#start_divider").height = 30;
-	$("#start_divider").show();
-	$("#start_bottom_row").show();
+	if (is_not_mobile()) {
+	    $("#start_divider").show();
+	    $("#start_bottom_row").show();
+	}
 
 	var map_top_pos = $("#map_canvas").position().top;
 	if (is_mobile()) {
