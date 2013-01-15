@@ -91,7 +91,7 @@
 		{% for r in base.resource_types %}
 		<a class="menu_item" href="{% url resource_type r.id %}">
 		    <img class="menu_item_image" src="{{ r.image.url }}" alt="{{ r.type_name }}s"/>
-		    <div class="menu_item_text">{{ r.type_name }}s</div>
+		    <div class="menu_item_text">{{ r.type_name }}</div>
 		</a>
 		{% endfor %}
 		</div>
@@ -106,7 +106,7 @@
 		{% for r in base.resource_types %}
 		<a class="menu_item" href="{% url resource_type r.id %}">
 		    <img class="menu_item_image" src="{{ r.image.url }}" alt="{{ r.type_name }}s"/>
-		    <div class="menu_item_text">{{ r.type_name }}s</div>
+		    <div class="menu_item_text">{{ r.type_name }}</div>
 		</a>
 		{% endfor %}
 		</div>
