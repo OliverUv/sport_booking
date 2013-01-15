@@ -2,9 +2,11 @@
 {% load i18n %}
 
 {% block content %}
-Your profile, bum!
-<form action="{{ request.path_info }}" method="post">{% csrf_token %}
-{{ form.as_p }}
-<input type="submit" value="Submit" />
-</form>
+<div id="profile_box">
+    <div id="profile_background"></div>
+    <form id="profile_form" action="{{ request.path_info }}" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+    </form>
+</div>
 {% endblock %}

@@ -175,6 +175,45 @@ h2 {
     padding-top: 40px;
 }
 
+#profile_box {
+    width: 200px;
+    height: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    position: relative;
+    border-top-width: 4px;
+    border-bottom-width: 4px;
+    border-top-style: double;
+    border-bottom-style: double;
+    border-top-color: #E1A60A;
+    border-bottom-color: #E1A60A;
+    padding: 8px 0px;
+    box-shadow:
+	1px 2px 4px rgba(0, 168, 255, 0.1),
+	2px 3px 4px rgba(255, 0, 180, 0.1);
+}
+
+#profile_background {
+    background: #FFFFFF;
+    opacity: 0.6;
+    filter: alpha(opacity=40);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+#profile_form {
+    position: relative;
+    width: 150px;
+    height: 300px;
+    padding-top: 50px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 /* Mobile */
 @media handheld, only screen and (max-width: 767px) { 
     .topcol {
