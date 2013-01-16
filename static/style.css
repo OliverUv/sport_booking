@@ -181,12 +181,12 @@ h2 {
     padding-top: 40px;
 }
 
-#profile_box {
+#profile_box, #rule_box {
     width: 200px;
     height: 400px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 7%;
+    margin-top: 4%;
     position: relative;
     border-top-width: 4px;
     border-bottom-width: 4px;
@@ -200,7 +200,7 @@ h2 {
 	2px 3px 4px rgba(255, 0, 180, 0.1);
 }
 
-#profile_background {
+#profile_background, #rule_background {
     background: #FFFFFF;
     opacity: 0.6;
     filter: alpha(opacity=40);
@@ -218,6 +218,17 @@ h2 {
     padding-top: 50px;
     margin-right: auto;
     margin-left: auto;
+}
+
+#rule_box {
+    position: relative;
+    width: 50%;
+    height: auto;
+}
+
+#rule_content {
+    position: relative;
+    padding: 20px 20px 0 20px;
 }
 
 /* Mobile */

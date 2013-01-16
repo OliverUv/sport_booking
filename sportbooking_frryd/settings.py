@@ -167,7 +167,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'hvad',  # Translation of dynamic content
-    'booking'  # Booking system
+    'booking',  # Booking system
+    'django.contrib.markup' # markup processing for the rules page
 )
 
 LOCALE_PATHS = ('/home/oliver/sportbooking_frryd/conf/locale')
@@ -211,3 +212,5 @@ LOGGING = {
 }
 
 AUTH_PROFILE_MODULE = 'booking.UserProfile'
+
+RULE_FILE = '/home/oliver/sportbooking_frryd/media/rules'

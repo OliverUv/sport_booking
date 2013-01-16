@@ -12,6 +12,7 @@ Requirements
 * `django-hvad <https://github.com/KristianOellegaard/django-hvad>`__
 * `django-cas <https://bitbucket.org/cpcc/django-cas/overview>`__
 * `Python Imaging Library <http://www.pythonware.com/products/pil>`__
+* `python docutils <http://docutils.sf.net>`__
 
 Setup
 =====
@@ -24,6 +25,7 @@ Make appropriate changes in the file sportbooking_frryd/settings.py. The followi
 * MEDIA_ROOT - should point to a place on the web server where media files (images) can be placed by django, and accessed by clients of the web server. Make sure the web server can read and write to this directory. This is used for images uploaded via the admin interface.
 * MEDIA_URL - the base of the address pointing to the media files, as seen from a client of the web server.
 * TEMPLATE_DIRS - must include a full absolute path to the template directory
+* RULE_FILE - must contain a partial path to the rule files. At the end of this path, '-LN.rst' will be added, where LN is a language code.
 
 Ensure that the required database exists. Run ``python manage.py syncdb`` from the project root.
 

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load custom_filters %}
+
+{% block head %}
+<style type="text/css" media="screen">
+    ol {
+		counter-reset:li; /* Initiate a counter */
+		margin-left:0; /* Remove the default left margin */
+		padding-left:0; /* Remove the default left padding */
+	}
+	ol > li {
+		position:relative; /* Create a positioning context */
+		margin:0 0 6px 2em; /* Give each list item a left margin to make room for the numbers */
+		padding:4px 8px; /* Add some spacing around the content */
+		list-style:none; /* Disable the normal item numbering */
+	}
+	ol > li:before {
+		content:counter(li); /* Use the counter as content */
+		counter-increment:li; /* Increment the counter by 1 */
+		/* Position and style the number */
+		position:absolute;
+		top:-2px;
+		left:-2em;
+		-moz-box-sizing:border-box;
+		-webkit-box-sizing:border-box;
+		box-sizing:border-box;
+		width:2em;
+		/* Some space between the number and the content in browsers that support
+		   generated content but not positioning it */
+		margin-right:8px;
+		padding:4px;
+		font-weight:bold;
+		font-style: italic;
+		font-family:"Helvetica Neue", Arial, sans-serif;
+		text-align:center;
+		color: #313131;
+		font-size: 160%;
+	}
+	li ol,
+	li ul {margin-top:6px;}
+	ol ol li:last-child {margin-bottom:0;}
+	h1 {
+		font-weight:bold;
+		font-style: italic;
+		font-family:"Helvetica Neue", Arial, sans-serif;
+		text-align:center;
+		color: #313131;
+		font-size: 160%;
+	}
+	</style>
+	<!--[if lt IE 8]>
+	<style>
+		ol {margin-left:40px;}
+		ol li {
+			margin-left:0;
+			list-style:decimal;
+		}
+		ol ul li {list-style:disc;}
+	</style>
+	<![endif]-->
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="rule_box">
+    <div id="rule_background"></div>
+    <div id="rule_content"> {{ rules|restructuredtext }} </div>
+</div>
+{% endblock %}

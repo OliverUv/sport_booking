@@ -3,10 +3,12 @@ Fix map
     get coordinates and places
 
 
-Rules page
 Fix HTTP 404/403/500 views
 Fixa bara svenska & engelska i Admin vy
 Write translations
+Fix size issues on small handsets
+Show ban reason in profile page
+Fix error handling on rules page if file does not exist
 
 Database versioning/migration ?
 put js at bottom of pages

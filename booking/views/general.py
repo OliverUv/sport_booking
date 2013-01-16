@@ -1,7 +1,8 @@
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.contrib.auth import logout as do_logout
 from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.utils import translation
 from django.utils.translation import ugettext as _
@@ -42,6 +43,14 @@ class BanUserForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('is_banned', 'ban_reason')
+
+
+def rules(request):
+    language = translation.get_language()
+    with open(settings.RULE_FILE + '-' + language + '.rst') as f:
+        rules = f.read()
+    context = build_request_context(request, {'rules': rules})
+    return render_to_response('rules.html', context)
 
 
 @login_required
