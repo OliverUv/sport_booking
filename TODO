@@ -12,7 +12,6 @@ Fix error handling on rules page if file does not exist
 
 Database versioning/migration ?
 put js at bottom of pages
-resource type page map centered based on resources
 Redirect to rules after edit profile
 Theme calendar
 Localize calendar date display etc

@@ -1,5 +1,7 @@
 function initializeMap(data) {
-    var zoom_level = 16;
+    var zoom_level = 15;
+    if (data.hasOwnProperty('zoom_level'))
+	zoom_level = data.zoom_level;
     if (is_mobile())
 	zoom_level = 15;
     var mapOptions = {

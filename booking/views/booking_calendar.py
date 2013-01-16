@@ -40,6 +40,10 @@ def resource_type(request, resource_t_id=None):
     # Sort resources by longitude so that calendar columns correspond to
     # the map shown above them.
     resources = sorted(resources, key=lambda r: r.longitude)
+    min_lat = min(resources, key=lambda r: r.latitude)
+    max_lat = max(resources, key=lambda r: r.latitude)
+    min_long = min(resources, key=lambda r: r.longitude)
+    max_long = max(resources, key=lambda r: r.longitude)
 
     # Calculate margins and calendar widths
     resource_count = len(resources)
@@ -51,6 +55,8 @@ def resource_type(request, resource_t_id=None):
     cal_margin = margin_width / (resource_count - 1)
 
     context = build_request_context(request, {
+        'longitude': (max_long.longitude + min_long.longitude) / 2,
+        'latitude': (max_lat.latitude + min_lat.latitude) / 2,
         'cal_width': cal_width,
         'cal_margin': cal_margin,
         'resource_type': resource_type,
