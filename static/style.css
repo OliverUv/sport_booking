@@ -135,12 +135,12 @@ h2 {
 }
 
 #top_rows {
-    background-color: #F1F1F1;
+    background-color: #F6F6F6;
 }
 
 #top_rows_bottom {
-    background-color: #666666;
-    height: 2px;
+    background-color: #CCC;
+    height: 3px;
 }
 
 #map_canvas {
