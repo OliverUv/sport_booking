@@ -51,6 +51,10 @@ TIME_ZONE = 'Europe/Stockholm'
 # This determines the default language for the site.
 LANGUAGE_CODE = 'en-us'
 
+LANGUAGES = (
+    ('sv', 'Swedish'),
+    ('en', 'English'))
+
 LANGUAGE_COOKIE_NAME = 'frryd_language_choice_cookie'
 CSRF_COOKIE_NAME = 'frryd_csrf_cookie'
 

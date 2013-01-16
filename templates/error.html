@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block head %}
+<style type="text/css" media="screen">
+    h1 {
+	font-weight:bold;
+	font-style: italic;
+	font-family:"Helvetica Neue", Arial, sans-serif;
+	text-align:left;
+	color: #313131;
+	font-size: 160%;
+	padding-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="error_box">
+    <div id="error_background"></div>
+    <div id="error_content">
+	<h1> {% block header %} Unknown error {% endblock %} </h1>
+	{% block error_content %}
+	{% trans "We have no idea what happened. Please contact us if this happens too often." %}
+	{% endblock %}
+    </div>
+</div>
+{% endblock %}

@@ -3,12 +3,9 @@ Fix map
     get coordinates and places
 
 
-Fix HTTP 404/403/500 views
-Fixa bara svenska & engelska i Admin vy
-Write translations
 Fix size issues on small handsets
-Show ban reason in profile page
 Fix error handling on rules page if file does not exist
+Fix so we can see who caused a deletion of a preliminary reservation.
 
 Database versioning/migration ?
 put js at bottom of pages
@@ -18,6 +15,7 @@ Localize calendar date display etc
 ?? Draw line from resource type name to image ??
 
 Release !
+    Write translations
     Make own graphics
     Minify scripts and CSS
     Edit Allowed referers for google maps api: https://code.google.com/apis/console/
@@ -27,7 +25,6 @@ GPS Detect where the user is, physically
 Reservation drag n drop
 Show notification on profile saved, user banned
 Fix redirects around profile requirements instead of errors.
-Fix so we can see who caused a deletion of a preliminary reservation.
 Fix pre-fetching of images when all resources are pulled (right now 1 extra DB-query per resource)
 Translation of maps ui (?language=blalba)
 Local flavourize https://github.com/django/django-localflavor-se

@@ -10,10 +10,10 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
 
     full_name = models.CharField(max_length=200, blank=True)
-    postal_number = models.IntegerField(blank=True, null=True, validators=[validate_postalnumber])
+    postal_number = models.IntegerField(blank=True, null=True, validators=[validate_postalnumber], help_text='Form: NNNNN')
     phone_number = models.CharField(max_length=40, blank=True)
     registration_time = models.DateTimeField(auto_now_add=True)
-    ban_reason = models.TextField(max_length=1000, blank=True, default='')
+    ban_reason = models.TextField(max_length=1000, blank=True, default='', help_text='The banned user will see this message.')
     is_banned = models.BooleanField(default=False)
 
     def __unicode__(self):

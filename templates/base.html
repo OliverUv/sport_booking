@@ -71,7 +71,15 @@
 		<div class="row">
 		    <div class="fourcol"></div>
 		    <div class="fourcol">{% trans "You must complete your profile before making reservations. Click here to do it." %}</div>
-		    <div class="fourcol"></div>
+		    <div class="fourcol last"></div>
+		</div>
+	    </div>
+	    {% elif request.user.profile.is_banned %}
+	    <div class="profilewarningspan container">
+		<div class="row">
+		    <div class="twocol"> {% trans "You have been banned. Reason:" %}&nbsp;</div>
+		    <div class="eightcol banned">{{ request.user.profile.ban_reason }}</div>
+		    <div class="twocol last"></div>
 		</div>
 	    </div>
 	    {% endif %}

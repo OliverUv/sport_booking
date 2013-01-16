@@ -18,11 +18,16 @@ h2 {
     cursor: pointer;
     text-align: center;
     font-size: 120%;
-    background-color: #DD3535;
+    /* background-color: #DD3535; */
+    background-color: #CC2525;
     color: #FFFFFF;
     text-shadow: 0px 0px 5px #000000;
     min-height: 60px;
     padding-top: 12px;
+}
+
+.banned {
+    text-align: center;
 }
 
 .menuspan {
@@ -181,7 +186,7 @@ h2 {
     padding-top: 40px;
 }
 
-#profile_box, #rule_box {
+#profile_box, #rule_box, #error_box {
     width: 200px;
     height: 400px;
     margin-left: auto;
@@ -200,7 +205,7 @@ h2 {
 	2px 3px 4px rgba(255, 0, 180, 0.1);
 }
 
-#profile_background, #rule_background {
+#profile_background, #rule_background, #error_background {
     background: #FFFFFF;
     opacity: 0.6;
     filter: alpha(opacity=40);
@@ -220,15 +225,25 @@ h2 {
     margin-left: auto;
 }
 
-#rule_box {
+.helptext {
+    font-style: italic;
+    color: #666;
+}
+
+#rule_box, #error_box {
     position: relative;
     width: 50%;
     height: auto;
 }
 
-#rule_content {
+#rule_content, #error_content {
     position: relative;
     padding: 20px 20px 0 20px;
+}
+
+#error_content {
+    margin-bottom: 10px;
+    text-align: right;
 }
 
 /* Mobile */

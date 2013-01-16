@@ -1,0 +1,76 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>{% trans "FR Ryd location booking" context "site title" %}</title>
+	<style type="text/css" media="screen">
+	    h1 {
+		font-weight:bold;
+		font-style: italic;
+		font-family:"Helvetica Neue", Arial, sans-serif;
+		text-align:left;
+		color: #313131;
+		font-size: 160%;
+		padding-bottom: 20px;
+	    }
+
+	    body {
+		background: #555;
+	    }
+
+	    #error_box {
+		width: 200px;
+		height: 400px;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 4%;
+		position: relative;
+		border-top-width: 4px;
+		border-bottom-width: 4px;
+		border-top-style: double;
+		border-bottom-style: double;
+		border-top-color: #E1A60A;
+		border-bottom-color: #E1A60A;
+		padding: 8px 0px;
+		box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+	    }
+
+	    #error_background {
+		background: #FFFFFF;
+		opacity: 0.6;
+		filter: alpha(opacity=40);
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		height: 100%;
+		width: 100%;
+	    }
+
+	    #error_box {
+		position: relative;
+		width: 50%;
+		height: auto;
+	    }
+
+	    #error_content {
+		position: relative;
+		padding: 20px 20px 0 20px;
+		margin-bottom: 10px;
+		text-align: right;
+	    }
+	</style>
+    </head>
+    <body>
+	<div id="error_box">
+	    <div id="error_background"></div>
+	    <div id="error_content">
+		<h1>500 Server error</h1>
+		<p>
+		{% trans "Something went wrong on our side. Please email us and tell us what happened." %}
+		</p>
+	    </div>
+	</div>
+    </body>
+</html>

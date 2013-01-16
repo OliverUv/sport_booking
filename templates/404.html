@@ -1,12 +1,6 @@
-{% extends "base.html" %}
+{% extends "error.html" %}
 {% load i18n %}
-
-{% block content %}
-404 !!!
-{% if message %}
-    {{ message }}
-{% else %}
+{% block header %} 404 Not found {% endblock %}
+{% block error_content %}
     {% trans "Could not find whatever you wanted to find, sorry :(" %}
-{% endif %}
-
 {% endblock %}

@@ -33,4 +33,7 @@ if settings.DEBUG:
     # debug seving of media files (images, css, javascript, etc.)
     urlpatterns += patterns('',
         (r'^media/(?P<path>.*)$', 'django.views.static.serve', {
-        'document_root': settings.MEDIA_ROOT}))
+        'document_root': settings.MEDIA_ROOT}),
+        (r'^403/$', 'django.views.defaults.permission_denied'),
+        (r'^404/$', 'django.views.defaults.page_not_found'),
+        (r'^500/$', 'django.views.defaults.server_error'))

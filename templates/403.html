@@ -1,0 +1,6 @@
+{% extends "error.html" %}
+{% load i18n %}
+{% block header %} 403 Forbidden {% endblock %}
+{% block error_content %}
+    {% trans "You're trying to do something you're not allowed to." %}
+{% endblock %}
