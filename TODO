@@ -1,27 +1,26 @@
-Fix map
-    create icons
-    get coordinates and places
 
 
-Fix size issues on small handsets
+
+
+Create non-map resource pages for handsets
 Fix error handling on rules page if file does not exist
 Fix so we can see who caused a deletion of a preliminary reservation.
 
 Database versioning/migration ?
-put js at bottom of pages
-Redirect to rules after edit profile
-Theme calendar
-Localize calendar date display etc
-?? Draw line from resource type name to image ??
 
 Release !
+    get coordinates and places
     Write translations
     Make own graphics
     Minify scripts and CSS
     Edit Allowed referers for google maps api: https://code.google.com/apis/console/
 
-GPS Detect where the user is, physically
 
+GPS Detect where the user is, physically
+?? Draw line from resource type name to image ??
+Redirect to rules after edit profile
+Theme calendar
+Localize calendar date display etc
 Reservation drag n drop
 Show notification on profile saved, user banned
 Fix redirects around profile requirements instead of errors.
