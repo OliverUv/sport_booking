@@ -11,7 +11,7 @@ The rules
 
 1. For each resource (e.g. a specific football field) you can make two reservations.
    
-   You are allowed one solid reservation that nobody can touch, this reservation is the one closest in the future. Your second reservation is a preliminary reservation. It can be overwritten by anybody, just as you can overwrite others' preliminary reservations. You can only overwrite a preleminary reservation with a solid reservation.
+   You are allowed one solid reservation that nobody can touch, this reservation is the one closest in the future. Your second reservation is a preliminary reservation. It can be overwritten by anybody, just as you can overwrite others' preliminary reservations. If somebody overwrites your reservation you can see their liu-id - report misbehaviour.
 
    When the time for your solid reservation has passed, your preliminary reservation automatically becomes solid. Unless somebody else has removed it, of course.
 

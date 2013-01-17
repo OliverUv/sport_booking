@@ -9,7 +9,7 @@ from django.utils.translation import ugettext as _
 from django.utils.translation import get_language
 from django import forms
 
-from booking.models import Resource, UserProfile, User, ResourceType
+from booking.models import Resource, UserProfile, User, ResourceType, Reservation
 
 
 def build_request_context(request, values):
@@ -64,7 +64,7 @@ Could not find rules file. Contact FR Ryd, please.
 
 
 @login_required
-def profile(request, username):
+def profile(request, username, page):
     if request.user.username != username:
         return http_forbidden_page(request, _('You can only view your own profile page.'))
     if request.method == 'POST':
@@ -75,7 +75,11 @@ def profile(request, username):
     else:
         form = UserProfileForm(instance=request.user.profile)
 
-    context = build_request_context(request, {'form': form})
+    res_per_page = 10
+    reservations = Reservation.objects.filter(user=request.user).select_related('deletion__replacing_reservation__user', 'overwrites__deleted_reservation__user', 'resource')
+    reservations = reservations[res_per_page * int(page):res_per_page * (int(page) + 1)]
+
+    context = build_request_context(request, {'form': form, 'reservations': list(reservations)})
     return render_to_response('profile.html', context)
 
 

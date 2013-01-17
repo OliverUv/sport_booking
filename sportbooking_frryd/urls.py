@@ -15,7 +15,7 @@ urlpatterns = patterns('',
 
     url(r'^accounts/login/$', 'django_cas.views.login', name='login'),
     url(r'^accounts/logout/$', 'django_cas.views.logout', name='logout'),
-    url(r'^profile/(?P<username>\w+)/$', 'booking.views.general.profile', name='profile'),
+    url(r'^profile/(?P<username>\w+)/(?P<page>\d+)$', 'booking.views.general.profile', name='profile'),
     url(r'^admin/ban/(?P<username>\w+)/$', 'booking.views.general.ban', name='ban'),
     url(r'^$', 'booking.views.general.start', name='start'),
     url(r'^rules/$', 'booking.views.general.rules', name='rules'),

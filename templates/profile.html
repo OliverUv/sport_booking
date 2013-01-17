@@ -9,4 +9,23 @@
     <input type="submit" value="Submit" />
     </form>
 </div>
+<div id="profile_res_box hide-on-phone">
+    <h1>Your reservations</h1>
+    {% if not reservations %}
+	<p>You will find a list of your reservations here.<p>
+    {% else %}
+	{% for r in reservations %}
+	<div class="profile_res">
+	    r @ {{ r.resource.name }}<br/>
+	    from {{ r.start }} to {{ r.end }}
+	    {% if r.deletion %}
+	    deleted by {{ r.deletion.replacing_reservation.user.username }}
+	    {% endif %}
+	    {% if r.overwrites %}
+	    you overwrote {{ r.overwrites.deleted_reservation.user.username }}'s r
+	    {% endif %}
+	</div>
+	{% endfor %}
+    {% endif %}
+</div>
 {% endblock %}

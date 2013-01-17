@@ -128,5 +128,8 @@ class Reservation(models.Model):
 
 class OverwriteLog(models.Model):
     time_created = models.DateTimeField(auto_now_add=True)
-    deleted_reservation = models.ForeignKey(Reservation, related_name='deletion')
-    replacing_reservation = models.ForeignKey(Reservation, related_name='overwrites')
+    deleted_reservation = models.OneToOneField(Reservation, related_name='deletion')
+    replacing_reservation = models.OneToOneField(Reservation, related_name='overwrites')
+
+    def __unicode__(self):
+        return '%s overwrites %s' % (self.replacing_reservation.user.username, self.deleted_reservation.user.username)

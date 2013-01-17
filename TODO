@@ -5,6 +5,8 @@
 Fix so we can see who caused a deletion of a preliminary reservation.
 
 Database versioning/migration ?
+Change today-bg colour in calendar
+Add transactions!
 
 Release !
     get coordinates and places
