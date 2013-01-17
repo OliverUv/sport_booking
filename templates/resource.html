@@ -36,28 +36,30 @@
 	$(window).bind("resize", on_win_resize);
 	on_win_resize();
 
-	mapData = {
-	    element_id: "resource_map_canvas",
-	    zoom_level: 16,
-	    latitude: {{ resource.latitude }},
-	    longitude: {{ resource.longitude }} };
-	map = initializeMap(mapData);
+	{% if not mobile_requested %}
+	    mapData = {
+		element_id: "resource_map_canvas",
+		zoom_level: 16,
+		latitude: {{ resource.latitude }},
+		longitude: {{ resource.longitude }} };
+	    map = initializeMap(mapData);
 
-	addArrowIcon(map,
-	    {{ resource.latitude }},
-	    {{ resource.longitude }},
-	    "{{ STATIC_URL }}images/down.png",
-	    "{{ resource.name }}",
-	    "{% url resource resource.id %}");
+	    addArrowIcon(map,
+		{{ resource.latitude }},
+		{{ resource.longitude }},
+		"{{ STATIC_URL }}images/down.png",
+		"{{ resource.name }}",
+		"{% url resource resource.id %}");
 
-	{% for r in resources %}
-	addResourceIcon(map,
-	    {{ r.latitude }},
-	    {{ r.longitude }},
-	    "{{ r.image_url }}",
-	    "{{ r.name }}",
-	    "{% url resource r.id %}");
-	{% endfor %}
+	    {% for r in resources %}
+	    addResourceIcon(map,
+		{{ r.latitude }},
+		{{ r.longitude }},
+		"{{ r.image_url }}",
+		"{{ r.name }}",
+		"{% url resource r.id %}");
+	    {% endfor %}
+	{% endif %}
     }
 
     $(document).ready(initialize);
@@ -65,10 +67,12 @@
 {% endblock %}
 
 {% block content %}
-<div id="resource_map_canvas" class="hide-on-short"></div>
-<div class="container" id="resource_divider">
-    <div class="row"></div>
-</div>
+{% if not mobile_requested %}
+    <div id="resource_map_canvas" class="hide-on-short hide-on-mobile"></div>
+    <div class="container" id="resource_divider">
+	<div class="row"></div>
+    </div>
+{% endif %}
 <div class="row">
     <div id="resource_calendar" class="eightcol"></div>
     <div class="fourcol last" id="resource_info_column">

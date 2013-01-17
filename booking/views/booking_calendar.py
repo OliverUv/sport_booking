@@ -18,10 +18,12 @@ def resource(request, resource_id=None):
     """
     if resource_id is None:
         return http_badrequest(_('No resource id given.'))
+    mobile_requested = request.path_info.startswith('/m/')
     language = get_language()
     resources = Resource.objects.language(language).all()
     resource = get_object_or_404(Resource, resource_id)
     context = build_request_context(request, {
+        'mobile_requested': mobile_requested,
         'resource': resource,
         'resources': resources})
 
