@@ -47,8 +47,17 @@ class BanUserForm(forms.ModelForm):
 
 def rules(request):
     language = translation.get_language()
-    with open(settings.RULE_FILE + '-' + language + '.rst') as f:
-        rules = f.read()
+    try:
+        with open(settings.RULE_FILE + '-' + language + '.rst') as f:
+            rules = f.read()
+    except Exception:
+        rules = _("""
+=============
+Server error!
+=============
+
+Could not find rules file. Contact FR Ryd, please.
+        """)
     context = build_request_context(request, {'rules': rules})
     return render_to_response('rules.html', context)
 

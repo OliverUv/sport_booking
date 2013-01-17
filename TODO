@@ -2,8 +2,6 @@
 
 
 
-Create non-map resource pages for handsets
-Fix error handling on rules page if file does not exist
 Fix so we can see who caused a deletion of a preliminary reservation.
 
 Database versioning/migration ?
