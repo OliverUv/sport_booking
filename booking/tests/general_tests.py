@@ -6,7 +6,7 @@ from django.test import LiveServerTestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-from booking.models import ResourceType, Resource, Reservation
+from booking.models import ResourceType, Resource, Reservation, OverwriteLog
 from booking.common import utc_now, to_timestamp
 from django.conf import settings
 from booking import common
@@ -110,10 +110,10 @@ def add_test_data():
     r11 = create_reservation(user7, res5, later(2), later(3))
 
     test_data = {
-            'users': [user1, user2, user3, user4, user5, user6, user7],
-            'resource_types': [rest1],
-            'resources': [res1, res2, res3, res4, res5],
-            'reservations': [r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11]}
+        'users': [user1, user2, user3, user4, user5, user6, user7],
+        'resource_types': [rest1],
+        'resources': [res1, res2, res3, res4, res5],
+        'reservations': [r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11]}
 
     return test_data
 
@@ -269,7 +269,7 @@ class ReservationTests(TestCase):
     def test_banned_reservation_failure(self):
         resource = self.test_data['resources'][2]
         profile = self.user.profile
-        profile.banned = 'banned because of tests'
+        profile.is_banned = 'banned because of tests'
         profile.save()
 
         response = self.client.post('/make_reservation/', {
@@ -371,13 +371,13 @@ class ReservationTests(TestCase):
         resource2 = self.test_data['resources'][3]
 
         forbidden_reservations = [
-                (later(3.2), later(3.8)),
-                (later(3.1), later(3.9)),
-                (later(3.3), later(3.7)),
-                (later(3.2), later(3.3)),
-                (later(3.5), later(3.8)),
-                (later(3.5), later(4)),
-                (later(3), later(3.5))]
+            (later(3.2), later(3.8)),
+            (later(3.1), later(3.9)),
+            (later(3.3), later(3.7)),
+            (later(3.2), later(3.3)),
+            (later(3.5), later(3.8)),
+            (later(3.5), later(4)),
+            (later(3), later(3.5))]
 
         response = self.client.post('/make_reservation/', {
             'start': to_timestamp(later(3.2)),
@@ -406,10 +406,10 @@ class ReservationTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
         colliding_reservations = [
-                (later(0.5), later(1.1)),
-                (later(1), later(2)),
-                (later(1.1), later(2.1)),
-                (later(1.9), later(2.1))]
+            (later(0.5), later(1.1)),
+            (later(1), later(2)),
+            (later(1.1), later(2.1)),
+            (later(1.9), later(2.1))]
 
         for (start, end) in colliding_reservations:
             response = self.client.post('/make_reservation/', {
@@ -418,8 +418,9 @@ class ReservationTests(TestCase):
                 'resource_id': resource1.id})
             self.assertEqual(response.status_code, 403)
 
+    @preserve_count(OverwriteLog)
     @diff_count(Reservation, 3)
-    def test_fail_override_with_preliminary(self):
+    def test_fail_overwrite_with_preliminary(self):
         c = Client()
         other_user = self.test_data['users'][5]
         c.login(username=other_user.username, password='pass')
@@ -465,7 +466,8 @@ class ReservationTests(TestCase):
         self.assertFalse(res3.deleted)
 
     @diff_count(Reservation, 3)
-    def test_reserve_over_preliminary(self):
+    @diff_count(OverwriteLog, 1)
+    def test_overwrite_preliminary(self):
         c = Client()
         other_user = self.test_data['users'][5]
         c.login(username=other_user.username, password='pass')
@@ -503,6 +505,10 @@ class ReservationTests(TestCase):
         self.assertFalse(res1.deleted)
         self.assertTrue(res2.deleted)
         self.assertFalse(res3.deleted)
+
+        self.assertTrue(OverwriteLog.objects.filter(
+            deleted_reservation=res2,
+            replacing_reservation=res3).exists())
 
     @preserve_count(Reservation)
     def test_fail_unauthorized_reservation(self):

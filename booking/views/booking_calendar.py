@@ -6,7 +6,7 @@ from django.utils.translation import get_language
 from datetime import timedelta
 
 from booking.common import get_object_or_404
-from booking.models import Reservation, ResourceType, Resource
+from booking.models import Reservation, ResourceType, Resource, OverwriteLog
 from booking.common import to_timestamp, from_timestamp, utc_now
 from booking.common import http_forbidden, http_badrequest, http_json_response
 from booking.views.general import build_request_context
@@ -169,20 +169,29 @@ def do_make_reservation(start, end, resource_id, user):
     for r in possibly_overlapping_reservations:
         if r.would_overlap(start, end):
             if outstanding_reservations > 0:
-                return http_forbidden(_("You can't override a reservation with a preliminary reservation."))
+                return http_forbidden(_("You can't overwrite a reservation with a preliminary reservation."))
             elif r.is_solid():
                 return http_forbidden(_('Somebody has already made a reservation here!'))
 
-    # Mark overriden preliminary bookings as deleted.
+    # Mark overwriten preliminary bookings as deleted.
+    overwritten_reservations = []
     for r in possibly_overlapping_reservations:
         if r.would_overlap(start, end):
             r.delete_and_report()
+            overwritten_reservations.append(r)
 
-    r = Reservation(user=user, start=start, end=end)
-    r.resource_id = resource_id
-    r.save()
+    new_reservation = Reservation(user=user, start=start, end=end)
+    new_reservation.resource_id = resource_id
+    new_reservation.save()
 
-    return http_json_response({'status': 'success', 'id': r.id})
+    # Document overwritten reservations
+    for r in overwritten_reservations:
+        doc_object = OverwriteLog(
+            deleted_reservation=r,
+            replacing_reservation=new_reservation)
+        doc_object.save()
+
+    return http_json_response({'status': 'success', 'id': new_reservation.id})
 
 
 @login_required

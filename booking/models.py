@@ -124,3 +124,9 @@ class Reservation(models.Model):
         if not self.user.profile.completed():
             return False
         return True
+
+
+class OverwriteLog(models.Model):
+    time_created = models.DateTimeField(auto_now_add=True)
+    deleted_reservation = models.ForeignKey(Reservation, related_name='deletion')
+    replacing_reservation = models.ForeignKey(Reservation, related_name='overwrites')
