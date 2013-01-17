@@ -20,6 +20,7 @@ def build_request_context(request, values):
     resource_types = ResourceType.objects.language(language).all()
 
     base = {
+        'in_profile_page': request.path_info.startswith('/profile/'),
         'resource_types': resource_types,
         'language': language}
     values['base'] = base

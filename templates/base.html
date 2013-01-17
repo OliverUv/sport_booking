@@ -68,15 +68,20 @@
 	    </div>
 	</div>
 
+	<div id="top_rows_bottom">
+	</div>
+
 	{% if request.user.is_authenticated %}
 	    {% if not request.user.profile.completed %}
-	    <div class="profilewarningspan container" onclick="window.location='{% url profile request.user.username %}';">
-		<div class="row">
-		    <div class="fourcol"></div>
-		    <div class="fourcol">{% trans "You must complete your profile before making reservations. Click here to do it." %}</div>
-		    <div class="fourcol last"></div>
-		</div>
-	    </div>
+		{% if not base.in_profile_page %}
+		    <div class="profilewarningspan container" onclick="window.location='{% url profile request.user.username %}';">
+			<div class="row">
+			    <div class="fourcol"></div>
+			    <div class="fourcol">{% trans "You must complete your profile before making reservations. Click here to do it." %}</div>
+			    <div class="fourcol last"></div>
+			</div>
+		    </div>
+		{% endif %}
 	    {% elif request.user.profile.is_banned %}
 	    <div class="profilewarningspan container">
 		<div class="row">
@@ -87,9 +92,6 @@
 	    </div>
 	    {% endif %}
 	{% endif %}
-
-	<div id="top_rows_bottom">
-	</div>
 
 	<div class="hide-on-phone container menuspan">
 	    <div id="fl_menu_hover"></div>
