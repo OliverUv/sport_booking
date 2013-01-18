@@ -2,10 +2,7 @@
 
 
 
-Fix so we can see who caused a deletion of a preliminary reservation.
-
 Database versioning/migration ?
-Change today-bg colour in calendar
 Add transactions!
 Overwrite when click on others reservation // with confirmation dialogue
 Log in warning if click on calendar without login

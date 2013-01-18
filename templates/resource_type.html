@@ -4,6 +4,9 @@
 {% block head %}
 <link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}cal/fullcalendar.css' />
 <link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}cal/fullcalendar.print.css' media='print' />
+<style type="text/css" media="screen">
+    .fc-state-highlight { background-color: #FFF !important; }
+</style>
 <script type='text/javascript' src='{{ STATIC_URL }}cal/fullcalendar.js'></script>
 <script type='text/javascript' src='{{ STATIC_URL }}cal/calendar_logic.js'></script>
 {% endblock %}
