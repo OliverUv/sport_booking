@@ -46,6 +46,11 @@ class BanUserForm(forms.ModelForm):
         fields = ('is_banned', 'ban_reason')
 
 
+def copyright(request):
+    context = build_request_context(request, {})
+    return render_to_response('copyright.html', context)
+
+
 def rules(request):
     language = translation.get_language()
     try:

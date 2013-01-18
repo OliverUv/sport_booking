@@ -240,7 +240,7 @@ h2 {
     opacity: 0.5;
 }
 
-#rule_box, #error_box {
+#rule_box, #error_box, #copyright_box {
     width: 200px;
     height: 400px;
     margin-left: auto;
@@ -259,7 +259,7 @@ h2 {
 	2px 3px 4px rgba(255, 0, 180, 0.1);
 }
 
-#profile_background, #rule_background, #error_background {
+#profile_background, #rule_background, #error_background, #copyright_background {
     background: #FFFFFF;
     opacity: 0.6;
     filter: alpha(opacity=40);
@@ -284,13 +284,13 @@ h2 {
     color: #666;
 }
 
-#rule_box, #error_box {
+#rule_box, #error_box, #copyright_box {
     position: relative;
     width: 50%;
     height: auto;
 }
 
-#rule_content, #error_content {
+#rule_content, #error_content, #copyright_content {
     position: relative;
     padding: 20px 20px 0 20px;
 }
@@ -298,6 +298,13 @@ h2 {
 #error_content {
     margin-bottom: 10px;
     text-align: right;
+}
+
+#copyright {
+    position: fixed;
+    bottom: 2px;
+    right: 2px;
+    font-size: 50%;
 }
 
 /* Mobile */
