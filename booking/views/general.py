@@ -76,10 +76,22 @@ def profile(request, username, page):
         form = UserProfileForm(instance=request.user.profile)
 
     res_per_page = 10
-    reservations = Reservation.objects.filter(user=request.user).select_related('deletion__replacing_reservation__user', 'overwrites__deleted_reservation__user', 'resource')
-    reservations = reservations[res_per_page * int(page):res_per_page * (int(page) + 1)]
+    # Something like this can be done to reduce load on the database.
+    # Probably not necessary unless we get really high traffic though.
+    # .select_related('deletion__replacing_reservation__user', 'overwrites__deleted_reservation__user', 'resource')
+    reservations = Reservation.objects.filter(user=request.user).order_by('-start')
+    res_count = reservations.count()
+    first_res_on_page = res_per_page * int(page)
+    last_res_on_page = res_per_page * (int(page) + 1)
+    has_more_reservations = res_count > last_res_on_page
+    reservations = reservations[first_res_on_page:last_res_on_page]
 
-    context = build_request_context(request, {'form': form, 'reservations': list(reservations)})
+    context = build_request_context(request, {
+        'form': form,
+        'reservations': list(reservations),
+        'has_more_reservations': has_more_reservations,
+        'next_page': int(page) + 1,
+        'previous_page': int(page) - 1})
     return render_to_response('profile.html', context)
 
 

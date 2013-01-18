@@ -2,30 +2,47 @@
 {% load i18n %}
 
 {% block content %}
-<div id="profile_box">
-    <div id="profile_background"></div>
-    <form id="profile_form" action="{{ request.path_info }}" method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" />
-    </form>
+<div class="row">
+<div id="profile_res_pbox" class="threecol">
+    <div id="profile_box">
+	<div id="profile_background"></div>
+	<form id="profile_form" action="{{ request.path_info }}" method="post">{% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" value="Submit" />
+	</form>
+    </div>
+    {% if reservations %}
+	{% if previous_page > -1 %}
+	<div class="profile_change_page">
+	    <a href="{% url profile request.user.username previous_page %}">Newer reservations</a>
+	</div>
+	{% endif %}
+	{% if has_more_reservations %}
+	<div class="profile_change_page">
+	    <a href="{% url profile request.user.username next_page %}">Older reservations</a>
+	</div>
+	{% endif %}
+    {% endif %}
 </div>
-<div id="profile_res_box hide-on-phone">
+<div id="profile_res_box" class="hide-on-phone ninecol last">
     <h1>Your reservations</h1>
     {% if not reservations %}
 	<p>You will find a list of your reservations here.<p>
     {% else %}
 	{% for r in reservations %}
 	<div class="profile_res">
-	    r @ {{ r.resource.name }}<br/>
-	    from {{ r.start }} to {{ r.end }}
-	    {% if r.deletion %}
-	    deleted by {{ r.deletion.replacing_reservation.user.username }}
-	    {% endif %}
+	    <span {% if r.in_past or r.deleted %}class="profile_res_transparent"{% endif %}><a href="{% url resource r.resource.id %}">{{ r.resource.name }}</a> from {{ r.start }}</span>
 	    {% if r.overwrites %}
-	    you overwrote {{ r.overwrites.deleted_reservation.user.username }}'s r
+	    <div class="profile_res_note">you overwrote {{ r.overwrites.deleted_reservation.user.username }}'s reservation</div>
+	    {% endif %}
+	    {% if r.deletion %}
+	    <div class="profile_res_note">deleted by {{ r.deletion.replacing_reservation.user.username }}</div>
+	    {% elif r.deleted %}
+	    <div class="profile_res_note">deleted</div>
 	    {% endif %}
 	</div>
 	{% endfor %}
     {% endif %}
+</div>
 </div>
 {% endblock %}

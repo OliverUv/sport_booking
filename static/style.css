@@ -196,7 +196,51 @@ h2 {
     padding-top: 40px;
 }
 
-#profile_box, #rule_box, #error_box {
+#profile_box {
+    height: 400px;
+    margin-top: 4%;
+    position: relative;
+    border-top-width: 4px;
+    border-bottom-width: 4px;
+    border-top-style: double;
+    border-bottom-style: double;
+    border-top-color: #E1A60A;
+    border-bottom-color: #E1A60A;
+    padding: 8px 0px;
+    box-shadow:
+	1px 2px 4px rgba(0, 168, 255, 0.1),
+	2px 3px 4px rgba(255, 0, 180, 0.1);
+}
+
+#profile_res_box {
+    margin-top: 4%;
+    padding: 8px 0px;
+}
+
+#profile_res_pbox {
+    margin-top: 4%;
+    padding: 8px 0px;
+}
+
+.profile_res {
+    margin-bottom: 14px;
+}
+
+.profile_change_page {
+    padding-top: 17px;
+    opacity: 0.8;
+}
+
+.profile_res_transparent {
+    opacity: 0.5;
+}
+
+.profile_res_note {
+    padding-left: 15px;
+    opacity: 0.5;
+}
+
+#rule_box, #error_box {
     width: 200px;
     height: 400px;
     margin-left: auto;

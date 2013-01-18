@@ -90,10 +90,13 @@ class Reservation(models.Model):
     def __unicode__(self):
         return '%s booking' % [self.user.username]
 
+    def in_past(self):
+        self.start < utc_now()
+
     def is_solid(self):
         if self.deleted:
             return False
-        if self.start < utc_now():
+        if self.in_past():
             return True
 
         conflicting_reservations = Reservation.objects.filter(
