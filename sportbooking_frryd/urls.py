@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     url(r'^reservations/(?P<resource_id>\d+)/$', 'booking.views.booking_calendar.get_reservations', name='reservations'),
     url(r'^make_reservation/$', 'booking.views.booking_calendar.make_reservation', name='make_reservation'),
     url(r'^delete_reservation/$', 'booking.views.booking_calendar.delete_reservation', name='delete_reservation'),
+    url(r'^overwrite_reservation/$', 'booking.views.booking_calendar.overwrite_reservation', name='overwrite_reservation'),
     url(r'^single_click_reservation/$', 'booking.views.booking_calendar.single_click_reservation', name='single_click_reservation'),
 
     url(r'^i18n/', include('django.conf.urls.i18n'))  # Enables internationalization

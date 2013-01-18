@@ -75,6 +75,7 @@
 	    resource_id: {{ r.id }},
 	    reservation_url: "{% url single_click_reservation %}",
 	    delete_url: "{% url delete_reservation %}",
+	    overwrite_url: "{% url overwrite_reservation %}",
 	    resource_event_url: "{% url reservations r.id %}"};
 	initializeCalendar(calendarData);
 

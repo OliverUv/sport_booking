@@ -39,15 +39,44 @@ function initializeCalendar(calendarData) {
 	});
     }
 
-    function showEventInfo(calEvent) {
-	// TODO
+    function overwriteEvent(calEvent) {
+	n = noty({
+	    text: "Do you want to overwrite event #" + calEvent.id,
+	    type: 'error',
+	    dismissQueue: true,
+	    layout: 'center',
+	    buttons: [{
+		addClass: 'btn btn-danger', text: 'Overwrite', onClick: function($noty) {
+		    $noty.close();
+		    $.ajax({
+			url: calendarData.overwrite_url,
+			type: "POST",
+			dataType: "json",
+			data: {id: calEvent.id},
+		    }).done(function() {
+			$('#' + calendarData.element_id).fullCalendar('refetchEvents');
+		    }).fail(showAjaxFailure);}}, {
+		addClass: 'btn btn-primary', text: 'Cancel', onClick: function($noty) {
+		    $noty.close();
+		    $('#' + calendarData.element_id).fullCalendar('refetchEvents');
+		}
+	    }]
+	});
     }
 
     function onEventClick(calEvent, jsEvent, view) {
 	if (calEvent.is_own) {
 	    deleteEvent(calEvent.id);
+	} else if (calEvent.solidity == "preliminary"){
+	    overwriteEvent(calEvent);
 	} else {
-	    showEventInfo(calEvent);
+	    n = noty({
+		text: "You cannot overwrite a solid reservation.",
+		type: 'error',
+		dismissQueue: true,
+		layout: 'topRight',
+		timeout: 3800
+	    });
 	}
     }
 

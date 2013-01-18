@@ -82,10 +82,10 @@ def add_reservation_annotations(user, reservations):
             display_as = 'own'
             r.is_own = True
 
-        r_status = 'solid' if r.is_solid() else 'preliminary'
+        r.solidity = 'solid' if r.is_solid() else 'preliminary'
 
-        r.bg_color = background_colors[display_as][r_status]
-        r.text_color = text_colors[display_as][r_status]
+        r.bg_color = background_colors[display_as][r.solidity]
+        r.text_color = text_colors[display_as][r.solidity]
 
 
 def get_reservations(request, resource_id):
@@ -116,6 +116,7 @@ def reservations_to_json_struct(reservations):
         'id': r.id,
         'start': to_timestamp(r.start),
         'end': to_timestamp(r.end),
+        'solidity': r.solidity,
         'color': r.bg_color,
         'textColor': r.text_color}
         for r in reservations]
@@ -206,6 +207,26 @@ def single_click_reservation(request):
     end = start + timedelta(hours=1)
 
     return do_make_reservation(start, end, resource_id, request.user)
+
+
+@login_required
+def overwrite_reservation(request):
+    r_id = request.POST.get('id', None)
+    if r_id is None:
+        return http_badrequest(_('No request id provided.'))
+    r = list(Reservation.objects.filter(id=int(r_id)))
+    if len(r) < 1:
+        return http_badrequest(_('No reservation with that id.'))
+    reservation = r[0]
+
+    if request.user.id == reservation.user_id:
+        return http_forbidden(_('You may not overwrite your own reservations.'))
+    elif reservation.is_solid():
+        return http_forbidden(_('You may not overwrite solid reservations.'))
+
+    # Dispatch to do_make_reservation which does all necessary testing for
+    # overwrites anyway.
+    return do_make_reservation(reservation.start, reservation.end, reservation.resource_id, request.user)
 
 
 @login_required
