@@ -69,6 +69,7 @@
 
 	{% for r in resources %}
 	calendarData = {
+	    logged_in: "{{ request.user.is_authenticated }}",
 	    view: 'agendaDay',
 	    header: false,
 	    element_id: "resource_calendar{{ r.id }}",

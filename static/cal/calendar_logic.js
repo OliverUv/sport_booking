@@ -1,6 +1,19 @@
 function initializeCalendar(calendarData) {
 
+    function loggedOutWarning() {
+	n = noty({
+	    text: "You must log in to make reservations.",
+	    type: 'error',
+	    dismissQueue: true,
+	    layout: 'topRight',
+	    timeout: 3800
+	});
+    }
+
     function onDayClick(date, allDay, jsEvent, view) {
+	if (calendarData.logged_in == "False")
+	    return loggedOutWarning();
+
 	var theData = {};
 	theData['timestamp'] = date.getTime()/1000;
 	theData['resource_id'] = calendarData.resource_id;
@@ -65,6 +78,9 @@ function initializeCalendar(calendarData) {
     }
 
     function onEventClick(calEvent, jsEvent, view) {
+	if (calendarData.logged_in == "False")
+	    return loggedOutWarning();
+
 	if (calEvent.is_own) {
 	    deleteEvent(calEvent.id);
 	} else if (calEvent.solidity == "preliminary"){

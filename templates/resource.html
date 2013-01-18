@@ -29,6 +29,7 @@
 	};
 
 	calendarData = {
+	    logged_in: "{{ request.user.is_authenticated }}",
 	    view: 'agendaWeek',
 	    element_id: "resource_calendar",
 	    resource_id: {{ resource.id }},
