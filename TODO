@@ -3,7 +3,6 @@
 
 
 Database versioning/migration ?
-attribution page
 
 
 Release !
@@ -26,16 +25,3 @@ Fix redirects around profile requirements instead of errors.
 Fix pre-fetching of images when all resources are pulled (right now 1 extra DB-query per resource)
 Translation of maps ui (?language=blalba)
 Local flavourize https://github.com/django/django-localflavor-se
-
-http://www.apricum.net/2012/03/25/free-photoshop-patterns-2/
-http://shoe-fly.deviantart.com/art/Pattern-set-2-61176365
-http://faded-ink.deviantart.com/art/Pretty-Plaids-001-30258497
-http://crazykira-resources.deviantart.com/art/Patterns-23-93684999 << 6th
-http://luthienblack.deviantart.com/art/Green-Patterns-35866483
-
-Hi!
-
-I'm designing a reservation system for my residents association's football fields, volleyball fields, etc. I'm doing this work for free for them, and they are non-profit. I really like your patterns and would appreciate it if you emailed me written permission to use them as backgrounds for the website. Will of course email you a link so you can see how it turned out afterward if you want :)
-
-Warm regard,
-Oliver Uvman

@@ -173,7 +173,6 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'hvad',  # Translation of dynamic content
     'booking',  # Booking system
-    'django.contrib.markup' # markup processing for the rules page
 )
 
 LOCALE_PATHS = ('/home/oliver/sportbooking_frryd/conf/locale')
