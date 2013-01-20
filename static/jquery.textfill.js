@@ -42,7 +42,10 @@
 
       var HfontSize = undefined;
       if (!Opts.widthOnly) {
+	var iterations = 0;
         while (minFontPixels < maxFontPixels - 1) {
+	  iterations += 1;
+	  if (iterations > 20) break;
           fontSize = Math.floor((minFontPixels + maxFontPixels) / 2)
           ourText.css('font-size', fontSize);
           if (ourText.height() < maxHeight)
@@ -55,7 +58,10 @@
 
       minFontPixels = Opts.minFontPixels;
       maxFontPixels = Opts.maxFontPixels <= 0 ? maxHeight : Opts.maxFontPixels;
+      var iterations = 0;
       while (minFontPixels < maxFontPixels - 1) {
+	iterations += 1;
+	if (iterations > 20) break;
         fontSize = Math.floor((minFontPixels + maxFontPixels) / 2)
         ourText.css('font-size', fontSize);
         if (ourText.width() < maxWidth)
