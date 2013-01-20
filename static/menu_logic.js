@@ -1,7 +1,7 @@
 //config
 $float_speed=1500; //milliseconds
 $float_easing="easeOutQuint";
-$menu_fade_speed=500; //milliseconds
+$menu_fade_speed=200; //milliseconds
 $closed_menu_opacity=1;
 
 //cache vars
