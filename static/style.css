@@ -60,6 +60,16 @@ h2 {
 .authspace {
     text-align: center;
     padding-top: 10px;
+    float: left;
+}
+
+.language_space {
+    margin-left: 50.6%;
+    width: 12.6%;
+}
+
+.auth_space {
+    width: 12.6%;
 }
 
 .rt_cal_title {
