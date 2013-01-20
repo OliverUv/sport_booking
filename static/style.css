@@ -26,7 +26,7 @@ h2 {
     color: #FFFFFF;
     text-shadow: 0px 0px 5px #000000;
     min-height: 60px;
-    padding-top: 12px;
+    padding-top: 4px;
 }
 
 .banned {
@@ -36,7 +36,14 @@ h2 {
 .menuspan {
     background-color: #101010;
     color: #AAAAAA;
-    height: 30px;
+    height: 40px;
+}
+.menuspan a, .menuspan a:visited, .menuspan a:link, .menuspan {
+    color: #FFF;
+    text-shadow: 
+	2px 2px 0px rgba(0, 168, 255, 0.35),
+	3px 3px 1px rgba(255, 0, 180, 0.25),
+	0 0 10px rgba(255, 255, 255, 0.6);
 }
 
 .toprow {
@@ -44,11 +51,15 @@ h2 {
     font-family: 'Crimson Text', serif;
     height: 30px;
     letter-spacing: 1px;
-    line-height: 30px;
 }
 
 .logspace {
     text-align: right;
+}
+
+.authspace {
+    text-align: center;
+    padding-top: 10px;
 }
 
 .rt_cal_title {
@@ -123,7 +134,7 @@ h2 {
 }
 
 .start_divider {
-    min-height: 30px;
+    height: 4px;
     background-color: #101010;
 }
 
@@ -148,7 +159,6 @@ h2 {
 }
 
 #top_rows {
-    /* background-color: #F6F6F6; */
     background-color: #FCFCFC;
 }
 
@@ -343,7 +353,7 @@ h2 {
     left: 0px;
     z-index: 9999;
     width: 330px;
-    height: 30px;
+    height: 40px;
     text-align: right;
 }
 #fl_menu_hover {
@@ -356,14 +366,20 @@ h2 {
 #fl_menu .label, #mb_menu .label {
     z-index: 9999;
     padding-left: 20px; 
-    line-height: 30px;
+    line-height: 40px;
+    /* padding-top: 9px; */
     font-size: 14px;
     font-weight: bold;
     font-family: 'Times New Roman';
-    text-shadow:
-	1px 1px 0px #101010,
-	2px 2px 1px rgba(193, 193, 193, 0.3);
-    color: #E1E1E1;
+    text-shadow: 
+	2px 2px 0px rgba(0, 168, 255, 0.35),
+	3px 3px 1px rgba(255, 0, 180, 0.25),
+	0 0 10px rgba(255, 255, 255, 0.6);
+    /* text-shadow: */
+	/* 1px 1px 0px #101010, */
+	/* 2px 2px 1px rgba(193, 193, 193, 0.3); */
+    /* color: #E1E1E1; */
+    color: #FFF;
     letter-spacing: 6px;
     margin-right: 24px;
 }
