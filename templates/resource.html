@@ -44,6 +44,7 @@
 	{% if not mobile_requested %}
 	    mapData = {
 		element_id: "resource_map_canvas",
+		scrollwheel: false,
 		zoom_level: 16,
 		latitude: {{ resource.latitude }},
 		longitude: {{ resource.longitude }} };

@@ -63,9 +63,11 @@
 
 	mapData = {
 	    element_id: "rt_map_canvas",
+	    scrollwheel: false,
 	    latitude: {{ latitude }},
 	    longitude: {{ longitude }}};
 	map = initializeMap(mapData);
+	var mapMarkerBounds = new google.maps.LatLngBounds();
 
 	{% for r in resources %}
 	calendarData = {
@@ -90,13 +92,15 @@
 	on_delayed_resize(on_win_resize{{ r.id }});
 	on_win_resize{{ r.id }}();
 
-	addResourceIcon(map,
+	var m = addResourceIcon(map,
 	    {{ r.latitude }},
 	    {{ r.longitude }},
 	    "{{ r.image_url }}",
 	    "{{ r.name }}",
 	    "{% url resource r.id %}");
+	mapMarkerBounds.extend(m.getPosition());
 	{% endfor %}
+	zoomToBounds(map, mapMarkerBounds, 17);
     }
 
     $(document).ready(initialize);

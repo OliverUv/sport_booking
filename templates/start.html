@@ -51,19 +51,22 @@
 
     function initialize(){
 	mapData = {
+	    map_zoom: 16,
 	    element_id: "map_canvas",
 	    latitude: default_latitude,
 	    longitude: default_longitude};
 	map = initializeMap(mapData);
-
+	var mapMarkerBounds = new google.maps.LatLngBounds();
 	{% for r in resources %}
-	addResourceIcon(map,
+	var m = addResourceIcon(map,
 	    {{ r.latitude }},
 	    {{ r.longitude }},
 	    "{{ r.image_url }}",
 	    "{{ r.name }}",
 	    "{% url resource r.id %}");
+	mapMarkerBounds.extend(m.getPosition());
 	{% endfor %}
+	zoomToBounds(map, mapMarkerBounds, 17);
 
 	on_delayed_resize(set_sizes);
 	set_sizes();

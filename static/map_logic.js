@@ -4,9 +4,13 @@ function initializeMap(data) {
 	zoom_level = data.zoom_level;
     if (is_mobile())
 	zoom_level = 15;
+    var scrollwheel = true;
+    if (data.hasOwnProperty('scrollwheel'))
+	scrollwheel = data.scrollwheel;
     var mapOptions = {
 	center: new google.maps.LatLng(data.latitude, data.longitude),
 	zoom: zoom_level,
+	scrollwheel: scrollwheel,
 	mapTypeId: google.maps.MapTypeId.SATELLITE,
 	disableDefaultUI: true,
 	panControl: false,
@@ -36,12 +40,23 @@ function addIcon(map, latitude, longitude, image_url, resource_name, resource_ur
     google.maps.event.addListener(marker, 'click', function() {
 	window.location = resource_url;
     });
+    return marker;
 }
 
 function addArrowIcon(map, latitude, longitude, image_url, resource_name, resource_url) {
-    addIcon(map, latitude, longitude, image_url, resource_name, resource_url, 25, 49, 2);
+    return addIcon(map, latitude, longitude, image_url, resource_name, resource_url, 25, 49, 2);
 }
 
 function addResourceIcon(map, latitude, longitude, image_url, resource_name, resource_url) {
-    addIcon(map, latitude, longitude, image_url, resource_name, resource_url, 25, 25, 1);
+    return addIcon(map, latitude, longitude, image_url, resource_name, resource_url, 25, 25, 1);
+}
+
+function zoomToBounds(map, bounds, max_zoom) {
+	map.fitBounds(bounds);
+	zoomChangeBoundsListener = google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
+	    if (this.getZoom() > max_zoom){
+		this.setZoom(max_zoom);
+	    }
+	});
+	setTimeout(function(){google.maps.event.removeListener(zoomChangeBoundsListener)}, 2000);
 }
