@@ -305,7 +305,8 @@ h2 {
 
 #rule_box, #error_box, #copyright_box {
     position: relative;
-    width: 50%;
+    max-width: 800px;
+    width: 85%;
     height: auto;
 }
 
