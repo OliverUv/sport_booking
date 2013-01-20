@@ -38,18 +38,18 @@
 	<div class="container row toprow">
 	    {% if base.language == "en" %}
 	    <div class="ninecol topcol">
-	    <form name="setLang" action="/i18n/setlang/" method="POST">{% csrf_token %}
+	    <form name="setLanga" action="/i18n/setlang/" method="POST">{% csrf_token %}
 		<input name="next" type="hidden" value="{{ request.get_full_path }}" />
 		<input type="hidden" name="language" value="sv" />
-		<a href="#" onclick="document.setLang.submit();return false;">Svenska</a>
+		<a href="#" onclick="document.setLanga.submit();return false;">Svenska</a>
 	    </form>
 	    </div>
 	    {% else %}
 	    <div class="ninecol topcol">
-	    <form name="setLang" action="/i18n/setlang/" method="POST">{% csrf_token %}
+	    <form name="setLangb" action="/i18n/setlang/" method="POST">{% csrf_token %}
 		<input name="next" type="hidden" value="{{ request.get_full_path }}" />
 		<input type="hidden" name="language" value="en" />
-		<a href="#" onclick="document.setLang.submit();return false;">&nbsp;English</a>
+		<a href="#" onclick="document.setLangb.submit();return false;">&nbsp;English</a>
 	    </form>		
 	    </div>
 	    {% endif %}
@@ -113,16 +113,16 @@
 
 	<div class="language_space authspace">
 	    {% if base.language == "en" %}
-	    <form name="setLang" action="/i18n/setlang/" method="POST">{% csrf_token %}
+	    <form name="setLangc" action="/i18n/setlang/" method="POST">{% csrf_token %}
 		<input name="next" type="hidden" value="{{ request.get_full_path }}" />
 		<input type="hidden" name="language" value="sv" />
-		<a href="#" onclick="document.setLang.submit();return false;">(SV)</a>
+		<a href="#" onclick="document.setLangc.submit();return false;">(SV)</a>
 	    </form>
 	    {% else %}
-	    <form name="setLang" action="/i18n/setlang/" method="POST">{% csrf_token %}
+	    <form name="setLangd" action="/i18n/setlang/" method="POST">{% csrf_token %}
 		<input name="next" type="hidden" value="{{ request.get_full_path }}" />
 		<input type="hidden" name="language" value="en" />
-		<a href="#" onclick="document.setLang.submit();return false;">(EN)</a>
+		<a href="#" onclick="document.setLangd.submit();return false;">(EN)</a>
 	    </form>		
 	    {% endif %}
 	</div>
