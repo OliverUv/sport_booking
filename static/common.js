@@ -77,3 +77,14 @@ function always_true() {
 function is_short() {
     return $(window).height() < 350;
 }
+
+function on_delayed_resize(fun) {
+    var delay = 40;
+    var timeout_id = 0;
+
+    function delayed_on_resize() {
+	clearTimeout(timeout_id);
+	timeout_id = setTimeout(fun, delay);
+    }
+    $(window).bind("resize", delayed_on_resize);
+}

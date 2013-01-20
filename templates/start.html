@@ -65,7 +65,7 @@
 	    "{% url resource r.id %}");
 	{% endfor %}
 
-	$(window).bind("resize", set_sizes);
+	on_delayed_resize(set_sizes);
 	set_sizes();
     }
 

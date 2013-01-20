@@ -38,7 +38,7 @@
 	    overwrite_url: "{% url overwrite_reservation %}",
 	    resource_event_url: "{% url reservations resource.id %}"};
 	initializeCalendar(calendarData);
-	$(window).bind("resize", on_win_resize);
+	on_delayed_resize(on_win_resize);
 	on_win_resize();
 
 	{% if not mobile_requested %}

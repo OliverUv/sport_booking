@@ -87,7 +87,7 @@
 	    $("#resource_calendar{{ r.id }}").fullCalendar('option', 'height', cal_height);
 	};
 
-	$(window).bind("resize", on_win_resize{{ r.id }});
+	on_delayed_resize(on_win_resize{{ r.id }});
 	on_win_resize{{ r.id }}();
 
 	addResourceIcon(map,
