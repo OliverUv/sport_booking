@@ -54,7 +54,10 @@ def resource_type(request, resource_t_id=None):
     margin_width = total_width - width_sans_margins
 
     cal_width = width_sans_margins / resource_count
-    cal_margin = margin_width / (resource_count - 1)
+    if resource_count == 1:
+        cal_margin = margin_width
+    else:
+        cal_margin = margin_width / (resource_count - 1)
 
     context = RequestContext(request, {
         'longitude': (max_long.longitude + min_long.longitude) / 2,
