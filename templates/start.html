@@ -56,6 +56,8 @@
 	    latitude: default_latitude,
 	    longitude: default_longitude};
 	map = initializeMap(mapData);
+	if (is_not_mobile)
+	    addSun(map, "{{ STATIC_URL }}images/angry_sun.png");
 	var mapMarkerBounds = new google.maps.LatLngBounds();
 	{% for r in resources %}
 	var m = addResourceIcon(map,

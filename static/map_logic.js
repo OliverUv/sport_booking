@@ -24,6 +24,24 @@ function initializeMap(data) {
     return map;
 }
 
+function addSun(map, image_url) {
+    var myLatLng = new google.maps.LatLng(27.064018, 8.102417);
+    var image = new google.maps.MarkerImage(image_url,
+	    new google.maps.Size(230, 240),
+	    new google.maps.Point(0,0),
+	    new google.maps.Point(115, 120));
+    var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          icon: image,
+	  title: "RUN",
+	  zIndex: 1
+      });
+    google.maps.event.addListener(marker, 'click', function() {
+	window.location = "http://youtu.be/Z-3z3DNUGiE";
+    });
+}
+
 function addIcon(map, latitude, longitude, image_url, resource_name, resource_url, anchorX, anchorY, zIndex) {
     var myLatLng = new google.maps.LatLng(latitude, longitude);
     var image = new google.maps.MarkerImage(image_url,
