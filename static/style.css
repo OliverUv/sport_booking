@@ -33,6 +33,10 @@ h2 {
     text-align: center;
 }
 
+.language {
+    opacity: 0.5;
+}
+
 .menuspan {
     background-color: #101010;
     color: #AAAAAA;
@@ -372,7 +376,7 @@ h2 {
     left: 0px;
     z-index: 9999;
     width: 330px;
-    height: 160px;
+    height: 100px;
 }
 #fl_menu .label, #mb_menu .label {
     z-index: 9999;
