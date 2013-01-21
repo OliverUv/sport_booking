@@ -338,6 +338,7 @@ h2 {
     bottom: 2px;
     right: 10px;
     font-size: 60%;
+    z-index: -1;
 }
 
 /* Mobile */

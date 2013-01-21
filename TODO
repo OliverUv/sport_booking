@@ -5,10 +5,9 @@
 
 Release !
     get coordinates and places
-    Write translations
-    Make own graphics
     Opacities for IE
     Minify scripts and CSS
+    Write translations
     Edit Allowed referers for google maps api: https://code.google.com/apis/console/
 
 
