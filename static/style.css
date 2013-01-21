@@ -72,8 +72,9 @@ h2 {
     width: 12.6%;
 }
 
-.auth_space {
+.auth_col {
     width: 12.6%;
+    min-width: 115px;
 }
 
 .rt_cal_title {
