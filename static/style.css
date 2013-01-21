@@ -7,10 +7,10 @@ html, body {
 }
 
 h1 {
-    margin-top: 0px;
-    text-shadow: 
-	2px 2px 0 rgba(0, 168, 255, 0.35),
-	3px 3px 1px rgba(255, 0, 180, 0.25);
+    margin-top: 10px;
+    /* text-shadow: */ 
+	/* 2px 2px 0 rgba(0, 168, 255, 0.35), */
+	/* 3px 3px 1px rgba(255, 0, 180, 0.25); */
 }
 
 h2 {
