@@ -27,7 +27,7 @@ function initializeMap(data) {
 function addIcon(map, latitude, longitude, image_url, resource_name, resource_url, anchorX, anchorY, zIndex) {
     var myLatLng = new google.maps.LatLng(latitude, longitude);
     var image = new google.maps.MarkerImage(image_url,
-	    new google.maps.Size(50, 49),
+	    new google.maps.Size(50, 50),
 	    new google.maps.Point(0,0), // origin, if in sprite with many icons
 	    new google.maps.Point(anchorX, anchorY)); // anchor
     var marker = new google.maps.Marker({
@@ -44,7 +44,7 @@ function addIcon(map, latitude, longitude, image_url, resource_name, resource_ur
 }
 
 function addArrowIcon(map, latitude, longitude, image_url, resource_name, resource_url) {
-    return addIcon(map, latitude, longitude, image_url, resource_name, resource_url, 25, 49, 2);
+    return addIcon(map, latitude, longitude, image_url, resource_name, resource_url, 25, 50, 2);
 }
 
 function addResourceIcon(map, latitude, longitude, image_url, resource_name, resource_url) {
