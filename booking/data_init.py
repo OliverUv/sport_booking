@@ -67,23 +67,41 @@ def create_resource(resource_type, longitude, latitude, name, info, swe_name, sw
 
 
 def add_initial_data(debug):
-    fbf = create_resource_type('resource_type_images/football.jpg',
-            'Football fields',
-            'On the football fields you can play as much football as you want. They truly are magical things.',
-            'Fotbollsplaner',
-            'som man spelar fotboll på :)')
-    tns = create_resource_type('resource_type_images/tennisball.jpg',
-            'Tennis courts',
-            'Where tennis can be played.',
-            'Tennisplaner',
-            'Där man spelar lite tennis ibland.')
+    fbf = create_resource_type(
+        'resource_type_images/football.png',
+        'Football fields',
+        'On the football fields you can play as much football as you want. They truly are magical things.',
+        'Fotbollsplaner',
+        'som man spelar fotboll på :)')
+    tns = create_resource_type(
+        'resource_type_images/tennis-ball.png',
+        'Tennis courts',
+        'Where tennis can be played.',
+        'Tennisplaner',
+        'Där man spelar lite tennis ibland.')
+    pol = create_resource_type(
+        'resource_type_images/poolball.png',
+        'Pool table rooms',
+        'Where you can play pool.',
+        'Biljardrum',
+        'Här kan du spela biljard och ha det trevligt.')
+    vol = create_resource_type(
+        'resource_type_images/volleyball.png',
+        'Volleyball fields',
+        'Where you can play volleyball.',
+        'Volleybollplaner',
+        'Här kan du spela volleyboll!')
 
-    fa = create_resource(fbf, 15.56774, 58.410758, 'Paper', 'a place', 'Papper', 'en plats')
-    fb = create_resource(fbf, 15.570261, 58.410134, 'Rock', 'to call', 'Sten', 'att kalla')
+    fa = create_resource(fbf, 15.56774, 58.410758, 'Rock', 'a place', 'Sten', 'en plats')
+    fb = create_resource(fbf, 15.570261, 58.410134, 'Paper', 'to call', 'Papper', 'att kalla')
     fc = create_resource(fbf, 15.57128, 58.41012, 'Scissors', 'home', 'Sax', 'hem')
 
     ta = create_resource(tns, 15.559725, 58.412745, 'Leftie', 'take a swing', 'Pumpen', 'svinga')
     tb = create_resource(tns, 15.560272, 58.412891, 'Rightie', 'ding ding dang', 'Pumpen', 'ding dabo dong')
+
+    create_resource(vol, 15.563014, 58.410334, 'BBQ field', 'Just beside [hg] and the central Ryd BBQ grills.', 'Grillplan', 'Ligger precis brevid [hg] och centrala Rydsgrillarna.')
+
+    create_resource(pol, 15.56266, 58.41238, 'Baller room', 'Remember to clean up after yourselves.', 'Balla rummet', 'Glöm inte att städa efter er.')
 
     if debug:
         a = create_user('baren555')
