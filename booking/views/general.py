@@ -6,31 +6,15 @@ from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.utils import translation
 from django.utils.translation import ugettext as _
-from django.utils.translation import get_language
 from django import forms
 
-from booking.models import Resource, UserProfile, User, ResourceType, Reservation
-
-
-def build_request_context(request, values):
-    if values is None:
-        values = {}
-    # Add resources that base.html depends on:
-    language = get_language()
-    resource_types = ResourceType.objects.language(language).all()
-
-    base = {
-        'in_profile_page': request.path_info.startswith('/profile/'),
-        'resource_types': resource_types,
-        'language': language}
-    values['base'] = base
-    return RequestContext(request, values)
+from booking.models import Resource, UserProfile, User, Reservation
 
 
 def http_forbidden_page(request, message):
     if message is None or message == '':
         message = 'Request was made with bad parameters.'
-    context = build_request_context(request, {'message': message})
+    context = RequestContext(request, {'message': message})
     return render_to_response('403.html', context)
 
 
@@ -47,7 +31,7 @@ class BanUserForm(forms.ModelForm):
 
 
 def copyright(request):
-    context = build_request_context(request, {})
+    context = RequestContext(request, {})
     return render_to_response('copyright.html', context)
 
 
@@ -64,7 +48,7 @@ Server error!
 
 Could not find rules file. Contact FR Ryd, please.
         """)
-    context = build_request_context(request, {'rules': rules})
+    context = RequestContext(request, {'rules': rules})
     return render_to_response('rules.html', context)
 
 
@@ -91,7 +75,7 @@ def profile(request, username, page):
     has_more_reservations = res_count > last_res_on_page
     reservations = reservations[first_res_on_page:last_res_on_page]
 
-    context = build_request_context(request, {
+    context = RequestContext(request, {
         'form': form,
         'reservations': list(reservations),
         'has_more_reservations': has_more_reservations,
@@ -113,14 +97,14 @@ def ban(request, username):
     else:
         form = BanUserForm(instance=user.profile)
 
-    context = build_request_context(request, {'form': form})
+    context = RequestContext(request, {'form': form})
     return render_to_response('ban.html', context)
 
 
 def start(request):
     language = translation.get_language()
     resources = Resource.objects.language(language).all()
-    context = build_request_context(request, {
+    context = RequestContext(request, {
         'resources': resources})
     return render_to_response('start.html', context)
 

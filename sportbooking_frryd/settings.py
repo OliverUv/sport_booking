@@ -123,6 +123,7 @@ TEMPLATE_LOADERS = (
 # Adding template context processors here
 TEMPLATE_CONTEXT_PROCESSORS = TCP + (
         'django.core.context_processors.request',
+        'booking.context_processors.default_values'
         )
 
 MIDDLEWARE_CLASSES = (

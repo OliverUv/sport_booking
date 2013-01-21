@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils.translation import get_language
 from datetime import timedelta
@@ -9,7 +10,6 @@ from booking.common import get_object_or_404
 from booking.models import Reservation, ResourceType, Resource, OverwriteLog
 from booking.common import to_timestamp, from_timestamp, utc_now
 from booking.common import http_forbidden, http_badrequest, http_json_response
-from booking.views.general import build_request_context
 
 
 def resource(request, resource_id=None):
@@ -22,7 +22,7 @@ def resource(request, resource_id=None):
     language = get_language()
     resources = Resource.objects.language(language).all()
     resource = get_object_or_404(Resource, resource_id)
-    context = build_request_context(request, {
+    context = RequestContext(request, {
         'mobile_requested': mobile_requested,
         'resource': resource,
         'resources': resources})
@@ -56,7 +56,7 @@ def resource_type(request, resource_t_id=None):
     cal_width = width_sans_margins / resource_count
     cal_margin = margin_width / (resource_count - 1)
 
-    context = build_request_context(request, {
+    context = RequestContext(request, {
         'longitude': (max_long.longitude + min_long.longitude) / 2,
         'latitude': (max_lat.latitude + min_lat.latitude) / 2,
         'cal_width': cal_width,
