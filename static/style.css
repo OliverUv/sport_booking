@@ -113,6 +113,14 @@ h2 {
     margin-left: 4%;
 }
 
+#frryd_link {
+    position: absolute;
+    top: 7px;
+    right: 5px;
+    height: 26px;
+    width: 26px;
+}
+
 #start_text_box {
     height: 100%;
     overflow: hidden;
@@ -327,7 +335,7 @@ h2 {
 #copyright {
     position: fixed;
     bottom: 2px;
-    right: 2px;
+    right: 10px;
     font-size: 60%;
 }
 
