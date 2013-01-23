@@ -101,6 +101,7 @@ function initializeCalendar(calendarData) {
 	defaultView: calendarData.view,
 	editable: true,
 	disableResizing: true,
+	disableDragging: true,
 	allDayDefault: false,
 	allDaySlot: false,
 	defaultEventMinutes: 60,
