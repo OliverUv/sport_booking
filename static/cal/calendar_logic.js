@@ -28,12 +28,17 @@ function initializeCalendar(calendarData) {
 	}).fail(showAjaxFailure);
     }
 
+    var open_delete_dialogs = [];
     function deleteEvent(eventId) {
+	if (open_delete_dialogs.indexOf(eventId) !== -1)
+	    return;
+	open_delete_dialogs.push(eventId);
 	n = noty({
 	    text: "Do you want to remove event #" + eventId,
 	    type: 'error',
 	    dismissQueue: true,
 	    layout: 'center',
+	    onClose: function() { open_delete_dialogs = open_delete_dialogs.remove(eventId); },
 	    buttons: [{
 		addClass: 'btn btn-danger', text: 'Delete', onClick: function($noty) {
 		    $noty.close();
