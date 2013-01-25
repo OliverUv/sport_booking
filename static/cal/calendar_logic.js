@@ -6,7 +6,8 @@ function initializeCalendar(calendarData) {
 	    type: 'error',
 	    dismissQueue: true,
 	    layout: 'topRight',
-	    timeout: 3800
+	    timeout: 3800,
+	    onCloseClick: function () { window.location = calendarData.login_url; }
 	});
     }
 
