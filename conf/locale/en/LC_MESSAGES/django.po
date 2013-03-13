@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-12 21:00+0200\n"
+"POT-Creation-Date: 2013-03-13 19:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,22 +16,192 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: booking/validators.py:11 booking/validators.py:13
+#: booking/validators.py:21
 msgid "You did not input a valid liu-id."
 msgstr "You did not input a valid liu-id."
 
-#: booking/views/general.py:11
-msgid "Welcome"
-msgstr "Welcome"
+#: booking/validators.py:34
+msgid "The postal number consists of five digits only."
+msgstr "The postal number consists of five digits only."
 
-#: templates/base.html:5
+#: booking/views/booking_calendar.py:20
+msgid "No resource id given."
+msgstr "No resource id given."
+
+#: booking/views/booking_calendar.py:38
+msgid "No resource type id given."
+msgstr "No resource type id given."
+
+#: booking/views/booking_calendar.py:130
+msgid "You must complete your profile before making reservations."
+msgstr "You must complete your profile before making reservations."
+
+#: booking/views/booking_calendar.py:132
+msgid "You are banned. Stated reason: "
+msgstr "You are banned. Stated reason: "
+
+#: booking/views/booking_calendar.py:132
+msgid " Contact FRRyd for further information."
+msgstr " Contact FRRyd for further information."
+
+#: booking/views/booking_calendar.py:137
+msgid "You may not reserve the resource for such a long time."
+msgstr "You may not reserve the resource for such a long time."
+
+#: booking/views/booking_calendar.py:141
+msgid "Start and end times must be in the future."
+msgstr "Start and end times must be in the future."
+
+#: booking/views/booking_calendar.py:144
+msgid "Start time must be before end time."
+msgstr "Start time must be before end time."
+
+#: booking/views/booking_calendar.py:153
+msgid "You may only make two reservations per resource."
+msgstr "You may only make two reservations per resource."
+
+#: booking/views/booking_calendar.py:162
+msgid "You may not reserve two resources at the same time."
+msgstr "You may not reserve two resources at the same time."
+
+#: booking/views/booking_calendar.py:176
+msgid "You can't overwrite a reservation with a preliminary reservation."
+msgstr "You can't overwrite a reservation with a preliminary reservation."
+
+#: booking/views/booking_calendar.py:178
+msgid "Somebody has already made a reservation here!"
+msgstr "Somebody has already made a reservation here!"
+
+#: booking/views/booking_calendar.py:219 booking/views/booking_calendar.py:239
+msgid "No request id provided."
+msgstr "No request id provided."
+
+#: booking/views/booking_calendar.py:222
+msgid "No reservation with that id."
+msgstr "No reservation with that id."
+
+#: booking/views/booking_calendar.py:226
+msgid "You may not overwrite your own reservations."
+msgstr "You may not overwrite your own reservations."
+
+#: booking/views/booking_calendar.py:228
+msgid "You may not overwrite solid reservations."
+msgstr "You may not overwrite solid reservations."
+
+#: booking/views/booking_calendar.py:243
+msgid "You may only delete your own events."
+msgstr "You may only delete your own events."
+
+#: booking/views/general.py:44
+msgid ""
+"\n"
+"=============\n"
+"Server error!\n"
+"=============\n"
+"\n"
+"Could not find rules file. Contact FR Ryd, please.\n"
+"        "
+msgstr ""
+"\n"
+"=============\n"
+"Server error!\n"
+"=============\n"
+"\n"
+"Could not find rules file. Contact FR Ryd, please.\n"
+"        "
+
+#: booking/views/general.py:58
+msgid "You can only view your own profile page."
+msgstr "You can only view your own profile page."
+
+#: booking/views/general.py:90
+msgid "You have to be staff to ban people!"
+msgstr "You have to be staff to ban people!"
+
+#: templates/403.html:5
+msgid "You're trying to do something you're not allowed to:"
+msgstr "You're trying to do something you're not allowed to:"
+
+#: templates/404.html:5
+msgid "Could not find whatever you wanted to find, sorry :("
+msgstr "Could not find whatever you wanted to find, sorry :("
+
+#: templates/500.html:7 templates/base.html:9
 msgctxt "site title"
 msgid "FR Ryd location booking"
 msgstr "FR Ryd location booking"
 
-#: templates/base.html:9
-msgid "Choose Language:"
-msgstr "Choose Language:"
+#: templates/500.html:71
+msgid ""
+"Something went wrong on our side. Please email us and tell us what happened."
+msgstr ""
+"Something went wrong on our side. Please email us and tell us what happened."
+
+#: templates/base.html:64 templates/base.html.py:137
+msgid "Logout"
+msgstr "Logout"
+
+#: templates/base.html:66 templates/base.html.py:139
+msgid "Login"
+msgstr "Login"
+
+#: templates/base.html:66 templates/base.html.py:139
+msgid "with liu-id"
+msgstr "with liu-id"
+
+#: templates/base.html:81
+msgid ""
+"You must complete your profile before making reservations. Click here to do "
+"it."
+msgstr ""
+"You must complete your profile before making reservations. Click here to do "
+"it."
+
+#: templates/base.html:89
+msgid "You have been banned. Reason:"
+msgstr "You have been banned. Reason:"
+
+#: templates/base.html:101 templates/base.html.py:147
+msgid "MENU"
+msgstr "MENU"
+
+#: templates/base.html:103 templates/base.html.py:149
+msgid "Home"
+msgstr "Home"
+
+#: templates/base.html:104 templates/base.html.py:150
+msgid "Rules"
+msgstr "Rules"
+
+#: templates/base.html:142
+msgid "Back to FR Ryd"
+msgstr "Back to FR Ryd"
+
+#: templates/error.html:25
+msgid ""
+"We have no idea what happened. Please contact us if this happens too often."
+msgstr ""
+"We have no idea what happened. Please contact us if this happens too often."
+
+#: templates/start.html:92
+msgid ""
+"This is the reservation system for FR Ryd's resources. We have football "
+"fields, tennis courts, a volleyball field and a pool table room that any Ryd "
+"resident can use. After you log in with your liu-id and fill in your profile "
+"details, click on the resources on the map above to get to their booking "
+"pages. Also click around in the menu to find more useful pages. Oh! And "
+"don't forget to "
+msgstr ""
+"This is the reservation system for FR Ryd's resources. We have football "
+"fields, tennis courts, a volleyball field and a pool table room that any Ryd "
+"resident can use. After you log in with your liu-id and fill in your profile "
+"details, click on the resources on the map above to get to their booking "
+"pages. Also click around in the menu to find more useful pages. Oh! And "
+"don't forget to "
+
+#: templates/start.html:92
+msgid "read the rules!"
+msgstr "read the rules!"
 
 #: templates/registration/login.html:8
 msgid "Your username and password didn't match. Please try again."
