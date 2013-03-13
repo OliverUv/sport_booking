@@ -43,7 +43,9 @@
 	    } else {
 		adjustment = 0;
 	    }
-	    $("#start_title_box").css("padding-top", (bottom_row_height - start_title_height) * 0.50 * adjustment);
+	    var new_size = (bottom_row_height - start_title_height) * 0.50 * adjustment;
+	    new_size = Math.floor(new_size);
+	    $("#start_title_box").css("padding-top", new_size);
 	}
     };
 
